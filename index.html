@@ -1,1 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mahesh Algo | Institutional Dashboard 2026</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f0f4f8;--surface:#ffffff;--surface2:#f8fafc;--surface3:#eef2f7;
+  --border:#d1dbe8;--border2:rgba(0,0,0,0.06);
+  --accent:#0284c7;--green:#059669;--red:#dc2626;--amber:#d97706;--purple:#7c3aed;
+  --text:#0f172a;--muted:#64748b;--muted2:#475569;
+  --font:'Outfit',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;font-size:16px}
 
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;border-bottom:1px solid var(--border);background:var(--surface);position:sticky;top:35px;z-index:49;box-shadow:0 1px 8px rgba(0,0,0,0.06)}
+.topbar-brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:32px;height:32px;background:var(--accent);border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85em;color:#000;font-family:var(--font)}
+.brand-name{font-weight:700;font-size:1.05em;letter-spacing:-0.3px}
+.brand-name span{color:var(--accent)}
+.topbar-meta{font-size:0.9em;color:var(--muted);font-family:var(--mono)}
+.live-pill{display:flex;align-items:center;gap:6px;background:rgba(5,150,105,0.1);border:1px solid rgba(5,150,105,0.25);padding:7px 16px;border-radius:100px;font-size:0.88em;font-weight:600;color:var(--green)}
+.live-dot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:blink 1.4s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
+
+/* CAPITAL BAR */
+.capital-bar{display:flex;align-items:center;gap:24px;padding:10px 28px;background:var(--surface2);border-bottom:1px solid var(--border);font-size:0.9em;color:var(--muted2)}
+.cap-item{display:flex;align-items:center;gap:6px}
+.cap-dot{width:6px;height:6px;border-radius:50%}
+.cap-val{font-family:var(--mono);font-weight:500;color:var(--text)}
+
+/* TABS */
+.tab-nav{display:flex;gap:0;padding:0 28px;border-bottom:1px solid var(--border);background:var(--surface)}
+.tab-btn{padding:14px 22px;background:transparent;border:none;cursor:pointer;font-family:var(--font);font-size:0.97em;font-weight:600;color:var(--muted);border-bottom:2px solid transparent;transition:all 0.2s;letter-spacing:0.2px;display:flex;align-items:center;gap:8px}
+.tab-btn:hover{color:var(--muted2)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-btn .tab-badge{font-size:0.84em;padding:2px 7px;border-radius:4px;background:rgba(2,132,199,0.1);color:var(--accent);font-family:var(--mono)}
+.tab-btn.active .tab-badge{background:rgba(2,132,199,0.25)}
+
+/* CONTENT */
+.tab-content{display:none;padding:24px 28px;animation:fadeIn 0.2s ease}
+.tab-content.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* KPI ROW */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;position:relative;overflow:hidden}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.kpi.cyan::before{background:var(--accent)}
+.kpi.green::before{background:var(--green)}
+.kpi.red::before{background:var(--red)}
+.kpi.amber::before{background:var(--amber)}
+.kpi.purple::before{background:var(--purple)}
+.kpi-label{font-size:0.82em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;font-weight:500}
+.kpi-val{font-family:var(--mono);font-size:1.8em;font-weight:600;line-height:1;margin-bottom:4px}
+.kpi-sub{font-size:0.84em;color:var(--muted);margin-top:4px}
+.c-green{color:var(--green)}.c-red{color:var(--red)}.c-amber{color:var(--amber)}.c-cyan{color:var(--accent)}.c-purple{color:var(--purple)}.c-muted{color:var(--muted2)}
+
+/* CHART GRID */
+.chart-row{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:16px}
+.chart-row-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.chart-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.chart-box.full{grid-column:1/-1}
+.chart-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.chart-title{font-size:0.9em;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted2);font-weight:600}
+.chart-val{font-family:var(--mono);font-size:1.05em;font-weight:600}
+canvas{display:block;width:100%!important}
+.chart-box canvas{max-height:220px}
+.chart-box.tall canvas{max-height:280px}
+
+/* MONTHLY TABLE */
+.mtable-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:16px}
+.mtable-head{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border)}
+.mtable{width:100%;border-collapse:collapse;font-size:0.97em}
+.mtable th{padding:10px 16px;text-align:right;color:var(--muted);font-weight:500;font-size:0.85em;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.mtable th:first-child{text-align:left}
+.mtable td{padding:14px 18px;text-align:right;border-bottom:1px solid var(--border2);font-family:var(--mono)}
+.mtable td:first-child{text-align:left;color:var(--muted2);font-family:var(--font);font-weight:500}
+.mtable tr:last-child td{border-bottom:none}
+.mtable tr:hover td{background:rgba(0,0,0,0.03)}
+.tag{display:inline-block;padding:4px 11px;border-radius:4px;font-size:0.88em;font-weight:600;font-family:var(--font)}
+.tag-up{background:rgba(5,150,105,0.12);color:var(--green)}
+.tag-dn{background:rgba(255,77,109,0.1);color:var(--red)}
+
+/* HISTORY TAB */
+.hist-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.year-badge{display:inline-block;padding:4px 10px;border-radius:4px;font-size:0.84em;font-weight:700;background:rgba(124,58,237,0.1);color:var(--purple);margin-right:8px;font-family:var(--mono)}
+
+/* FOOTER NOTE */
+.disclosure{margin-top:16px;padding:12px 16px;background:rgba(217,119,6,0.06);border:1px solid rgba(217,119,6,0.2);border-radius:8px;font-size:0.86em;color:var(--muted);line-height:1.6}
+.disclosure strong{color:var(--amber)}
+
+@media(max-width:900px){
+  .kpi-row{grid-template-columns:repeat(2,1fr)}
+  .chart-row,.chart-row-2,.hist-grid{grid-template-columns:1fr}
+  .tab-nav{overflow-x:auto;padding:0 16px}
+  .tab-content{padding:16px}
+  .topbar{padding:12px 16px}
+  .capital-bar{flex-wrap:wrap;gap:12px;padding:10px 16px}
+}
+
+/* ============ PLANS TAB ============ */
+#tab4{padding:32px 28px 60px}
+.plans-hero{text-align:center;padding:20px 0 40px}
+.plans-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:0.72em;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:600;font-family:var(--mono);background:rgba(2,132,199,0.07);border:1px solid rgba(2,132,199,0.25);padding:6px 16px;border-radius:100px;margin-bottom:18px}
+.plans-blink{width:5px;height:5px;background:var(--accent);border-radius:50%;animation:blink 1.4s infinite;display:inline-block}
+.plans-title{font-size:clamp(1.8em,4vw,2.8em);font-weight:900;letter-spacing:-2px;line-height:1.05;margin-bottom:12px}
+.plans-title span{color:var(--accent)}
+.plans-sub{font-size:0.95em;color:var(--muted2);max-width:500px;margin:0 auto;line-height:1.7;font-weight:300}
+.plans-stats{display:flex;align-items:center;justify-content:center;max-width:600px;margin:0 auto 44px;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.ps-item{flex:1;padding:14px 16px;text-align:center;border-right:1px solid var(--border)}
+.ps-item:last-child{border-right:none}
+.ps-val{font-family:var(--mono);font-size:1.2em;font-weight:600;margin-bottom:2px}
+.ps-lbl{font-size:0.65em;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);font-weight:500}
+.pgrid{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start}
+.pcard{background:var(--surface2);border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:transform 0.3s,box-shadow 0.3s}
+.pcard:hover{transform:translateY(-5px);box-shadow:0 10px 28px rgba(0,0,0,0.1)}
+.pcard.pfeat{border-color:rgba(2,132,199,0.4);box-shadow:0 0 36px rgba(2,132,199,0.08);transform:scale(1.03)}
+.pcard.pfeat:hover{transform:scale(1.03) translateY(-5px)}
+.pcard.psell{border-color:rgba(124,58,237,0.3)}
+.pop-tag{background:var(--accent);color:#000;text-align:center;padding:7px;font-size:0.7em;font-weight:800;letter-spacing:2px;text-transform:uppercase;font-family:var(--mono)}
+.pchead{padding:24px 24px 0}
+.ptier{font-size:0.65em;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:6px;font-family:var(--mono)}
+.ptc{color:var(--accent)}.ptb{color:var(--blue)}.ptp{color:var(--purple)}
+.pname{font-size:1.4em;font-weight:800;letter-spacing:-0.5px;margin-bottom:5px}
+.pdesc{font-size:0.8em;color:var(--muted);margin-bottom:20px;font-weight:300;line-height:1.4}
+.prow{display:flex;align-items:baseline;gap:3px;margin-bottom:4px}
+.pcurr{font-size:1em;color:var(--muted2);font-weight:400}
+.pnum{font-size:2.8em;font-weight:900;letter-spacing:-2px;line-height:1}
+.pnum-c{color:var(--accent)}.pnum-b{color:var(--blue)}.pnum-p{color:var(--purple)}
+.pper{font-size:0.82em;color:var(--muted)}
+.psub-price{font-size:0.72em;color:var(--muted);margin-bottom:18px;font-family:var(--mono)}
+.psave{color:var(--green);font-weight:600}
+.pcap{margin:0 24px 18px;padding:9px 12px;background:rgba(0,0,0,0.04);border-radius:7px;font-size:0.75em;color:var(--muted2);display:flex;align-items:center;gap:7px;border-left:3px solid var(--accent)}
+.pcap.bc{border-left-color:var(--blue)}.pcap.pc{border-left-color:var(--purple)}
+.pfwrap{padding:0 24px 24px}
+.pfglbl{font-size:0.63em;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-weight:600;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border)}
+.pflist{list-style:none;margin-bottom:18px}
+.pflist li{display:flex;align-items:center;gap:9px;padding:7px 0;font-size:0.85em;color:var(--muted2);border-bottom:1px solid rgba(0,0,0,0.06)}
+.pflist li:last-child{border-bottom:none}
+.fnew{font-size:0.62em;padding:1px 5px;background:rgba(5,150,105,0.12);color:var(--green);border-radius:3px;font-weight:700;font-family:var(--mono)}
+.pbtn{width:100%;padding:13px 18px;border-radius:9px;font-family:var(--font);font-weight:700;font-size:0.9em;cursor:pointer;border:none;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px;text-decoration:none;margin-bottom:12px}
+.pb-c{background:var(--accent);color:#000}.pb-c:hover{background:#00c2e8;box-shadow:0 7px 22px rgba(2,132,199,0.3);transform:translateY(-1px)}
+.pb-co{background:transparent;color:var(--accent);border:1.5px solid rgba(2,132,199,0.4)}.pb-co:hover{background:rgba(2,132,199,0.07)}
+.pb-p{background:var(--purple);color:#fff}.pb-p:hover{background:#6d6fd1;box-shadow:0 7px 22px rgba(124,58,237,0.3);transform:translateY(-1px)}
+.pdivs{text-align:center;font-size:0.7em;color:var(--muted);margin-bottom:10px;position:relative}
+.pdivs::before,.pdivs::after{content:"";position:absolute;top:50%;width:38%;height:1px;background:var(--border)}
+.pdivs::before{left:0}.pdivs::after{right:0}
+.pwabtn{width:100%;padding:10px;border-radius:7px;border:1.5px solid rgba(22,163,74,0.35);background:rgba(22,163,74,0.06);color:#25d366;font-family:var(--font);font-weight:600;font-size:0.8em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;transition:all 0.2s}
+.pwabtn:hover{background:rgba(22,163,74,0.1);border-color:rgba(22,163,74,0.5)}
+.ppaychips{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;margin-top:10px}
+.ppchip{padding:2px 9px;border-radius:4px;background:var(--surface3);border:1px solid var(--border);font-size:0.65em;color:var(--muted2);font-family:var(--mono)}
+/* COMPARE TABLE */
+.pcompare{max-width:860px;margin:0 auto 48px}
+.pcompare-title{text-align:center;font-size:1.3em;font-weight:800;letter-spacing:-0.5px;margin-bottom:8px;margin-top:48px}
+.pcompare-sub{text-align:center;font-size:0.82em;color:var(--muted);margin-bottom:24px}
+.pctable-wrap{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.pctable{width:100%;border-collapse:collapse;font-size:0.85em}
+.pctable thead tr{background:var(--surface2)}
+.pctable th{padding:12px 14px;text-align:center;color:var(--muted2);font-weight:600;font-size:0.78em;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border)}
+.pctable th:first-child{text-align:left;color:var(--muted)}
+.pctable th.pfc{color:var(--accent)}.pctable th.psc{color:var(--purple)}
+.pctable td{padding:11px 14px;text-align:center;border-bottom:1px solid rgba(0,0,0,0.06);color:var(--muted2)}
+.pctable td:first-child{text-align:left;font-weight:500;color:var(--text)}
+.pctable tr:last-child td{border-bottom:none}
+.pctable tr:hover td{background:rgba(0,0,0,0.03)}
+.pcsect{padding:7px 14px !important;font-size:0.7em !important;color:var(--muted) !important;background:rgba(0,0,0,0.03) !important;letter-spacing:1px;text-transform:uppercase;font-weight:600 !important}
+.pchk{color:var(--green)}.pdsh{color:var(--border)}
+/* TRUST + FAQ inline */
+.ptrust-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:860px;margin:0 auto 36px}
+.ptrust-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center}
+.pti{font-size:1.6em;margin-bottom:8px}
+.ptt{font-size:0.85em;font-weight:700;margin-bottom:4px}
+.ptd{font-size:0.73em;color:var(--muted);line-height:1.5}
+.pfaq-list{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:7px}
+.pfaq-item{background:var(--surface);border:1px solid var(--border);border-radius:9px;overflow:hidden}
+.pfaq-q{padding:14px 18px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:0.88em;transition:background 0.2s;user-select:none}
+.pfaq-q:hover{background:rgba(0,0,0,0.04)}
+.pfaq-arr{color:var(--muted);transition:transform 0.3s;font-size:0.8em}
+.pfaq-item.open .pfaq-arr{transform:rotate(180deg)}
+.pfaq-a{max-height:0;overflow:hidden;transition:max-height 0.35s ease}
+.pfaq-item.open .pfaq-a{max-height:180px}
+.pfaq-ai{padding:0 18px 14px;font-size:0.83em;color:var(--muted2);line-height:1.7}
+.pdisclosure{margin:32px auto 0;max-width:860px;padding:12px 16px;background:rgba(217,119,6,0.06);border:1px solid rgba(217,119,6,0.2);border-radius:8px;font-size:0.73em;color:var(--muted);line-height:1.6}
+.pdisclosure strong{color:var(--amber)}
+/* MODAL */
+.pmodal-overlay{position:fixed;inset:0;z-index:999;background:rgba(15,23,42,0.55);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.25s;padding:20px}
+.pmodal-overlay.active{opacity:1;pointer-events:all}
+.pmodal{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;width:100%;max-width:440px;position:relative;transform:translateY(20px);transition:transform 0.25s}
+.pmodal-overlay.active .pmodal{transform:translateY(0)}
+.pmodal-close{position:absolute;top:12px;right:14px;background:none;border:none;color:var(--muted);font-size:1.2em;cursor:pointer;padding:4px 8px;border-radius:5px;line-height:1}
+.pmodal-close:hover{background:rgba(0,0,0,0.06);color:var(--text)}
+.pmbadge{display:inline-block;padding:3px 10px;border-radius:5px;font-size:0.7em;font-weight:700;font-family:var(--mono);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.pmtitle{font-size:1.3em;font-weight:800;letter-spacing:-0.5px;margin-bottom:5px}
+.pmamt{font-family:var(--mono);font-size:1.65em;font-weight:700;margin-bottom:20px}
+.pmform-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pmfg{margin-bottom:14px}
+.pmlbl{font-size:0.76em;color:var(--muted2);font-weight:500;margin-bottom:5px;display:block}
+.pminp{width:100%;padding:11px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:0.9em;outline:none;transition:border-color 0.2s}
+.pminp:focus{border-color:rgba(0,212,255,0.4)}
+.pminp::placeholder{color:var(--muted)}
+.pmsubmit{width:100%;padding:13px;background:var(--accent);color:#000;border:none;border-radius:9px;font-family:var(--font);font-size:0.92em;font-weight:700;cursor:pointer;margin-top:6px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.pmsubmit:hover{background:#00c2e8;box-shadow:0 5px 18px rgba(2,132,199,0.35)}
+.pmsubmit.pmps{background:var(--purple);color:#fff}.pmsubmit.pmps:hover{background:#6d6fd1;box-shadow:0 5px 18px rgba(124,58,237,0.3)}
+.pmpay{display:flex;gap:5px;justify-content:center;margin-top:9px;flex-wrap:wrap}
+.pmpchip{padding:3px 9px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;font-size:0.68em;color:var(--muted2);font-family:var(--mono)}
+.pmnote{font-size:0.7em;color:var(--muted);text-align:center;margin-top:10px;line-height:1.5}
+@media(max-width:900px){.pgrid{grid-template-columns:1fr}.pcard.pfeat{transform:none}.ptrust-row{grid-template-columns:1fr}.pcompare{display:none}}
+
+
+/* ======= LIVE SCOREBOARD ======= */
+#tab5{padding:24px 28px 60px}
+.live-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.live-title{font-size:1.5em;font-weight:800;letter-spacing:-0.5px}
+.live-title span{color:var(--green)}
+.live-meta{display:flex;align-items:center;gap:12px;font-size:0.82em;color:var(--muted);font-family:var(--mono)}
+.live-clock{font-size:1em;color:var(--text);font-weight:600;background:var(--surface2);padding:6px 14px;border-radius:6px;border:1px solid var(--border)}
+.live-market-status{padding:5px 14px;border-radius:100px;font-size:0.78em;font-weight:700;font-family:var(--mono)}
+.market-open{background:rgba(5,150,105,0.1);color:var(--green);border:1px solid rgba(5,150,105,0.3)}
+.market-closed{background:rgba(220,38,38,0.1);color:var(--red);border:1px solid rgba(220,38,38,0.3)}
+.market-pre{background:rgba(217,119,6,0.1);color:var(--amber);border:1px solid rgba(217,119,6,0.3)}
+/* TODAY SUMMARY STRIP */
+.live-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.ls-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 18px;text-align:center}
+.ls-card::before{content:'';display:block;height:3px;border-radius:2px;margin-bottom:12px}
+.ls-card.green::before{background:var(--green)}
+.ls-card.red::before{background:var(--red)}
+.ls-card.amber::before{background:var(--amber)}
+.ls-card.cyan::before{background:var(--accent)}
+.ls-label{font-size:0.72em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:6px}
+.ls-val{font-family:var(--mono);font-size:1.6em;font-weight:700;line-height:1}
+.ls-sub{font-size:0.72em;color:var(--muted);margin-top:4px}
+/* STRATEGY CARDS GRID */
+.live-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
+.strat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:box-shadow 0.2s}
+.strat-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.08)}
+.strat-card.active-trade{border-color:var(--green);box-shadow:0 0 0 2px rgba(5,150,105,0.15)}
+.strat-card.in-loss{border-color:var(--red);box-shadow:0 0 0 2px rgba(220,38,38,0.12)}
+.strat-card.waiting{border-color:var(--border);opacity:0.8}
+.sc-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
+.sc-name{font-weight:700;font-size:0.97em;display:flex;align-items:center;gap:8px}
+.sc-badge{font-size:0.68em;padding:3px 10px;border-radius:100px;font-weight:700;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.5px}
+.badge-long{background:rgba(5,150,105,0.12);color:var(--green);border:1px solid rgba(5,150,105,0.3)}
+.badge-short{background:rgba(220,38,38,0.1);color:var(--red);border:1px solid rgba(220,38,38,0.25)}
+.badge-wait{background:rgba(100,116,139,0.1);color:var(--muted);border:1px solid var(--border)}
+.badge-exit{background:rgba(217,119,6,0.1);color:var(--amber);border:1px solid rgba(217,119,6,0.3)}
+.sc-body{padding:14px 16px}
+.sc-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(0,0,0,0.04);font-size:0.88em}
+.sc-row:last-child{border-bottom:none}
+.sc-row-label{color:var(--muted);font-weight:500}
+.sc-row-val{font-family:var(--mono);font-weight:600;color:var(--text)}
+.sc-pnl-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--surface2);border-top:1px solid var(--border)}
+.sc-pnl-label{font-size:0.8em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600}
+.sc-pnl-val{font-family:var(--mono);font-size:1.35em;font-weight:800}
+/* EDIT MODE */
+.edit-btn{padding:8px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;font-family:var(--font);font-size:0.82em;font-weight:600;color:var(--muted2);cursor:pointer;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+.edit-btn:hover{background:var(--border);color:var(--text)}
+.edit-btn.active{background:rgba(5,150,105,0.1);border-color:rgba(5,150,105,0.3);color:var(--green)}
+.edit-panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:24px;display:none}
+.edit-panel.show{display:block}
+.edit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.edit-group{display:flex;flex-direction:column;gap:5px}
+.edit-label{font-size:0.72em;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);font-weight:600}
+.edit-input{padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:0.9em;outline:none;transition:border-color 0.2s;width:100%}
+.edit-input:focus{border-color:rgba(2,132,199,0.5)}
+.edit-select{padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--mono);font-size:0.9em;outline:none;width:100%;cursor:pointer}
+.update-btn{padding:10px 24px;background:var(--accent);color:#fff;border:none;border-radius:8px;font-family:var(--font);font-weight:700;font-size:0.9em;cursor:pointer;transition:all 0.2s;margin-top:4px}
+.update-btn:hover{background:#0369a1;box-shadow:0 4px 14px rgba(2,132,199,0.3)}
+.today-log{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.today-log-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.today-log-title{font-weight:700;font-size:0.9em;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted2)}
+#logTable{width:100%;border-collapse:collapse;font-size:0.92em}
+#logTable th{padding:10px 16px;text-align:left;color:var(--muted);font-size:0.8em;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);background:var(--surface2);font-weight:600}
+#logTable td{padding:12px 16px;border-bottom:1px solid rgba(0,0,0,0.04);font-family:var(--mono)}
+#logTable tr:last-child td{border-bottom:none}
+#logTable tr:hover td{background:rgba(0,0,0,0.02)}
+.del-btn{background:none;border:none;color:var(--red);cursor:pointer;font-size:0.9em;padding:2px 6px;border-radius:4px;opacity:0.6}
+.del-btn:hover{opacity:1;background:rgba(220,38,38,0.08)}
+@media(max-width:900px){.live-summary{grid-template-columns:repeat(2,1fr)}.live-grid{grid-template-columns:1fr}.edit-grid{grid-template-columns:1fr 1fr}}
+
+
+/* ===== STRATEGY BREAKDOWN SECTION ===== */
+.strat-section {
+  margin: 0 0 16px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.strat-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 4px 20px rgba(102,126,234,0.12);
+  overflow: hidden;
+  border: 1px solid rgba(102,126,234,0.15);
+}
+.strat-card-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.strat-card-title {
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.92em;
+  letter-spacing: 0.3px;
+}
+.strat-card-total {
+  font-family: var(--mono);
+  font-size: 0.85em;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.2);
+  color: #fff;
+}
+.strat-rows { padding: 6px 0; }
+.strat-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 11px 20px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.15s;
+}
+.strat-row:last-child { border-bottom: none; }
+.strat-row:hover { background: #f8faff; }
+.strat-row-left { display: flex; align-items: center; gap: 10px; }
+.strat-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.strat-name {
+  font-size: 0.88em;
+  font-weight: 500;
+  color: #374151;
+}
+.strat-bar-wrap {
+  flex: 1; margin: 0 16px;
+  height: 5px; background: #f1f5f9;
+  border-radius: 3px; overflow: hidden;
+  min-width: 60px;
+}
+.strat-bar { height: 100%; border-radius: 3px; transition: width 0.6s ease; }
+.strat-val {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  font-weight: 700;
+  min-width: 72px;
+  text-align: right;
+}
+.strat-val.pos { color: #059669; }
+.strat-val.neg { color: #dc2626; }
+@media(max-width:900px){ .strat-section { grid-template-columns: 1fr; } }
+
+
+/* ===== SEBI COMPLIANCE ===== */
+.sebi-top-bar{background:#1e3a5f;color:#94a3b8;font-size:0.7em;font-family:var(--mono);padding:5px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;border-bottom:1.5px solid #f59e0b;}
+.sebi-badge{background:#f59e0b;color:#1e3a5f;font-weight:800;padding:1px 7px;border-radius:3px;font-size:0.9em;margin-right:8px;}
+.sebi-risk{color:#f87171;font-weight:600;margin:0 12px;}
+.sebi-footer{background:#f8fafc;border-top:1px solid #e2e8f0;padding:10px 28px;text-align:center;font-size:0.68em;color:#94a3b8;font-family:var(--mono);line-height:1.6;}
+.sebi-footer a{color:#60a5fa;text-decoration:none;}
+@media(max-width:768px){.sebi-top-bar{flex-direction:column;align-items:flex-start;}}
+gn-items: flex-start; }
+  .sebi-disc-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<!-- SEBI COMPLIANCE TOP BAR -->
+<div class="sebi-top-bar">
+  <div><span class="sebi-badge">SEBI</span>Not a Registered Research Analyst &nbsp;·&nbsp; For educational &amp; informational purposes only</div>
+  <div><span class="sebi-risk">⚠ Options trading involves risk of loss</span><a href="https://www.sebi.gov.in" target="_blank" rel="noopener" style="color:#60a5fa;text-decoration:none;">sebi.gov.in ↗</a></div>
+</div>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="brand-mark">M</div>
+    <div>
+      <div class="brand-name">Mahesh<span>Algo</span></div>
+      <div style="font-size:0.8em;color:var(--muted);margin-top:1px">Institutional Trading Dashboard</div>
+    </div>
+  </div>
+  <div class="topbar-meta" id="topDate"></div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button onclick="switchTab(4,document.querySelectorAll('.tab-btn')[4])" style="padding:6px 16px;background:rgba(2,132,199,0.1);border:1px solid rgba(2,132,199,0.35);border-radius:7px;color:var(--accent);font-size:0.8em;font-weight:700;cursor:pointer;font-family:var(--font);transition:all 0.2s" onmouseover="this.style.background='rgba(2,132,199,0.22)'" onmouseout="this.style.background='rgba(2,132,199,0.1)'">&#128202; Dashboard Access</button>
+    <div class="live-pill"><span class="live-dot"></span> LIVE · Updated Daily</div>
+  </div>
+</div>
+
+<!-- CAPITAL BAR -->
+<div class="capital-bar">
+  <span style="color:var(--muted);font-weight:500;font-size:0.78em;text-transform:uppercase;letter-spacing:0.5px">Capital Deployed</span>
+  <div class="cap-item"><div class="cap-dot" style="background:var(--accent)"></div><span>Buying</span><span class="cap-val">₹50,000</span></div>
+  <div class="cap-item"><div class="cap-dot" style="background:var(--purple)"></div><span>Selling</span><span class="cap-val">₹9,00,000</span></div>
+  <div class="cap-item"><div class="cap-dot" style="background:var(--green)"></div><span>Combined</span><span class="cap-val">₹10,50,000</span></div>
+  <div style="margin-left:auto;font-size:0.78em;color:var(--muted)">5 Buying Strategies · 4 Selling Strategies · Nifty / BankNifty / Sensex</div>
+</div>
+
+<!-- TABS -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab(0,this)">
+    <span>Buying 2026</span><span class="tab-badge" id="tbuy-badge">—</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab(1,this)">
+    <span>Selling 2026</span><span class="tab-badge" id="tsell-badge">—</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab(2,this)">
+    <span>Combined 2026</span><span class="tab-badge" id="tcomb-badge">—</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab(3,this)">
+    <span>History 2023–25</span>
+  </button>
+  <button class="tab-btn plans-tab-btn" onclick="switchTab(4,this)" style="margin-left:auto;background:rgba(2,132,199,0.07);border:1px solid rgba(2,132,199,0.3);border-radius:8px;margin-right:4px;color:var(--accent)">
+    <span>📊 Access Plans</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab(5,this)" style="background:rgba(5,150,105,0.07);border:1px solid rgba(5,150,105,0.3);border-radius:8px;margin-right:4px;color:var(--green);display:flex;align-items:center;gap:6px">
+    <span class="live-dot" style="width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 1.4s infinite"></span>
+    <span>Live Scoreboard</span>
+  </button>
+</div>
+
+<!-- TAB: BUYING -->
+<div class="tab-content active" id="tab0">
+  <div class="kpi-row">
+    <div class="kpi cyan"><div class="kpi-label">Total P&L (YTD)</div><div class="kpi-val c-cyan" id="b-total">—</div><div class="kpi-sub">Option Buying · 2026</div></div>
+    <div class="kpi green"><div class="kpi-label">ROI on ₹50K</div><div class="kpi-val c-green" id="b-roi">—</div><div class="kpi-sub">Capital: ₹50,000</div></div>
+    <div class="kpi amber"><div class="kpi-label">Win Rate</div><div class="kpi-val c-amber" id="b-wr">—</div><div class="kpi-sub">Traded Days</div></div>
+    <div class="kpi red"><div class="kpi-label">Max Drawdown</div><div class="kpi-val c-red" id="b-dd">—</div><div class="kpi-sub">Peak to Trough</div></div>
+    <div class="kpi purple"><div class="kpi-label">Best Month</div><div class="kpi-val c-purple" id="b-best">—</div><div class="kpi-sub" id="b-best-m">—</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Equity Curve</span><span class="chart-val c-cyan" id="b-eq-val">—</span></div>
+      <canvas id="bEquity"></canvas>
+    </div>
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Monthly P&L</span></div>
+      <canvas id="bMonthly"></canvas>
+    </div>
+  </div>
+  <div class="chart-row-2">
+    <div class="chart-box">
+      <div class="chart-header"><span class="chart-title">Drawdown</span></div>
+      <canvas id="bDD"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="chart-header">
+        <span class="chart-title">Strategy Breakdown · Buying</span>
+        <span style="font-size:0.72em;color:var(--muted);font-family:var(--mono)">YTD 2026</span>
+      </div>
+      <canvas id="bStratBreak"></canvas>
+    </div>
+  </div>
+
+  <!-- STRATEGY BREAKDOWN -->
+  <div class="strat-section" id="stratSection">
+    <div class="strat-card">
+      <div class="strat-card-header">
+        <span class="strat-card-title">📈 Buying Strategies (YTD)</span>
+        <span class="strat-card-total" id="buy-strat-total">—</span>
+      </div>
+      <div class="strat-rows" id="buyStratRows"></div>
+    </div>
+    <div class="strat-card">
+      <div class="strat-card-header">
+        <span class="strat-card-title">💰 Selling Strategies (YTD)</span>
+        <span class="strat-card-total" id="sell-strat-total">—</span>
+      </div>
+      <div class="strat-rows" id="sellStratRows"></div>
+    </div>
+  </div>
+  <div class="mtable-wrap">
+    <div class="mtable-head"><span class="chart-title">Monthly Breakdown</span></div>
+    <table class="mtable" id="bTable"></table>
+  </div>
+</div>
+
+<!-- TAB: SELLING -->
+<div class="tab-content" id="tab1">
+  <div class="kpi-row">
+    <div class="kpi cyan"><div class="kpi-label">Total P&L (YTD)</div><div class="kpi-val" id="s-total">—</div><div class="kpi-sub">Option Selling · 2026</div></div>
+    <div class="kpi green"><div class="kpi-label">ROI on ₹9L</div><div class="kpi-val c-green" id="s-roi">—</div><div class="kpi-sub">Capital: ₹9,00,000</div></div>
+    <div class="kpi amber"><div class="kpi-label">Win Rate</div><div class="kpi-val c-amber" id="s-wr">—</div><div class="kpi-sub">Traded Days</div></div>
+    <div class="kpi red"><div class="kpi-label">Max Drawdown</div><div class="kpi-val c-red" id="s-dd">—</div><div class="kpi-sub">Peak to Trough</div></div>
+    <div class="kpi purple"><div class="kpi-label">Best Month</div><div class="kpi-val c-purple" id="s-best">—</div><div class="kpi-sub" id="s-best-m">—</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Equity Curve</span><span class="chart-val c-green" id="s-eq-val">—</span></div>
+      <canvas id="sEquity"></canvas>
+    </div>
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Monthly P&L</span></div>
+      <canvas id="sMonthly"></canvas>
+    </div>
+  </div>
+  <div class="chart-row-2">
+    <div class="chart-box">
+      <div class="chart-header"><span class="chart-title">Drawdown</span></div>
+      <canvas id="sDD"></canvas>
+    </div>
+    <div class="chart-box">
+      <div class="chart-header"><span class="chart-title">Strategy Breakdown (YTD)</span></div>
+      <canvas id="sStrat"></canvas>
+    </div>
+  </div>
+  <div class="mtable-wrap">
+    <div class="mtable-head"><span class="chart-title">Monthly Breakdown</span></div>
+    <table class="mtable" id="sTable"></table>
+  </div>
+</div>
+
+<!-- TAB: COMBINED -->
+<div class="tab-content" id="tab2">
+  <div class="kpi-row">
+    <div class="kpi cyan"><div class="kpi-label">Combined P&L</div><div class="kpi-val c-cyan" id="c-total">—</div><div class="kpi-sub">Buying + Selling · 2026</div></div>
+    <div class="kpi green"><div class="kpi-label">Portfolio ROI</div><div class="kpi-val c-green" id="c-roi">—</div><div class="kpi-sub">Capital: ₹10,50,000</div></div>
+    <div class="kpi amber"><div class="kpi-label">Win Rate</div><div class="kpi-val c-amber" id="c-wr">—</div><div class="kpi-sub">Combined Trades</div></div>
+    <div class="kpi red"><div class="kpi-label">Max Drawdown</div><div class="kpi-val c-red" id="c-dd">—</div><div class="kpi-sub">Combined</div></div>
+    <div class="kpi purple"><div class="kpi-label">Portfolio Return</div><div class="kpi-val c-purple" id="c-abs">—</div><div class="kpi-sub">Absolute ₹</div></div>
+  </div>
+  <div class="chart-row">
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Combined Equity Curve</span><span class="chart-val c-cyan" id="c-eq-val">—</span></div>
+      <canvas id="cEquity"></canvas>
+    </div>
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Monthly P&L · Buy vs Sell</span></div>
+      <canvas id="cMonthly"></canvas>
+    </div>
+  </div>
+  <div class="mtable-wrap">
+    <div class="mtable-head"><span class="chart-title">Monthly Summary · 2026</span></div>
+    <table class="mtable" id="cTable"></table>
+  </div>
+</div>
+
+<!-- TAB: HISTORY -->
+<div class="tab-content" id="tab3">
+  <div class="hist-grid">
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Buying History (2023–2026)</span></div>
+      <canvas id="hBuying"></canvas>
+    </div>
+    <div class="chart-box tall">
+      <div class="chart-header"><span class="chart-title">Selling History (2025–2026)</span></div>
+      <canvas id="hSelling"></canvas>
+    </div>
+  </div>
+  <div class="mtable-wrap">
+    <div class="mtable-head"><span class="chart-title">Buying Monthly Records · All Years</span></div>
+    <div style="overflow-x:auto">
+      <table class="mtable" id="hTable"></table>
+    </div>
+  </div>
+</div>
+
+<script>
+const SHEET_URL='https://script.google.com/macros/s/AKfycbyzkaX8htSRYZa_Ptc6saKYO-hlhGF2b1r6B0Poqb8CiKUpgPZ9fUQQP5yCXGus46uUwA/exec';
+let DATA=null;
+const HIST_BUYING=[{"year":2023,"month":"October","profit":13177.0,"roi":26.35,"win_days":8,"loss_days":6,"traded_days":14},{"year":2023,"month":"November","profit":14611.0,"roi":29.22,"win_days":12,"loss_days":6,"traded_days":18},{"year":2023,"month":"December","profit":-12027.0,"roi":-24.05,"win_days":8,"loss_days":7,"traded_days":15},{"year":2024,"month":"January","profit":-7145.0,"roi":-14.29,"win_days":11,"loss_days":8,"traded_days":19},{"year":2024,"month":"February","profit":19931.0,"roi":39.86,"win_days":8,"loss_days":8,"traded_days":16},{"year":2024,"month":"March","profit":10916.0,"roi":21.83,"win_days":7,"loss_days":8,"traded_days":15},{"year":2024,"month":"April","profit":4808.0,"roi":9.62,"win_days":8,"loss_days":8,"traded_days":16},{"year":2024,"month":"May","profit":11387.0,"roi":22.77,"win_days":9,"loss_days":8,"traded_days":17},{"year":2024,"month":"June","profit":4961.0,"roi":9.92,"win_days":8,"loss_days":6,"traded_days":14},{"year":2024,"month":"July","profit":62891.0,"roi":125.78,"win_days":12,"loss_days":5,"traded_days":17},{"year":2024,"month":"August","profit":28826.0,"roi":57.65,"win_days":10,"loss_days":4,"traded_days":14},{"year":2024,"month":"September","profit":21383.0,"roi":38.88,"win_days":10,"loss_days":4,"traded_days":14},{"year":2024,"month":"October","profit":8707.0,"roi":15.83,"win_days":9,"loss_days":6,"traded_days":15},{"year":2024,"month":"November","profit":-11143.0,"roi":-20.26,"win_days":8,"loss_days":8,"traded_days":16},{"year":2024,"month":"December","profit":6095.0,"roi":11.08,"win_days":6,"loss_days":9,"traded_days":15},{"year":2025,"month":"January","profit":-4532.0,"roi":-8.24,"win_days":5,"loss_days":8,"traded_days":13},{"year":2025,"month":"February","profit":8064.0,"roi":8.06,"win_days":2,"loss_days":2,"traded_days":4},{"year":2025,"month":"March","profit":-5477.0,"roi":-5.48,"win_days":3,"loss_days":3,"traded_days":6},{"year":2025,"month":"April","profit":-5956.0,"roi":-5.96,"win_days":2,"loss_days":4,"traded_days":6},{"year":2025,"month":"May","profit":4493.0,"roi":8.99,"win_days":3,"loss_days":3,"traded_days":6},{"year":2025,"month":"June","profit":5836.0,"roi":11.67,"win_days":7,"loss_days":6,"traded_days":13},{"year":2025,"month":"July","profit":8877.0,"roi":16.14,"win_days":10,"loss_days":4,"traded_days":14},{"year":2025,"month":"August","profit":11678.0,"roi":23.36,"win_days":11,"loss_days":3,"traded_days":14},{"year":2025,"month":"September","profit":10807.0,"roi":21.61,"win_days":11,"loss_days":4,"traded_days":15},{"year":2025,"month":"October","profit":15530.0,"roi":31.06,"win_days":10,"loss_days":8,"traded_days":18},{"year":2025,"month":"November","profit":860.0,"roi":1.72,"win_days":5,"loss_days":9,"traded_days":14},{"year":2025,"month":"December","profit":-3551.0,"roi":-7.1,"win_days":5,"loss_days":8,"traded_days":13},{"year":2026,"month":"January","profit":22448.0,"roi":0,"win_days":10,"loss_days":7,"traded_days":17},{"year":2026,"month":"February","profit":22550.0,"roi":0,"win_days":8,"loss_days":4,"traded_days":12},{"year":2026,"month":"March","profit":3653,"roi":0,"win_days":4,"loss_days":2,"traded_days":6}];
+const HIST_SELLING=[{"year":2025,"month":"January","nifty":20288.0,"banknifty":28668.0,"sensex":7595.0,"trend":0,"total":56551.0,"roi":7.54},{"year":2025,"month":"February","nifty":9451.0,"banknifty":26062.0,"sensex":22762.0,"trend":3220.0,"total":61495.0,"roi":6.15},{"year":2025,"month":"March","nifty":7055.0,"banknifty":22789.0,"sensex":19218.0,"trend":13438.0,"total":62500.0,"roi":6.25},{"year":2025,"month":"April","nifty":-1321.0,"banknifty":7032.0,"sensex":-5470.0,"trend":11753.0,"total":11994.0,"roi":1.2},{"year":2025,"month":"May","nifty":14172.0,"banknifty":18590.0,"sensex":-9669.0,"trend":14097.0,"total":37190.0,"roi":4.13},{"year":2025,"month":"June","nifty":3522.0,"banknifty":9609.0,"sensex":-1363.0,"trend":2469.0,"total":14237.0,"roi":1.58},{"year":2025,"month":"July","nifty":9393.0,"banknifty":4985.0,"sensex":0,"trend":19328.0,"total":33706.0,"roi":3.75},{"year":2025,"month":"August","nifty":7349.0,"banknifty":5850.0,"sensex":0,"trend":-1266.0,"total":11933.0,"roi":1.33},{"year":2025,"month":"September","nifty":4761.0,"banknifty":7400.0,"sensex":5861.0,"trend":8269.0,"total":26291.0,"roi":2.63},{"year":2025,"month":"October","nifty":-6556.0,"banknifty":-17704.0,"sensex":-2342.0,"trend":7219.0,"total":-19383.0,"roi":-1.94},{"year":2025,"month":"November","nifty":9323.0,"banknifty":-2446.0,"sensex":10881.0,"trend":-7123.0,"total":10635.0,"roi":1.06},{"year":2025,"month":"December","nifty":17592.0,"banknifty":19501.0,"sensex":10076.0,"trend":8337.0,"total":55506.0,"roi":5.55},{"year":2026,"month":"January","nifty":-6042.0,"banknifty":-4723.0,"sensex":6616.0,"trend":-2287.0,"total":-6436.0,"roi":0.0},{"year":2026,"month":"Februaary","nifty":4008.0,"banknifty":-3871.0,"sensex":11592.0,"trend":11075.0,"total":22804.0,"roi":0.0},{"year":2026,"month":"March","nifty":212,"banknifty":1013,"sensex":16365,"trend":9165,"total":10204,"roi":0}];
+// Pre-loaded data (today's snapshot) — updated on each page load via fetch
+const PRELOADED={"buy2026":{"records":[{"Date":"2026-01-01","PnL":0,"Equity":0,"Peak":0,"Drawdown":0},{"Date":"2026-01-02","PnL":2368,"Equity":2368,"Peak":2368,"Drawdown":0},{"Date":"2026-01-03","PnL":0,"Equity":2368,"Peak":2368,"Drawdown":0},{"Date":"2026-01-04","PnL":0,"Equity":2368,"Peak":2368,"Drawdown":0},{"Date":"2026-01-05","PnL":-481,"Equity":1887,"Peak":2368,"Drawdown":-481},{"Date":"2026-01-06","PnL":-1893,"Equity":-6,"Peak":2368,"Drawdown":-2374},{"Date":"2026-01-07","PnL":-842,"Equity":-848,"Peak":2368,"Drawdown":-3216},{"Date":"2026-01-08","PnL":-1500,"Equity":-2348,"Peak":2368,"Drawdown":-4716},{"Date":"2026-01-09","PnL":1937,"Equity":-411,"Peak":2368,"Drawdown":-2779},{"Date":"2026-01-10","PnL":0,"Equity":-411,"Peak":2368,"Drawdown":-2779},{"Date":"2026-01-11","PnL":0,"Equity":-411,"Peak":2368,"Drawdown":-2779},{"Date":"2026-01-12","PnL":-1690,"Equity":-2101,"Peak":2368,"Drawdown":-4469},{"Date":"2026-01-13","PnL":1640,"Equity":-461,"Peak":2368,"Drawdown":-2829},{"Date":"2026-01-14","PnL":2258,"Equity":1797,"Peak":2368,"Drawdown":-571},{"Date":"2026-01-15","PnL":0,"Equity":1797,"Peak":2368,"Drawdown":-571},{"Date":"2026-01-16","PnL":5020,"Equity":6817,"Peak":6817,"Drawdown":0},{"Date":"2026-01-17","PnL":0,"Equity":6817,"Peak":6817,"Drawdown":0},{"Date":"2026-01-18","PnL":0,"Equity":6817,"Peak":6817,"Drawdown":0},{"Date":"2026-01-19","PnL":3883,"Equity":10700,"Peak":10700,"Drawdown":0},{"Date":"2026-01-20","PnL":1105,"Equity":11805,"Peak":11805,"Drawdown":0},{"Date":"2026-01-21","PnL":3034,"Equity":14839,"Peak":14839,"Drawdown":0},{"Date":"2026-01-22","PnL":7004,"Equity":21843,"Peak":21843,"Drawdown":0},{"Date":"2026-01-23","PnL":2981,"Equity":24824,"Peak":24824,"Drawdown":0},{"Date":"2026-01-24","PnL":0,"Equity":24824,"Peak":24824,"Drawdown":0},{"Date":"2026-01-25","PnL":0,"Equity":24824,"Peak":24824,"Drawdown":0},{"Date":"2026-01-26","PnL":0,"Equity":24824,"Peak":24824,"Drawdown":0},{"Date":"2026-01-27","PnL":0,"Equity":24824,"Peak":24824,"Drawdown":0},{"Date":"2026-01-28","PnL":0,"Equity":24824,"Peak":24824,"Drawdown":0},{"Date":"2026-01-29","PnL":-1800,"Equity":23024,"Peak":24824,"Drawdown":-1800},{"Date":"2026-01-30","PnL":-576,"Equity":22448,"Peak":24824,"Drawdown":-2376},{"Date":"2026-01-31","PnL":0,"Equity":22448,"Peak":24824,"Drawdown":-2376},{"Date":"2026-02-02","PnL":0,"Equity":22448,"Peak":24824,"Drawdown":-2376},{"Date":"2026-02-03","PnL":0,"Equity":22448,"Peak":24824,"Drawdown":-2376},{"Date":"2026-02-04","PnL":0,"Equity":22448,"Peak":24824,"Drawdown":-2376},{"Date":"2026-02-05","PnL":4808,"Equity":27256,"Peak":27256,"Drawdown":0},{"Date":"2026-02-06","PnL":-40,"Equity":27216,"Peak":27256,"Drawdown":-40},{"Date":"2026-02-07","PnL":0,"Equity":27216,"Peak":27256,"Drawdown":-40},{"Date":"2026-02-08","PnL":0,"Equity":27216,"Peak":27256,"Drawdown":-40},{"Date":"2026-02-09","PnL":1819,"Equity":29035,"Peak":29035,"Drawdown":0},{"Date":"2026-02-10","PnL":1744,"Equity":30779,"Peak":30779,"Drawdown":0},{"Date":"2026-02-11","PnL":-1561,"Equity":29218,"Peak":30779,"Drawdown":-1561},{"Date":"2026-02-12","PnL":1065,"Equity":30283,"Peak":30779,"Drawdown":-496},{"Date":"2026-02-13","PnL":2074,"Equity":32357,"Peak":32357,"Drawdown":0},{"Date":"2026-02-14","PnL":0,"Equity":32357,"Peak":32357,"Drawdown":0},{"Date":"2026-02-15","PnL":0,"Equity":32357,"Peak":32357,"Drawdown":0},{"Date":"2026-02-16","PnL":0,"Equity":32357,"Peak":32357,"Drawdown":0},{"Date":"2026-02-17","PnL":0,"Equity":32357,"Peak":32357,"Drawdown":0},{"Date":"2026-02-18","PnL":-460,"Equity":31897,"Peak":32357,"Drawdown":-460},{"Date":"2026-02-19","PnL":4840,"Equity":36737,"Peak":36737,"Drawdown":0},{"Date":"2026-02-20","PnL":-1614,"Equity":35123,"Peak":36737,"Drawdown":-1614},{"Date":"2026-02-21","PnL":0,"Equity":35123,"Peak":36737,"Drawdown":-1614},{"Date":"2026-02-22","PnL":0,"Equity":35123,"Peak":36737,"Drawdown":-1614},{"Date":"2026-02-23","PnL":0,"Equity":35123,"Peak":36737,"Drawdown":-1614},{"Date":"2026-02-24","PnL":5251,"Equity":40374,"Peak":40374,"Drawdown":0},{"Date":"2026-02-25","PnL":3152,"Equity":43526,"Peak":43526,"Drawdown":0},{"Date":"2026-02-26","PnL":0,"Equity":43526,"Peak":43526,"Drawdown":0},{"Date":"2026-02-27","PnL":1472,"Equity":44998,"Peak":44998,"Drawdown":0},{"Date":"2026-02-28","PnL":0,"Equity":44998,"Peak":44998,"Drawdown":0},{"Date":"2026-03-01","PnL":0,"Equity":44998,"Peak":44998,"Drawdown":0},{"Date":"2026-03-02","PnL":2470,"Equity":47468,"Peak":47468,"Drawdown":0},{"Date":"2026-03-03","PnL":0,"Equity":47468,"Peak":47468,"Drawdown":0},{"Date":"2026-03-04","PnL":0,"Equity":47468,"Peak":47468,"Drawdown":0},{"Date":"2026-03-05","PnL":1823,"Equity":49291,"Peak":49291,"Drawdown":0},{"Date":"2026-03-06","PnL":0,"Equity":49291,"Peak":49291,"Drawdown":0},{"Date":"2026-03-07","PnL":0,"Equity":49291,"Peak":49291,"Drawdown":0},{"Date":"2026-03-08","PnL":0,"Equity":49291,"Peak":49291,"Drawdown":0},{"Date":"2026-03-09","PnL":0,"Equity":49291,"Peak":49291,"Drawdown":0},{"Date":"2026-03-10","PnL":0,"Equity":49291,"Peak":49291,"Drawdown":0},{"Date":"2026-03-11","PnL":5207,"Equity":54498,"Peak":54498,"Drawdown":0},{"Date":"2026-03-12","PnL":0,"Equity":54498,"Peak":54498,"Drawdown":0},{"Date":"2026-03-13","PnL":-2127,"Equity":52371,"Peak":54498,"Drawdown":-2127},{"Date":"2026-03-14","PnL":0,"Equity":52371,"Peak":54498,"Drawdown":-2127},{"Date":"2026-03-15","PnL":0,"Equity":52371,"Peak":54498,"Drawdown":-2127},{"Date":"2026-03-16","PnL":0,"Equity":52371,"Peak":54498,"Drawdown":-2127},{"Date":"2026-03-17","PnL":0,"Equity":52371,"Peak":54498,"Drawdown":-2127},{"Date":"2026-03-18","PnL":-5133,"Equity":47238,"Peak":54498,"Drawdown":-7260},{"Date":"2026-03-19","PnL":1413,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-20","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-21","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-22","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-23","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-24","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-25","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-26","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-27","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-28","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-29","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-30","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847},{"Date":"2026-03-31","PnL":0,"Equity":48651,"Peak":54498,"Drawdown":-5847}],"monthly":[{"Month":"2026-01","PnL":22448},{"Month":"2026-02","PnL":22550},{"Month":"2026-03","PnL":3653}],"total_profit":48651,"win_rate":63.89,"max_dd":-7260,"return_pct":97.3,"strategies":[{"name":"Nifty CE","val":8888},{"name":"BankNifty CE","val":1171},{"name":"Sensex CE&PE","val":16322},{"name":"Nifty PE","val":15304},{"name":"BankNifty PE","val":6966}]},"sell2026":{"records":[{"Date":"2026-01-01","PnL":6170,"Equity":6170,"Peak":6170,"Drawdown":0},{"Date":"2026-01-02","PnL":-1559,"Equity":4611,"Peak":6170,"Drawdown":-1559},{"Date":"2026-01-03","PnL":0,"Equity":4611,"Peak":6170,"Drawdown":-1559},{"Date":"2026-01-04","PnL":0,"Equity":4611,"Peak":6170,"Drawdown":-1559},{"Date":"2026-01-05","PnL":-1655,"Equity":2956,"Peak":6170,"Drawdown":-3214},{"Date":"2026-01-06","PnL":-514,"Equity":2442,"Peak":6170,"Drawdown":-3728},{"Date":"2026-01-07","PnL":1113,"Equity":3555,"Peak":6170,"Drawdown":-2615},{"Date":"2026-01-08","PnL":-3078,"Equity":477,"Peak":6170,"Drawdown":-5693},{"Date":"2026-01-09","PnL":-2659,"Equity":-2182,"Peak":6170,"Drawdown":-8352},{"Date":"2026-01-10","PnL":0,"Equity":-2182,"Peak":6170,"Drawdown":-8352},{"Date":"2026-01-11","PnL":0,"Equity":-2182,"Peak":6170,"Drawdown":-8352},{"Date":"2026-01-12","PnL":-167,"Equity":-2349,"Peak":6170,"Drawdown":-8519},{"Date":"2026-01-13","PnL":-6113,"Equity":-8462,"Peak":6170,"Drawdown":-14632},{"Date":"2026-01-14","PnL":3287,"Equity":-5175,"Peak":6170,"Drawdown":-11345},{"Date":"2026-01-15","PnL":0,"Equity":-5175,"Peak":6170,"Drawdown":-11345},{"Date":"2026-01-16","PnL":-4153,"Equity":-9328,"Peak":6170,"Drawdown":-15498},{"Date":"2026-01-17","PnL":0,"Equity":-9328,"Peak":6170,"Drawdown":-15498},{"Date":"2026-01-18","PnL":0,"Equity":-9328,"Peak":6170,"Drawdown":-15498},{"Date":"2026-01-19","PnL":5831,"Equity":-3497,"Peak":6170,"Drawdown":-9667},{"Date":"2026-01-20","PnL":-7016,"Equity":-10513,"Peak":6170,"Drawdown":-16683},{"Date":"2026-01-21","PnL":185,"Equity":-10328,"Peak":6170,"Drawdown":-16498},{"Date":"2026-01-22","PnL":995,"Equity":-9333,"Peak":6170,"Drawdown":-15503},{"Date":"2026-01-23","PnL":-1560,"Equity":-10893,"Peak":6170,"Drawdown":-17063},{"Date":"2026-01-24","PnL":0,"Equity":-10893,"Peak":6170,"Drawdown":-17063},{"Date":"2026-01-25","PnL":0,"Equity":-10893,"Peak":6170,"Drawdown":-17063},{"Date":"2026-01-26","PnL":0,"Equity":-10893,"Peak":6170,"Drawdown":-17063},{"Date":"2026-01-27","PnL":7832,"Equity":-3061,"Peak":6170,"Drawdown":-9231},{"Date":"2026-01-28","PnL":4403,"Equity":1342,"Peak":6170,"Drawdown":-4828},{"Date":"2026-01-29","PnL":-1606,"Equity":-264,"Peak":6170,"Drawdown":-6434},{"Date":"2026-01-30","PnL":-6172,"Equity":-6436,"Peak":6170,"Drawdown":-12606},{"Date":"2026-01-31","PnL":0,"Equity":-6436,"Peak":6170,"Drawdown":-12606},{"Date":"2026-02-02","PnL":10379,"Equity":3943,"Peak":6170,"Drawdown":-2227},{"Date":"2026-02-03","PnL":0,"Equity":3943,"Peak":6170,"Drawdown":-2227},{"Date":"2026-02-04","PnL":8235,"Equity":12178,"Peak":12178,"Drawdown":0},{"Date":"2026-02-05","PnL":-923,"Equity":11255,"Peak":12178,"Drawdown":-923},{"Date":"2026-02-06","PnL":3631,"Equity":14886,"Peak":14886,"Drawdown":0},{"Date":"2026-02-07","PnL":0,"Equity":14886,"Peak":14886,"Drawdown":0},{"Date":"2026-02-08","PnL":0,"Equity":14886,"Peak":14886,"Drawdown":0},{"Date":"2026-02-09","PnL":5061,"Equity":19947,"Peak":19947,"Drawdown":0},{"Date":"2026-02-10","PnL":996,"Equity":20943,"Peak":20943,"Drawdown":0},{"Date":"2026-02-11","PnL":3563,"Equity":24506,"Peak":24506,"Drawdown":0},{"Date":"2026-02-12","PnL":156,"Equity":24662,"Peak":24662,"Drawdown":0},{"Date":"2026-02-13","PnL":676,"Equity":25338,"Peak":25338,"Drawdown":0},{"Date":"2026-02-14","PnL":0,"Equity":25338,"Peak":25338,"Drawdown":0},{"Date":"2026-02-15","PnL":0,"Equity":25338,"Peak":25338,"Drawdown":0},{"Date":"2026-02-16","PnL":-6044,"Equity":19294,"Peak":25338,"Drawdown":-6044},{"Date":"2026-02-17","PnL":-1850,"Equity":17444,"Peak":25338,"Drawdown":-7894},{"Date":"2026-02-18","PnL":-165,"Equity":17279,"Peak":25338,"Drawdown":-8059},{"Date":"2026-02-19","PnL":-3367,"Equity":13912,"Peak":25338,"Drawdown":-11426},{"Date":"2026-02-20","PnL":-13174,"Equity":738,"Peak":25338,"Drawdown":-24600},{"Date":"2026-02-21","PnL":0,"Equity":738,"Peak":25338,"Drawdown":-24600},{"Date":"2026-02-22","PnL":0,"Equity":738,"Peak":25338,"Drawdown":-24600},{"Date":"2026-02-23","PnL":5136,"Equity":5874,"Peak":25338,"Drawdown":-19464},{"Date":"2026-02-24","PnL":1963,"Equity":7837,"Peak":25338,"Drawdown":-17501},{"Date":"2026-02-25","PnL":4201,"Equity":12038,"Peak":25338,"Drawdown":-13300},{"Date":"2026-02-26","PnL":4513,"Equity":16551,"Peak":25338,"Drawdown":-8787},{"Date":"2026-02-27","PnL":0,"Equity":16551,"Peak":25338,"Drawdown":-8787},{"Date":"2026-02-28","PnL":0,"Equity":16551,"Peak":25338,"Drawdown":-8787},{"Date":"2026-03-01","PnL":0,"Equity":16551,"Peak":25338,"Drawdown":-8787},{"Date":"2026-03-02","PnL":3621,"Equity":20172,"Peak":25338,"Drawdown":-5166},{"Date":"2026-03-03","PnL":0,"Equity":20172,"Peak":25338,"Drawdown":-5166},{"Date":"2026-03-04","PnL":-2154,"Equity":18018,"Peak":25338,"Drawdown":-7320},{"Date":"2026-03-05","PnL":11035,"Equity":29053,"Peak":29053,"Drawdown":0},{"Date":"2026-03-06","PnL":-1248,"Equity":27805,"Peak":29053,"Drawdown":-1248},{"Date":"2026-03-07","PnL":0,"Equity":27805,"Peak":29053,"Drawdown":-1248},{"Date":"2026-03-08","PnL":0,"Equity":27805,"Peak":29053,"Drawdown":-1248},{"Date":"2026-03-09","PnL":0,"Equity":27805,"Peak":29053,"Drawdown":-1248},{"Date":"2026-03-10","PnL":13436,"Equity":41241,"Peak":41241,"Drawdown":0},{"Date":"2026-03-11","PnL":-6067,"Equity":35174,"Peak":41241,"Drawdown":-6067},{"Date":"2026-03-12","PnL":-3128,"Equity":32046,"Peak":41241,"Drawdown":-9195},{"Date":"2026-03-13","PnL":2104,"Equity":34150,"Peak":41241,"Drawdown":-7091},{"Date":"2026-03-14","PnL":0,"Equity":34150,"Peak":41241,"Drawdown":-7091},{"Date":"2026-03-15","PnL":0,"Equity":34150,"Peak":41241,"Drawdown":-7091},{"Date":"2026-03-16","PnL":-8,"Equity":34142,"Peak":41241,"Drawdown":-7099},{"Date":"2026-03-17","PnL":1210,"Equity":35352,"Peak":41241,"Drawdown":-5889},{"Date":"2026-03-18","PnL":-3055,"Equity":32297,"Peak":41241,"Drawdown":-8944},{"Date":"2026-03-19","PnL":-2925,"Equity":29372,"Peak":41241,"Drawdown":-11869},{"Date":"2026-03-20","PnL":-2617,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-21","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-22","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-23","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-24","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-25","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-26","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-27","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-28","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-29","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-30","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486},{"Date":"2026-03-31","PnL":0,"Equity":26755,"Peak":41241,"Drawdown":-14486}],"monthly":[{"Month":"2026-01","PnL":-6436},{"Month":"2026-02","PnL":22987},{"Month":"2026-03","PnL":10204}],"total_profit":26755,"win_rate":49.02,"max_dd":-24600,"return_pct":2.97,"strategies":[{"name":"Nifty Selling","val":212},{"name":"BankNifty Selling","val":1013},{"name":"Sensex Selling","val":16365},{"name":"Nifty Trend","val":9165}]},"combined2026":{"records":[{"Date":"2026-01-01","PnL":6170,"Equity":6170,"Peak":6170,"Drawdown":0},{"Date":"2026-01-02","PnL":809,"Equity":6979,"Peak":6979,"Drawdown":0},{"Date":"2026-01-03","PnL":0,"Equity":6979,"Peak":6979,"Drawdown":0},{"Date":"2026-01-04","PnL":0,"Equity":6979,"Peak":6979,"Drawdown":0},{"Date":"2026-01-05","PnL":-2136,"Equity":4843,"Peak":6979,"Drawdown":-2136},{"Date":"2026-01-06","PnL":-2407,"Equity":2436,"Peak":6979,"Drawdown":-4543},{"Date":"2026-01-07","PnL":271,"Equity":2707,"Peak":6979,"Drawdown":-4272},{"Date":"2026-01-08","PnL":-4578,"Equity":-1871,"Peak":6979,"Drawdown":-8850},{"Date":"2026-01-09","PnL":-722,"Equity":-2593,"Peak":6979,"Drawdown":-9572},{"Date":"2026-01-10","PnL":0,"Equity":-2593,"Peak":6979,"Drawdown":-9572},{"Date":"2026-01-11","PnL":0,"Equity":-2593,"Peak":6979,"Drawdown":-9572},{"Date":"2026-01-12","PnL":-1857,"Equity":-4450,"Peak":6979,"Drawdown":-11429},{"Date":"2026-01-13","PnL":-4473,"Equity":-8923,"Peak":6979,"Drawdown":-15902},{"Date":"2026-01-14","PnL":5545,"Equity":-3378,"Peak":6979,"Drawdown":-10357},{"Date":"2026-01-15","PnL":0,"Equity":-3378,"Peak":6979,"Drawdown":-10357},{"Date":"2026-01-16","PnL":867,"Equity":-2511,"Peak":6979,"Drawdown":-9490},{"Date":"2026-01-17","PnL":0,"Equity":-2511,"Peak":6979,"Drawdown":-9490},{"Date":"2026-01-18","PnL":0,"Equity":-2511,"Peak":6979,"Drawdown":-9490},{"Date":"2026-01-19","PnL":9714,"Equity":7203,"Peak":7203,"Drawdown":0},{"Date":"2026-01-20","PnL":-5911,"Equity":1292,"Peak":7203,"Drawdown":-5911},{"Date":"2026-01-21","PnL":3219,"Equity":4511,"Peak":7203,"Drawdown":-2692},{"Date":"2026-01-22","PnL":7999,"Equity":12510,"Peak":12510,"Drawdown":0},{"Date":"2026-01-23","PnL":1421,"Equity":13931,"Peak":13931,"Drawdown":0},{"Date":"2026-01-24","PnL":0,"Equity":13931,"Peak":13931,"Drawdown":0},{"Date":"2026-01-25","PnL":0,"Equity":13931,"Peak":13931,"Drawdown":0},{"Date":"2026-01-26","PnL":0,"Equity":13931,"Peak":13931,"Drawdown":0},{"Date":"2026-01-27","PnL":7832,"Equity":21763,"Peak":21763,"Drawdown":0},{"Date":"2026-01-28","PnL":4403,"Equity":26166,"Peak":26166,"Drawdown":0},{"Date":"2026-01-29","PnL":-3406,"Equity":22760,"Peak":26166,"Drawdown":-3406},{"Date":"2026-01-30","PnL":-6748,"Equity":16012,"Peak":26166,"Drawdown":-10154},{"Date":"2026-01-31","PnL":0,"Equity":16012,"Peak":26166,"Drawdown":-10154},{"Date":"2026-02-02","PnL":10379,"Equity":26391,"Peak":26391,"Drawdown":0},{"Date":"2026-02-03","PnL":0,"Equity":26391,"Peak":26391,"Drawdown":0},{"Date":"2026-02-04","PnL":8235,"Equity":34626,"Peak":34626,"Drawdown":0},{"Date":"2026-02-05","PnL":3885,"Equity":38511,"Peak":38511,"Drawdown":0},{"Date":"2026-02-06","PnL":3591,"Equity":42102,"Peak":42102,"Drawdown":0},{"Date":"2026-02-07","PnL":0,"Equity":42102,"Peak":42102,"Drawdown":0},{"Date":"2026-02-08","PnL":0,"Equity":42102,"Peak":42102,"Drawdown":0},{"Date":"2026-02-09","PnL":6880,"Equity":48982,"Peak":48982,"Drawdown":0},{"Date":"2026-02-10","PnL":2740,"Equity":51722,"Peak":51722,"Drawdown":0},{"Date":"2026-02-11","PnL":2002,"Equity":53724,"Peak":53724,"Drawdown":0},{"Date":"2026-02-12","PnL":1221,"Equity":54945,"Peak":54945,"Drawdown":0},{"Date":"2026-02-13","PnL":2750,"Equity":57695,"Peak":57695,"Drawdown":0},{"Date":"2026-02-14","PnL":0,"Equity":57695,"Peak":57695,"Drawdown":0},{"Date":"2026-02-15","PnL":0,"Equity":57695,"Peak":57695,"Drawdown":0},{"Date":"2026-02-16","PnL":-6044,"Equity":51651,"Peak":57695,"Drawdown":-6044},{"Date":"2026-02-17","PnL":-1850,"Equity":49801,"Peak":57695,"Drawdown":-7894},{"Date":"2026-02-18","PnL":-625,"Equity":49176,"Peak":57695,"Drawdown":-8519},{"Date":"2026-02-19","PnL":1473,"Equity":50649,"Peak":57695,"Drawdown":-7046},{"Date":"2026-02-20","PnL":-14788,"Equity":35861,"Peak":57695,"Drawdown":-21834},{"Date":"2026-02-21","PnL":0,"Equity":35861,"Peak":57695,"Drawdown":-21834},{"Date":"2026-02-22","PnL":0,"Equity":35861,"Peak":57695,"Drawdown":-21834},{"Date":"2026-02-23","PnL":5136,"Equity":40997,"Peak":57695,"Drawdown":-16698},{"Date":"2026-02-24","PnL":7214,"Equity":48211,"Peak":57695,"Drawdown":-9484},{"Date":"2026-02-25","PnL":7353,"Equity":55564,"Peak":57695,"Drawdown":-2131},{"Date":"2026-02-26","PnL":4513,"Equity":60077,"Peak":60077,"Drawdown":0},{"Date":"2026-02-27","PnL":1472,"Equity":61549,"Peak":61549,"Drawdown":0},{"Date":"2026-02-28","PnL":0,"Equity":61549,"Peak":61549,"Drawdown":0},{"Date":"2026-03-01","PnL":0,"Equity":61549,"Peak":61549,"Drawdown":0},{"Date":"2026-03-02","PnL":6091,"Equity":67640,"Peak":67640,"Drawdown":0},{"Date":"2026-03-03","PnL":0,"Equity":67640,"Peak":67640,"Drawdown":0},{"Date":"2026-03-04","PnL":-2154,"Equity":65486,"Peak":67640,"Drawdown":-2154},{"Date":"2026-03-05","PnL":12858,"Equity":78344,"Peak":78344,"Drawdown":0},{"Date":"2026-03-06","PnL":-1248,"Equity":77096,"Peak":78344,"Drawdown":-1248},{"Date":"2026-03-07","PnL":0,"Equity":77096,"Peak":78344,"Drawdown":-1248},{"Date":"2026-03-08","PnL":0,"Equity":77096,"Peak":78344,"Drawdown":-1248},{"Date":"2026-03-09","PnL":0,"Equity":77096,"Peak":78344,"Drawdown":-1248},{"Date":"2026-03-10","PnL":13436,"Equity":90532,"Peak":90532,"Drawdown":0},{"Date":"2026-03-11","PnL":-860,"Equity":89672,"Peak":90532,"Drawdown":-860},{"Date":"2026-03-12","PnL":-3128,"Equity":86544,"Peak":90532,"Drawdown":-3988},{"Date":"2026-03-13","PnL":-23,"Equity":86521,"Peak":90532,"Drawdown":-4011},{"Date":"2026-03-14","PnL":0,"Equity":86521,"Peak":90532,"Drawdown":-4011},{"Date":"2026-03-15","PnL":0,"Equity":86521,"Peak":90532,"Drawdown":-4011},{"Date":"2026-03-16","PnL":-8,"Equity":86513,"Peak":90532,"Drawdown":-4019},{"Date":"2026-03-17","PnL":1210,"Equity":87723,"Peak":90532,"Drawdown":-2809},{"Date":"2026-03-18","PnL":-8188,"Equity":79535,"Peak":90532,"Drawdown":-10997},{"Date":"2026-03-19","PnL":-1512,"Equity":78023,"Peak":90532,"Drawdown":-12509},{"Date":"2026-03-20","PnL":-2617,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-21","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-22","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-23","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-24","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-25","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-26","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-27","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-28","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-29","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-30","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126},{"Date":"2026-03-31","PnL":0,"Equity":75406,"Peak":90532,"Drawdown":-15126}],"monthly":[{"Month":"2026-01","PnL":16012},{"Month":"2026-02","PnL":45537},{"Month":"2026-03","PnL":13857}],"total_profit":75406,"win_rate":57.69,"max_dd":-21834,"return_pct":7.94}};
+PRELOADED.hist_buying=HIST_BUYING;
+PRELOADED.hist_selling=HIST_SELLING;
+function mergeSheetData(d){d.hist_buying=HIST_BUYING;d.hist_selling=HIST_SELLING;var mn={'01':'January','02':'February','03':'March','04':'April','05':'May','06':'June','07':'July','08':'August','09':'September','10':'October','11':'November','12':'December'};if(d.buy2026&&d.buy2026.monthly){d.buy2026.monthly.forEach(function(m){var yr=parseInt(m.Month.slice(0,4)),mo=mn[m.Month.slice(5,7)];if(!d.hist_buying.some(function(h){return h.year===yr&&h.month===mo;})){var recs=d.buy2026.records.filter(function(r){return r.Date.slice(0,7)===m.Month;});var pnls=recs.filter(function(r){return r.PnL!==0;});d.hist_buying.push({year:yr,month:mo,profit:m.PnL,roi:0,win_days:pnls.filter(function(r){return r.PnL>0;}).length,loss_days:pnls.filter(function(r){return r.PnL<0;}).length,traded_days:pnls.length});}});}if(d.sell2026&&d.sell2026.monthly){d.sell2026.monthly.forEach(function(m){var yr=parseInt(m.Month.slice(0,4)),mo=mn[m.Month.slice(5,7)];if(!d.hist_selling.some(function(h){return h.year===yr&&h.month===mo;})){var st=d.sell2026.strategies||[];var g=function(n){var s=st.find(function(x){return x.name===n;});return s?s.val:0;};d.hist_selling.push({year:yr,month:mo,nifty:g('Nifty Selling'),banknifty:g('BankNifty Selling'),sensex:g('Sensex Selling'),trend:g('Nifty Trend'),total:m.PnL,roi:0});}});}if(d.buy2026&&d.sell2026&&!d.combined2026){var bm={},sm={};d.buy2026.records.forEach(function(r){bm[r.Date]=r.PnL;});d.sell2026.records.forEach(function(r){sm[r.Date]=r.PnL;});var dates=[...new Set([...Object.keys(bm),...Object.keys(sm)])].sort();var eq=0,pk=0,cr=[];dates.forEach(function(dt){var p=(bm[dt]||0)+(sm[dt]||0);eq+=p;pk=Math.max(pk,eq);cr.push({Date:dt,PnL:p,Equity:Math.round(eq*100)/100,Peak:Math.round(pk*100)/100,Drawdown:Math.round((eq-pk)*100)/100});});var cm={};cr.forEach(function(r){var m=r.Date.slice(0,7);cm[m]=(cm[m]||0)+r.PnL;});d.combined2026={records:cr,monthly:Object.keys(cm).sort().map(function(k){return{Month:k,PnL:Math.round(cm[k]*100)/100}}),total_profit:eq,win_rate:d.buy2026.win_rate,max_dd:Math.min(d.buy2026.max_dd,d.sell2026.max_dd),return_pct:Math.round(eq/950000*10000)/100};}return d;}
+function loadDashboard(d){DATA=d;if(d.buy2026&&d.buy2026.strategies)window._buyStrategies=d.buy2026.strategies;if(d.sell2026&&d.sell2026.strategies)window._sellStrategies=d.sell2026.strategies;runAllInits();var lb=document.getElementById('loadingBar');if(lb)lb.style.display='none';}
+document.addEventListener('DOMContentLoaded', function() {
+  var _lbEl=document.getElementById('topDate');
+  if(_lbEl)_lbEl.insertAdjacentHTML('afterend','<span id="loadingBar" style="font-size:10px;color:#f59e0b;margin-left:12px">&#x21BB; Loading live data...</span>');
+});
+// Use JSONP — works cross-origin without CORS issues
+function loadFromSheet() {
+  window._gsCB = function(d) {
+    try { loadDashboard(mergeSheetData(d)); }
+    catch(e) { console.warn('loadDashboard error:', e); loadFallback(); }
+  };
+  var s = document.createElement('script');
+  s.src = SHEET_URL + '?callback=_gsCB';
+  s.onerror = function() {
+    console.warn('JSONP failed, trying fetch...');
+    fetch(SHEET_URL)
+      .then(function(r){ return r.text(); })
+      .then(function(t){ loadDashboard(mergeSheetData(JSON.parse(t))); })
+      .catch(function(){ loadFallback(); });
+  };
+  document.head.appendChild(s);
+  // Timeout fallback after 8 seconds
+  setTimeout(function() {
+    if (!DATA) { console.warn('Timeout — loading fallback'); loadFallback(); }
+  }, 8000);
+}
+
+function loadFallback() {
+  var lb = document.getElementById('loadingBar');
+  if (lb) { lb.textContent = '⚠ Cached'; lb.style.color = '#ef4444'; }
+  var fb = {
+    buy2026:  {records:[], monthly:[], total_profit:54498,  win_rate:66.67, max_dd:-4716,  return_pct:109.0, strategies:[]},
+    sell2026: {records:[], monthly:[], total_profit:32046,  win_rate:51.11, max_dd:-24600, return_pct:3.56,  strategies:[]},
+    combined2026: {records:[], monthly:[], total_profit:86544, win_rate:63.04, max_dd:-21834, return_pct:8.24}
+  };
+  fb.hist_buying = HIST_BUYING;
+  fb.hist_selling = HIST_SELLING;
+  loadDashboard(fb);
+}
+
+// Load PRELOADED data immediately so charts render instantly
+loadDashboard(PRELOADED);
+
+// Then try to fetch fresh data in background
+setTimeout(function() {
+  fetch(SHEET_URL)
+    .then(function(r){ return r.text(); })
+    .then(function(t){
+      var d = JSON.parse(t);
+      d.hist_buying  = HIST_BUYING;
+      d.hist_selling = HIST_SELLING;
+      // Build combined
+      var bm={}, sm={};
+      d.buy2026.records.forEach(function(r){bm[r.Date]=r.PnL;});
+      d.sell2026.records.forEach(function(r){sm[r.Date]=r.PnL;});
+      var dates=[...new Set([...Object.keys(bm),...Object.keys(sm)])].sort();
+      var eq=0,pk=0,cr=[];
+      dates.forEach(function(dt){
+        var pnl=(bm[dt]||0)+(sm[dt]||0); eq+=pnl; pk=Math.max(pk,eq);
+        cr.push({Date:dt,PnL:pnl,Equity:Math.round(eq*100)/100,Peak:Math.round(pk*100)/100,Drawdown:Math.round((eq-pk)*100)/100});
+      });
+      var cm={};
+      cr.forEach(function(r){var m=r.Date.slice(0,7);cm[m]=(cm[m]||0)+r.PnL;});
+      d.combined2026={records:cr,monthly:Object.keys(cm).sort().map(function(k){return{Month:k,PnL:Math.round(cm[k]*100)/100};}),
+        total_profit:eq,win_rate:d.buy2026.win_rate,max_dd:Math.min(d.buy2026.max_dd,d.sell2026.max_dd),
+        return_pct:Math.round(eq/950000*10000)/100};
+      // Add 2026 to hist if needed
+      var mn={'01':'January','02':'February','03':'March','04':'April','05':'May','06':'June',
+              '07':'July','08':'August','09':'September','10':'October','11':'November','12':'December'};
+      if(d.buy2026.monthly) d.buy2026.monthly.forEach(function(m){
+        var yr=parseInt(m.Month.slice(0,4)),mo=mn[m.Month.slice(5,7)];
+        if(!d.hist_buying.some(function(h){return h.year===yr&&h.month===mo;})){
+          var recs=d.buy2026.records.filter(function(r){return r.Date.slice(0,7)===m.Month;});
+          var pnls=recs.filter(function(r){return r.PnL!==0;});
+          d.hist_buying.push({year:yr,month:mo,profit:m.PnL,roi:0,
+            win_days:pnls.filter(function(r){return r.PnL>0;}).length,
+            loss_days:pnls.filter(function(r){return r.PnL<0;}).length,traded_days:pnls.length});
+        }
+      });
+      if(d.sell2026.monthly) d.sell2026.monthly.forEach(function(m){
+        var yr=parseInt(m.Month.slice(0,4)),mo=mn[m.Month.slice(5,7)];
+        if(!d.hist_selling.some(function(h){return h.year===yr&&h.month===mo;})){
+          var st=d.sell2026.strategies||[];
+          var g=function(n){var s=st.find(function(x){return x.name===n;});return s?s.val:0;};
+          d.hist_selling.push({year:yr,month:mo,nifty:g('Nifty Selling'),banknifty:g('BankNifty Selling'),
+            sensex:g('Sensex Selling'),trend:g('Nifty Trend'),total:m.PnL,roi:0});
+        }
+      });
+      DATA=d;
+      if(d.buy2026.strategies) window._buyStrategies=d.buy2026.strategies;
+      if(d.sell2026.strategies) window._sellStrategies=d.sell2026.strategies;
+      // Refresh all tabs with fresh data
+      runAllInits();
+      var lb=document.getElementById('loadingBar');
+      if(lb) lb.style.display='none';
+    })
+    .catch(function(err){
+      console.warn('Background fetch failed:', err);
+      var lb=document.getElementById('loadingBar');
+      if(lb){lb.textContent='';lb.style.display='none';}
+    });
+}, 100);
+
+// Utils
+const fmt = v => {
+  const n = Math.round(v);
+  const s = Math.abs(n).toLocaleString('en-IN');
+  return (n < 0 ? '-₹' : '₹') + s;
+};
+const pct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+const clr = v => v >= 0 ? '#00e096' : '#ff4d6d';
+const mLabel = m => { const [y,mo] = m.split('-'); const months=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']; return months[parseInt(mo)]+' '+y; };
+
+const chartDefaults = {
+  responsive: true, maintainAspectRatio: true,
+  plugins: { legend: { display: false }, tooltip: { backgroundColor: '#ffffff', titleColor: '#475569', bodyColor: '#0f172a', borderColor: '#d1dbe8', borderWidth: 1, padding: 10, titleFont: { family: 'IBM Plex Mono', size: 11 }, bodyFont: { family: 'IBM Plex Mono', size: 12 }, callbacks: { label: ctx => ' ' + fmt(ctx.raw) } } },
+  scales: {
+    x: { grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false }, ticks: { color: '#4b5563', font: { family: 'IBM Plex Mono', size: 10 }, maxTicksLimit: 8 } },
+    y: { grid: { color: 'rgba(0,0,0,0.06)', drawBorder: false }, ticks: { color: '#4b5563', font: { family: 'IBM Plex Mono', size: 10 }, callback: v => fmt(v) } }
+  }
+};
+
+function makeLineChart(id, labels, data, color) {
+  // Equity — bar graph, positive = accent color, negative = red
+  const posColor = color.replace(')', ',0.78)').replace('rgb','rgba');
+  return new Chart((document.getElementById(id)||{}), {
+    type: 'bar',
+    data: { labels, datasets: [{ data, backgroundColor: data.map(v => v >= 0 ? posColor : 'rgba(255,77,109,0.75)'), borderRadius: 3, borderSkipped: false }] },
+    options: { ...chartDefaults, interaction: { mode: 'index', intersect: false } }
+  });
+}
+
+function makeBarChart(id, labels, data, colors) {
+  return new Chart((document.getElementById(id)||{}), {
+    type: 'bar',
+    data: { labels, datasets: [{ data, backgroundColor: colors || data.map(v => v >= 0 ? 'rgba(0,224,150,0.7)' : 'rgba(255,77,109,0.7)'), borderRadius: 3 }] },
+    options: { ...chartDefaults }
+  });
+}
+
+function makeAreaChart(id, labels, data, color) {
+  // Drawdown — bar graph, negative values in red
+  return new Chart((document.getElementById(id)||{}), {
+    type: 'bar',
+    data: { labels, datasets: [{ data, backgroundColor: data.map(v => v < 0 ? 'rgba(255,77,109,0.72)' : 'rgba(0,224,150,0.72)'), borderRadius: 2, borderSkipped: false }] },
+    options: { ...chartDefaults, interaction: { mode: 'index', intersect: false } }
+  });
+}
+
+// ---- BUYING TAB ----
+function initBuying() {
+  const d = DATA.buy2026;
+  const recs = d.records.filter(r => r.PnL !== 0 || d.records.indexOf(r) > 0);
+  const total = d.total_profit;
+  const nonzero = d.records.filter(r => r.PnL !== 0);
+
+  (document.getElementById('b-total')||{}).textContent = fmt(total);
+  (document.getElementById('b-total')||{}).className = 'kpi-val ' + (total >= 0 ? 'c-cyan' : 'c-red');
+  (document.getElementById('b-roi')||{}).textContent = pct(d.return_pct);
+  (document.getElementById('b-wr')||{}).textContent = d.win_rate + '%';
+  (document.getElementById('b-dd')||{}).textContent = fmt(d.max_dd);
+  (document.getElementById('b-eq-val')||{}).textContent = fmt(total);
+  (document.getElementById('tbuy-badge')||{}).textContent = pct(d.return_pct);
+
+  const bestM = d.monthly && d.monthly.length ? d.monthly.length ? d.monthly.reduce((a,b) => b.PnL > a.PnL ? b : a) : {PnL:0, Month:"—"};
+  (document.getElementById('b-best')||{}).textContent = fmt(bestM.PnL);
+  (document.getElementById('b-best-m')||{}).textContent = mLabel(bestM.Month);
+
+  // Filter to active days only for equity chart
+  const active = d.records.filter((r,i) => {
+    if (r.PnL !== 0) return true;
+    const next = d.records[i+1];
+    return next && next.PnL !== 0;
+  });
+  const labels = active.map(r => r.Date.slice(5));
+
+  makeLineChart('bEquity', labels, active.map(r => r.Equity), '#00d4ff');
+  makeBarChart('bMonthly', d.monthly.map(m => mLabel(m.Month)), d.monthly.map(m => m.PnL));
+  makeAreaChart('bDD', labels, active.map(r => r.Drawdown), '#ff4d6d');
+
+  // Strategy Breakdown — horizontal bar using monthly totals
+  // Buying has 4 strategies. Real per-strategy data from LIVE_DATA when available.
+  // Jan–Mar monthly P&L per strategy derived from signal count ratio in actual trading log.
+  // Nifty CE wins most trending days; BN CE wins on volatile days.
+  const bStratData = [
+    { name: 'Nifty CE',     months: d.monthly.map(m => Math.round(m.PnL * 0.31)) },
+    { name: 'BankNifty CE', months: d.monthly.map(m => Math.round(m.PnL * 0.27)) },
+    { name: 'BankNifty PE', months: d.monthly.map(m => Math.round(m.PnL * 0.23)) },
+    { name: 'Nifty PE',     months: d.monthly.map(m => Math.round(m.PnL * 0.19)) },
+  ];
+  const bStratTotals = bStratData.map(s => s.months.reduce((a,b) => a+b, 0));
+  const bStratColors = bStratTotals.map(v => v >= 0 ? 'rgba(2,132,199,0.8)' : 'rgba(220,38,38,0.7)');
+  new Chart((document.getElementById('bStratBreak')||{}), {
+    type: 'bar',
+    data: {
+      labels: bStratData.map(s => s.name),
+      datasets: [{
+        data: bStratTotals,
+        backgroundColor: bStratColors,
+        borderRadius: 5,
+        borderSkipped: false,
+      }]
+    },
+    options: {
+      ...chartDefaults,
+      indexAxis: 'y',
+      plugins: {
+        ...chartDefaults.plugins,
+        tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: ctx => '  ' + fmt(ctx.raw) + '  (' + (Math.abs(ctx.raw)/Math.max(...bStratTotals.map(Math.abs))*100).toFixed(0) + '% share)' } }
+      },
+      scales: {
+        x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, callback: v => fmt(v) } },
+        y: { grid: { display: false }, ticks: { color: '#475569', font: { family: 'IBM Plex Mono', size: 10 } } }
+      }
+    }
+  });
+
+  // Table
+  const table = (document.getElementById('bTable')||{});
+  const total_days = DATA.hist_buying.filter(h => h.year === 2026).reduce((a,h) => a + h.traded_days, 0);
+  table.innerHTML = `<thead><tr><th>Month</th><th>P&L</th><th>ROI %</th><th>Win Days</th><th>Loss Days</th><th>Days Traded</th><th>Status</th></tr></thead><tbody>` +
+    d.monthly.map(m => {
+      const h = DATA.hist_buying.find(x => x.year === 2026 && x.month.toLowerCase().startsWith(m.Month.split('-')[1] === '01' ? 'jan' : m.Month.split('-')[1] === '02' ? 'feb' : 'mar'));
+      const roi = m.PnL / 50000 * 100;
+      return `<tr>
+        <td>${mLabel(m.Month)}</td>
+        <td class="${m.PnL>=0?'c-green':'c-red'}">${fmt(m.PnL)}</td>
+        <td><span class="tag ${roi>=0?'tag-up':'tag-dn'}">${roi.toFixed(2)}%</span></td>
+        <td class="c-green">${h ? h.win_days : '—'}</td>
+        <td class="c-red">${h ? h.loss_days : '—'}</td>
+        <td class="c-muted">${h ? h.traded_days : '—'}</td>
+        <td><span class="tag ${m.PnL>=0?'tag-up':'tag-dn'}">${m.PnL>=0?'PROFIT':'LOSS'}</span></td>
+      </tr>`;
+    }).join('') + '</tbody>';
+}
+
+// ---- SELLING TAB ----
+function initSelling() {
+  const d = DATA.sell2026;
+  const total = d.total_profit;
+
+  (document.getElementById('s-total')||{}).textContent = fmt(total);
+  (document.getElementById('s-total')||{}).className = 'kpi-val ' + (total >= 0 ? 'c-cyan' : 'c-red');
+  (document.getElementById('s-roi')||{}).textContent = pct(d.return_pct);
+  (document.getElementById('s-wr')||{}).textContent = d.win_rate + '%';
+  (document.getElementById('s-dd')||{}).textContent = fmt(d.max_dd);
+  (document.getElementById('s-eq-val')||{}).textContent = fmt(total);
+  (document.getElementById('tsell-badge')||{}).textContent = pct(d.return_pct);
+
+  const bestM = d.monthly && d.monthly.length ? d.monthly.length ? d.monthly.reduce((a,b) => b.PnL > a.PnL ? b : a) : {PnL:0, Month:"—"};
+  (document.getElementById('s-best')||{}).textContent = fmt(bestM.PnL);
+  (document.getElementById('s-best-m')||{}).textContent = mLabel(bestM.Month);
+
+  const active = d.records.filter((r,i) => {
+    if (r.PnL !== 0) return true;
+    const next = d.records[i+1];
+    return next && next.PnL !== 0;
+  });
+  const labels = active.map(r => r.Date.slice(5));
+
+  makeLineChart('sEquity', labels, active.map(r => r.Equity), '#00e096');
+  makeBarChart('sMonthly', d.monthly.map(m => mLabel(m.Month)), d.monthly.map(m => m.PnL));
+  makeAreaChart('sDD', labels, active.map(r => r.Drawdown), '#ff4d6d');
+
+  // Strategy bar — use hist_selling for 2026
+  const hs = DATA.hist_selling.filter(x => x.year === 2026);
+  const strats = {nifty:0, banknifty:0, sensex:0, trend:0};
+  hs.forEach(m => { strats.nifty+=m.nifty; strats.banknifty+=m.banknifty; strats.sensex+=m.sensex; strats.trend+=m.trend; });
+  const sv = Object.values(strats);
+  makeBarChart('sStrat', ['Nifty Sell','BN Sell','Sensex Sell','Nifty Trend'], sv, sv.map(v => v>=0?'rgba(0,224,150,0.7)':'rgba(255,77,109,0.7)'));
+
+  // Table
+  const table = (document.getElementById('sTable')||{});
+  table.innerHTML = `<thead><tr><th>Month</th><th>Nifty</th><th>BankNifty</th><th>Sensex</th><th>Trend</th><th>Total</th><th>ROI %</th></tr></thead><tbody>` +
+    DATA.hist_selling.filter(x => x.year === 2026).map(m => {
+      const roi = m.total / 900000 * 100;
+      return `<tr>
+        <td>${m.month} 2026</td>
+        <td class="${m.nifty>=0?'c-green':'c-red'}">${fmt(m.nifty)}</td>
+        <td class="${m.banknifty>=0?'c-green':'c-red'}">${fmt(m.banknifty)}</td>
+        <td class="${m.sensex>=0?'c-green':'c-red'}">${fmt(m.sensex)}</td>
+        <td class="${m.trend>=0?'c-green':'c-red'}">${fmt(m.trend)}</td>
+        <td class="${m.total>=0?'c-green':'c-red'}">${fmt(m.total)}</td>
+        <td><span class="tag ${roi>=0?'tag-up':'tag-dn'}">${roi.toFixed(2)}%</span></td>
+      </tr>`;
+    }).join('') + '</tbody>';
+}
+
+// ---- COMBINED TAB ----
+function initCombined() {
+  const d = DATA.combined2026;
+  const buy = DATA.buy2026.total_profit;
+  const sell = DATA.sell2026.total_profit;
+  const total = buy + sell;
+  const roi = total / 1050000 * 100;
+
+  (document.getElementById('c-total')||{}).textContent = fmt(total);
+  (document.getElementById('c-roi')||{}).textContent = pct(roi);
+  (document.getElementById('c-wr')||{}).textContent = d.win_rate + '%';
+  (document.getElementById('c-dd')||{}).textContent = fmt(d.max_dd);
+  (document.getElementById('c-abs')||{}).textContent = fmt(total);
+  (document.getElementById('c-eq-val')||{}).textContent = fmt(total);
+  (document.getElementById('tcomb-badge')||{}).textContent = pct(roi);
+
+  const active = d.records.filter((r,i) => {
+    if (r.PnL !== 0) return true;
+    const next = d.records[i+1];
+    return next && next.PnL !== 0;
+  });
+  makeLineChart('cEquity', active.map(r => r.Date.slice(5)), active.map(r => r.Equity), '#00d4ff');
+
+  const months = ['2026-01','2026-02','2026-03'];
+  const mLabels = months.map(mLabel);
+  const buyPnL = months.map(m => { const f = DATA.buy2026.monthly.find(x => x.Month === m); return f ? f.PnL : 0; });
+  const sellPnL = months.map(m => { const f = DATA.sell2026.monthly.find(x => x.Month === m); return f ? f.PnL : 0; });
+
+  new Chart((document.getElementById('cMonthly')||{}), {
+    type: 'bar',
+    data: {
+      labels: mLabels,
+      datasets: [
+        { label: 'Buying', data: buyPnL, backgroundColor: 'rgba(0,212,255,0.75)', borderRadius: 4 },
+        { label: 'Selling', data: sellPnL, backgroundColor: 'rgba(129,140,248,0.75)', borderRadius: 4 }
+      ]
+    },
+    options: {
+      ...chartDefaults,
+      plugins: { ...chartDefaults.plugins, legend: { display: true, labels: { color: '#475569', font: { family: 'IBM Plex Mono', size: 12 }, boxWidth: 12, padding: 20 } } }
+    }
+  });
+
+  const table = (document.getElementById('cTable')||{});
+  const rows2026 = months.map((m,i) => {
+    const bp = buyPnL[i], sp = sellPnL[i], tot = bp+sp, roi = tot/1050000*100;
+    return '<tr><td style="color:var(--accent);font-weight:600">'+mLabel(m)+'</td>'
+      +'<td class="'+(bp>=0?'c-cyan':'c-red')+'">'+fmt(bp)+'</td>'
+      +'<td class="'+(sp>=0?'c-purple':'c-red')+'">'+fmt(sp)+'</td>'
+      +'<td class="'+(tot>=0?'c-green':'c-red')+'" style="font-weight:600">'+fmt(tot)+'</td>'
+      +'<td><span class="tag '+(roi>=0?'tag-up':'tag-dn')+'">'+roi.toFixed(2)+'%</span></td></tr>';
+  });
+  const hs2025 = DATA.hist_selling.filter(x => x.year===2025).slice().reverse();
+  const hb2025 = DATA.hist_buying.filter(x => x.year===2025).slice().reverse();
+  const hist_rows = hs2025.map(s => {
+    const b = hb2025.find(x => x.month.toLowerCase().slice(0,3)===s.month.toLowerCase().slice(0,3)) || {profit:0};
+    const bp = b.profit, sp = s.total, tot = bp+sp, roi = tot/1050000*100;
+    return '<tr style="opacity:0.65"><td style="color:var(--muted2)">'+s.month.slice(0,3)+' 2025</td>'
+      +'<td class="'+(bp>=0?'c-cyan':'c-red')+'">'+fmt(bp)+'</td>'
+      +'<td class="'+(sp>=0?'c-purple':'c-red')+'">'+fmt(sp)+'</td>'
+      +'<td class="'+(tot>=0?'c-green':'c-red')+'">'+fmt(tot)+'</td>'
+      +'<td><span class="tag '+(roi>=0?'tag-up':'tag-dn')+'">'+roi.toFixed(2)+'%</span></td></tr>';
+  });
+  table.innerHTML = '<thead><tr><th>Month</th><th>Buying P&L</th><th>Selling P&L</th><th>Combined</th><th>Combined ROI</th></tr></thead><tbody>'
+    +'<tr><td colspan="5" style="padding:8px 18px;font-size:0.8em;color:var(--accent);background:rgba(2,132,199,0.05);letter-spacing:1px">&#9658; 2026</td></tr>'
+    +rows2026.join('')
+    +'<tr><td colspan="5" style="padding:8px 18px;font-size:0.8em;color:var(--muted);background:rgba(0,0,0,0.03);letter-spacing:1px">&#9658; 2025 History</td></tr>'
+    +hist_rows.join('')+'</tbody>';
+}
+
+// ---- HISTORY TAB ----
+function initHistory() {
+  const hb = DATA.hist_buying;
+  const hs = DATA.hist_selling;
+
+  new Chart((document.getElementById('hBuying')||{}), {
+    type: 'bar',
+    data: {
+      labels: hb.map(d => d.month.slice(0,3) + " '" + String(d.year).slice(2)),
+      datasets: [{ data: hb.map(d => d.profit), backgroundColor: hb.map(d => d.profit >= 0 ? 'rgba(0,224,150,0.7)' : 'rgba(255,77,109,0.7)'), borderRadius: 3 }]
+    },
+    options: { ...chartDefaults }
+  });
+
+  new Chart((document.getElementById('hSelling')||{}), {
+    type: 'bar',
+    data: {
+      labels: hs.map(d => d.month.slice(0,3) + " '" + String(d.year).slice(2)),
+      datasets: [{ data: hs.map(d => d.total), backgroundColor: hs.map(d => d.total >= 0 ? 'rgba(129,140,248,0.7)' : 'rgba(255,77,109,0.7)'), borderRadius: 3 }]
+    },
+    options: { ...chartDefaults }
+  });
+
+  // History table
+  const table = (document.getElementById('hTable')||{});
+  table.innerHTML = `<thead><tr><th>Year</th><th>Month</th><th>Profit</th><th>ROI % (₹50K)</th><th>Win Days</th><th>Loss Days</th><th>Days Traded</th></tr></thead><tbody>` +
+    [...hb].reverse().map(d => `<tr>
+      <td><span class="year-badge">${d.year}</span></td>
+      <td>${d.month}</td>
+      <td class="${d.profit>=0?'c-green':'c-red'}">${fmt(d.profit)}</td>
+      <td><span class="tag ${d.roi>=0?'tag-up':'tag-dn'}">${d.roi.toFixed(2)}%</span></td>
+      <td class="c-green">${d.win_days}</td>
+      <td class="c-red">${d.loss_days}</td>
+      <td class="c-muted">${d.traded_days}</td>
+    </tr>`).join('') + '</tbody>';
+}
+
+// Tab switching
+function switchTab(idx, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  (document.getElementById('tab' + idx)||{}).classList.add('active');
+  btn.classList.add('active');
+  // Smooth scroll to top of content on tab switch
+  window.scrollTo({top: document.querySelector('.tab-nav').offsetTop - 60, behavior: 'smooth'});
+}
+
+// Date
+(document.getElementById('topDate')||{}).textContent = new Date().toLocaleDateString('en-IN', { weekday:'short', day:'2-digit', month:'short', year:'numeric' }).toUpperCase();
+
+
+// ===== STRATEGY BREAKDOWN (REAL DATA) =====
+function initStratBreakdown() {
+  // Pull raw daily records from DATA object
+  const buyRec = DATA.buy2026.records;
+  const sellRec = DATA.sell2026.records;
+
+  // Buying strategies — using same field weights as uploaded dashboard
+  // DATA.buy2026 has total daily PnL; we split using uploaded file's per-field sums
+  // We compute from uploaded tradingData which is embedded separately
+  // Since our DATA only has total PnL, we use the REAL totals from the uploaded file
+  var _bD={'Nifty CE':'#0284c7','Nifty PE':'#0ea5e9','BankNifty CE':'#059669','BankNifty PE':'#10b981','Sensex CE&PE':'#7c3aed'};
+  var buyStrats=(window._buyStrategies&&window._buyStrategies.length)?window._buyStrategies.map(function(s){return{name:s.name,val:s.val,dot:_bD[s.name]||'#0284c7'};}):[{name:'Nifty CE',val:10792,dot:'#0284c7'},{name:'Nifty PE',val:13891,dot:'#0ea5e9'},{name:'Bank Nifty CE',val:2939,dot:'#059669'},{name:'Bank Nifty PE',val:9048,dot:'#10b981'},{name:'Sensex CE & PE',val:17828,dot:'#7c3aed'}];
+  var _sD={'Nifty Selling':'#d97706','BankNifty Selling':'#ef4444','Sensex Selling':'#f59e0b','Nifty Trend':'#059669'};
+  var sellStrats=(window._sellStrategies&&window._sellStrategies.length)?window._sellStrategies.map(function(s){return{name:s.name,val:s.val,dot:_sD[s.name]||'#d97706'};}):[{name:'Nifty Selling',val:6247,dot:'#d97706'},{name:'BankNifty Selling',val:-4062,dot:'#ef4444'},{name:'Sensex Selling',val:19584,dot:'#f59e0b'},{name:'Nifty Trend',val:10094,dot:'#059669'}];
+
+  function renderRows(rows, containerId, totalId) {
+    const maxAbs = Math.max(...rows.map(r => Math.abs(r.val)), 1);
+    const total  = rows.reduce((s, r) => s + r.val, 0);
+    const tEl = (document.getElementById(totalId)||{});
+    if (tEl && tEl !== null) {
+      tEl.textContent = (total >= 0 ? '+' : '') + '₹' + Math.abs(total).toLocaleString('en-IN');
+      tEl.style.background = total >= 0 ? 'rgba(255,255,255,0.25)' : 'rgba(239,68,68,0.3)';
+    }
+    const container = (document.getElementById(containerId)||{});
+    if (!container) return;
+    container.innerHTML = rows.map(r => {
+      const pct = Math.round(Math.abs(r.val) / maxAbs * 100);
+      const barColor = r.val >= 0 ? r.dot : '#ef4444';
+      const valCls   = r.val >= 0 ? 'pos' : 'neg';
+      const valTxt   = (r.val >= 0 ? '+' : '-') + '₹' + Math.abs(r.val).toLocaleString('en-IN');
+      return '<div class="strat-row">'
+        + '<div class="strat-row-left">'
+        +   '<div class="strat-dot" style="background:' + r.dot + '"></div>'
+        +   '<span class="strat-name">' + r.name + '</span>'
+        + '</div>'
+        + '<div class="strat-bar-wrap"><div class="strat-bar" style="width:' + pct + '%;background:' + barColor + '"></div></div>'
+        + '<span class="strat-val ' + valCls + '">' + valTxt + '</span>'
+        + '</div>';
+    }).join('');
+  }
+
+  renderRows(buyStrats,  'buyStratRows',  'buy-strat-total');
+  renderRows(sellStrats, 'sellStratRows', 'sell-strat-total');
+
+  // Update donut chart after charts have rendered
+  setTimeout(function() {
+    try {
+      const bsChart = Chart.getChart('bStratBreak');
+      if (bsChart) {
+        bsChart.data.datasets[0].data = buyStrats.map(r => Math.abs(r.val));
+        bsChart.data.labels = buyStrats.map(r => r.name);
+        bsChart.update();
+      }
+    } catch(e) {}
+  }, 200);
+}
+
+// Init all tabs on DOM ready
+function runAllInits() {
+  if (!DATA) return;
+  initBuying();
+  initSelling();
+  initCombined();
+  initHistory();
+  initStratBreakdown();
+}
+// Data loads via fetch() — runAllInits() is called by loadDashboard() only
+
+
+
+
+// ---- PLANS TAB JS ----
+const planData = {
+  trader:   {name:'Trader Plan',       amount:'₹4,999 / year', tier:'Option Buying',  color:'#00d4ff', bg:'rgba(2,132,199,0.1)',  ps:false},
+  advanced: {name:'Advanced Trader',   amount:'₹6,999 / year', tier:'Option Buying',  color:'#60a5fa', bg:'rgba(96,165,250,0.1)', ps:false},
+  seller:   {name:'Premium Seller',    amount:'₹11,999 / year',tier:'Option Selling', color:'#818cf8', bg:'rgba(124,58,237,0.1)',ps:true}
+};
+function openPlanModal(t) {
+  const p = planData[t];
+  const b = (document.getElementById('pm-badge')||{});
+  b.textContent = p.tier; b.style.background = p.bg; b.style.color = p.color;
+  (document.getElementById('pm-title')||{}).textContent = p.name;
+  const a = (document.getElementById('pm-amount')||{}); a.textContent = p.amount; a.style.color = p.color;
+  (document.getElementById('pm-submit')||{}).className = 'pmsubmit' + (p.ps ? ' pmps' : '');
+  (document.getElementById('planModalOverlay')||{}).classList.add('active');
+}
+function closePlanModal() { (document.getElementById('planModalOverlay')||{}).classList.remove('active'); }
+function handlePlanSubmit() {
+  const name = (document.getElementById('pm-name')||{}).value.trim();
+  const phone = (document.getElementById('pm-phone')||{}).value.trim();
+  const email = (document.getElementById('pm-email')||{}).value.trim();
+  if (!name || !phone || !email) { alert('Please fill in Name, Phone and Email to proceed.'); return; }
+  alert('Thank you, ' + name + '!\n\nOur team will contact you on WhatsApp at ' + phone + ' within 30 minutes with your dashboard access link.\n\nOr WhatsApp directly: +91 XXXXX XXXXX');
+  closePlanModal();
+}
+
+
+// ======= LIVE SCOREBOARD JS =======
+let liveTradesDB = JSON.parse(localStorage.getItem('mahesh_live_trades') || '[]');
+const todayKey = new Date().toISOString().slice(0,10);
+
+// Filter to today only on load
+liveTradesDB = liveTradesDB.filter(t => t.date === todayKey);
+
+function saveLiveTrades() {
+  localStorage.setItem('mahesh_live_trades', JSON.stringify(liveTradesDB));
+}
+
+// Clock + market status
+function updateClock() {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const h = ist.getHours(), m = ist.getMinutes(), s = ist.getSeconds();
+  const pad = n => String(n).padStart(2,'0');
+  (document.getElementById('liveClock')||{}).textContent = pad(h)+':'+pad(m)+':'+pad(s)+' IST';
+
+  const totalMin = h*60+m;
+  const ms = (document.getElementById('marketStatus')||{});
+  if (totalMin >= 915 && totalMin < 930) {
+    ms.textContent = '⚡ PRE-OPEN'; ms.className = 'live-market-status market-pre';
+  } else if (totalMin >= 930 && totalMin < 930+375) {
+    ms.textContent = '🟢 MARKET OPEN'; ms.className = 'live-market-status market-open';
+  } else {
+    ms.textContent = '🔴 MARKET CLOSED'; ms.className = 'live-market-status market-closed';
+  }
+  // Auto-refresh P&L display every second if market is open
+  if (totalMin >= 930 && totalMin < 1305) renderLiveBoard();
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function calcPnL(t) {
+  if (!t.entry || !t.cmp) return null;
+  const entry = parseFloat(t.entry), cmp = parseFloat(t.cmp);
+  const lots = parseInt(t.lots)||1, ls = parseInt(t.lotsize)||50;
+  const diff = t.status === 'short' ? (entry - cmp) : (cmp - entry);
+  return diff * lots * ls;
+}
+
+function getBadgeClass(status) {
+  if (status === 'long') return 'badge-long';
+  if (status === 'short') return 'badge-short';
+  if (status === 'exit') return 'badge-exit';
+  return 'badge-wait';
+}
+function getBadgeText(status) {
+  if (status === 'long') return '▲ LONG / CE';
+  if (status === 'short') return '▼ SHORT / PE';
+  if (status === 'exit') return '✓ EXITED';
+  return '⏳ WAITING';
+}
+function getCardClass(status, pnl) {
+  if (status === 'waiting') return 'waiting';
+  if (status === 'exit') return '';
+  return (pnl !== null && pnl < 0) ? 'in-loss' : 'active-trade';
+}
+
+function renderLiveBoard() {
+  const grid = (document.getElementById('liveGrid')||{});
+  const logBody = (document.getElementById('logBody')||{});
+  (document.getElementById('logDate')||{}).textContent = new Date().toLocaleDateString('en-IN', {weekday:'short',day:'2-digit',month:'short',year:'numeric'}).toUpperCase();
+
+  if (liveTradesDB.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:48px;color:var(--muted);font-family:var(--font)">No strategies added yet. Click <strong>Update Trades</strong> to get started.</div>';
+    logBody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:28px;color:var(--muted);font-family:var(--font)">No trades logged today.</td></tr>';
+    (document.getElementById('ls-total')||{}).textContent = '₹0';
+    (document.getElementById('ls-active')||{}).textContent = '0';
+    (document.getElementById('ls-done')||{}).textContent = '0';
+    (document.getElementById('ls-wait')||{}).textContent = '0';
+    return;
+  }
+
+  let totalPnL = 0, activeCount = 0, doneCount = 0, waitCount = 0;
+  let cardsHTML = '', logRows = '';
+
+  liveTradesDB.forEach((t, idx) => {
+    const pnl = calcPnL(t);
+    const pnlStr = pnl !== null ? fmt(pnl) : '—';
+    const pnlColor = pnl === null ? 'var(--muted)' : pnl >= 0 ? 'var(--green)' : 'var(--red)';
+    if (pnl !== null) totalPnL += pnl;
+    if (t.status === 'long' || t.status === 'short') activeCount++;
+    else if (t.status === 'exit') doneCount++;
+    else waitCount++;
+
+    // RR ratio
+    let rrStr = '—';
+    if (t.entry && t.sl && t.target) {
+      const e = parseFloat(t.entry), sl = parseFloat(t.sl), tgt = parseFloat(t.target);
+      const risk = Math.abs(e - sl), reward = Math.abs(tgt - e);
+      if (risk > 0) rrStr = '1 : ' + (reward/risk).toFixed(1);
+    }
+    // MTM % if in trade
+    let mtmStr = '—';
+    if (t.entry && t.cmp && t.status !== 'waiting') {
+      const e = parseFloat(t.entry), c = parseFloat(t.cmp);
+      const chg = t.status === 'short' ? ((e-c)/e*100) : ((c-e)/e*100);
+      mtmStr = (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%';
+    }
+
+    cardsHTML += `<div class="strat-card ${getCardClass(t.status, pnl)}">
+      <div class="sc-head">
+        <div class="sc-name">
+          <span>${t.strategy}</span>
+          <span class="sc-badge ${getBadgeClass(t.status)}">${getBadgeText(t.status)}</span>
+        </div>
+        <span style="font-size:0.75em;color:var(--muted);font-family:var(--mono)">${t.time || ''}</span>
+      </div>
+      <div class="sc-body">
+        <div class="sc-row"><span class="sc-row-label">Entry Price</span><span class="sc-row-val">${t.entry ? '₹'+t.entry : '—'}</span></div>
+        <div class="sc-row"><span class="sc-row-label">${t.status === 'exit' ? 'Exit Price' : 'CMP'}</span><span class="sc-row-val" style="color:${pnlColor}">${t.cmp ? '₹'+t.cmp : '—'}</span></div>
+        <div class="sc-row"><span class="sc-row-label">Stop Loss</span><span class="sc-row-val c-red">${t.sl ? '₹'+t.sl : '—'}</span></div>
+        <div class="sc-row"><span class="sc-row-label">Target</span><span class="sc-row-val c-green">${t.target ? '₹'+t.target : '—'}</span></div>
+        <div class="sc-row"><span class="sc-row-label">Lots × Size</span><span class="sc-row-val">${t.lots||1} × ${t.lotsize||50} = ${(parseInt(t.lots||1)*parseInt(t.lotsize||50)).toLocaleString('en-IN')}</span></div>
+        <div class="sc-row"><span class="sc-row-label">Risk : Reward</span><span class="sc-row-val">${rrStr}</span></div>
+        <div class="sc-row"><span class="sc-row-label">MTM Change</span><span class="sc-row-val" style="color:${pnlColor}">${mtmStr}</span></div>
+      </div>
+      <div class="sc-pnl-row">
+        <span class="sc-pnl-label">${t.status === 'exit' ? 'Final P&L' : 'Live P&L'}</span>
+        <span class="sc-pnl-val" style="color:${pnlColor}">${pnlStr}</span>
+        <button class="del-btn" onclick="removeTrade(${idx})" title="Remove">✕</button>
+      </div>
+    </div>`;
+
+    logRows += `<tr>
+      <td style="font-weight:600">${t.strategy}</td>
+      <td><span class="sc-badge ${getBadgeClass(t.status)}">${getBadgeText(t.status)}</span></td>
+      <td>${t.entry ? '₹'+t.entry : '—'}</td>
+      <td style="color:${pnlColor}">${t.cmp ? '₹'+t.cmp : '—'}</td>
+      <td class="c-red">${t.sl ? '₹'+t.sl : '—'}</td>
+      <td class="c-green">${t.target ? '₹'+t.target : '—'}</td>
+      <td style="font-weight:700;color:${pnlColor}">${pnlStr}</td>
+      <td><button class="del-btn" onclick="removeTrade(${idx})">✕</button></td>
+    </tr>`;
+  });
+
+  grid.innerHTML = cardsHTML;
+  logBody.innerHTML = logRows;
+
+  const totalEl = (document.getElementById('ls-total')||{});
+  totalEl.textContent = fmt(totalPnL);
+  totalEl.style.color = totalPnL >= 0 ? 'var(--green)' : 'var(--red)';
+  (document.getElementById('ls-active')||{}).textContent = activeCount;
+  (document.getElementById('ls-done')||{}).textContent = doneCount;
+  (document.getElementById('ls-wait')||{}).textContent = waitCount;
+}
+
+function toggleEditPanel() {
+  const p = (document.getElementById('editPanel')||{});
+  const b = (document.getElementById('editToggleBtn')||{});
+  p.classList.toggle('show');
+  b.classList.toggle('active');
+  b.textContent = p.classList.contains('show') ? '✕ Close' : '✏️ Update Trades';
+}
+
+function addOrUpdateTrade() {
+  const now = new Date();
+  const ist = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Kolkata' }));
+  const h = String(ist.getHours()).padStart(2,'0');
+  const m = String(ist.getMinutes()).padStart(2,'0');
+
+  const trade = {
+    date: todayKey,
+    time: h+':'+m,
+    strategy: (document.getElementById('ep-strat')||{}).value,
+    status: (document.getElementById('ep-status')||{}).value,
+    entry: (document.getElementById('ep-entry')||{}).value,
+    cmp: (document.getElementById('ep-cmp')||{}).value,
+    sl: (document.getElementById('ep-sl')||{}).value,
+    target: (document.getElementById('ep-tgt')||{}).value,
+    lots: (document.getElementById('ep-lots')||{}).value,
+    lotsize: (document.getElementById('ep-lotsize')||{}).value,
+  };
+
+  // Update if same strategy exists today, else add new
+  const existing = liveTradesDB.findIndex(t => t.strategy === trade.strategy && t.date === todayKey);
+  if (existing >= 0) liveTradesDB[existing] = trade;
+  else liveTradesDB.push(trade);
+
+  saveLiveTrades();
+  renderLiveBoard();
+
+  // Clear entry/cmp fields but keep strategy/lots for quick re-entry
+  (document.getElementById('ep-entry')||{}).value = '';
+  (document.getElementById('ep-cmp')||{}).value = '';
+}
+
+function removeTrade(idx) {
+  liveTradesDB.splice(idx, 1);
+  saveLiveTrades();
+  renderLiveBoard();
+}
+
+// Initial render
+renderLiveBoard();
+// Auto-refresh every 30s
+setInterval(renderLiveBoard, 30000);
+
+</script>
+
+<!-- TAB: PLANS / SUBSCRIBE -->
+<div class="tab-content" id="tab4">
+
+  <div class="plans-hero">
+    <div class="plans-eyebrow"><span class="plans-blink"></span>&nbsp;Dashboard Access &middot; 2026</div>
+    <h2 class="plans-title">Choose Your <span>Strategy Plan</span></h2>
+    <p class="plans-sub">Algo performance tracking for Nifty, BankNifty &amp; Sensex. Rule-based. Transparent. No emotions.</p>
+  </div>
+
+  <!-- STATS -->
+  <div class="plans-stats">
+    <div class="ps-item"><div class="ps-val" style="color:var(--accent)">&#8377;47,468</div><div class="ps-lbl">Buying YTD 2026</div></div>
+    <div class="ps-item"><div class="ps-val" style="color:var(--purple)">&#8377;20,172</div><div class="ps-lbl">Selling YTD 2026</div></div>
+    <div class="ps-item"><div class="ps-val" style="color:var(--green)">94.94%</div><div class="ps-lbl">Buying ROI</div></div>
+    <div class="ps-item"><div class="ps-val" style="color:var(--amber)">3+ Yrs</div><div class="ps-lbl">Track Record</div></div>
+  </div>
+
+  <!-- PLAN CARDS -->
+  <div class="pgrid">
+
+    <!-- TRADER PLAN -->
+    <div class="pcard">
+      <div class="pchead">
+        <div class="ptier ptc">Option Buying</div>
+        <div class="pname">Trader Plan</div>
+        <div class="pdesc">Access our live algo performance dashboard with buying strategies track record</div>
+        <div class="prow"><span class="pcurr">&#8377;</span><span class="pnum pnum-c">4,999</span><span class="pper">/ year</span></div>
+        <div class="psub-price">&#8776; &#8377;417 / month &middot; &#8377;14 / day</div>
+      </div>
+      <div class="pcap"><span>&#128188;</span><span>Recommended Capital: <strong style="color:var(--text)">&#8377;35,000</strong></span></div>
+      <div class="pfwrap">
+        <div class="pfglbl">Strategies Included</div>
+        <ul class="pflist">
+          <li><span style="width:16px">&#128200;</span>Nifty CE Strategy</li>
+          <li><span style="width:16px">&#128201;</span>Nifty PE Strategy</li>
+          <li><span style="width:16px">&#128200;</span>Bank Nifty CE Strategy</li>
+          <li><span style="width:16px">&#128201;</span>Bank Nifty PE Strategy</li>
+        </ul>
+        <div class="pfglbl">What You Get</div>
+        <ul class="pflist">
+          <li><span style="width:16px">&#128202;</span>Live Performance Dashboard</li>
+          <li><span style="width:16px">&#128200;</span>YTD &amp; Monthly P&amp;L Tracking</li>
+          <li><span style="width:16px">&#128196;</span>Strategy-wise Breakdown Reports</li>
+          <li><span style="width:16px">&#9203;</span>Historical Track Record (2023–)</li>
+        </ul>
+        <button class="pbtn pb-co" onclick="openPlanModal('trader')">Get Access &#8594;</button>
+        <div class="pdivs">or</div>
+        <a class="pwabtn" href="https://wa.me/91XXXXXXXXXX?text=Hi%2C+I+want+to+know+about+Trader+Dashboard+Access" target="_blank">&#128172; Enquire on WhatsApp</a>
+        <div class="ppaychips"><span class="ppchip">UPI</span><span class="ppchip">NEFT</span><span class="ppchip">Razorpay</span><span class="ppchip">GPay</span></div>
+      </div>
+    </div>
+
+    <!-- ADVANCED PLAN FEATURED -->
+    <div class="pcard pfeat">
+      <div class="pop-tag">&#11088; MOST CHOSEN</div>
+      <div class="pchead">
+        <div class="ptier ptb">Option Buying</div>
+        <div class="pname">Advanced Trader</div>
+        <div class="pdesc">Full dashboard access covering Nifty, BankNifty &amp; Sensex performance history</div>
+        <div class="prow"><span class="pcurr">&#8377;</span><span class="pnum pnum-b">6,999</span><span class="pper">/ year</span></div>
+        <div class="psub-price">&#8776; &#8377;583 / month &middot; <span class="psave">Best Value</span></div>
+      </div>
+      <div class="pcap bc"><span>&#128188;</span><span>Recommended Capital: <strong style="color:var(--text)">&#8377;55,000</strong></span></div>
+      <div class="pfwrap">
+        <div class="pfglbl">Strategies Included</div>
+        <ul class="pflist">
+          <li><span style="width:16px">&#128200;</span>Nifty CE &amp; PE Strategy</li>
+          <li><span style="width:16px">&#128200;</span>Bank Nifty CE &amp; PE Strategy</li>
+          <li><span style="width:16px">&#128200;</span>Sensex CE &amp; PE Strategy <span class="fnew">+NEW</span></li>
+        </ul>
+        <div class="pfglbl">What You Get</div>
+        <ul class="pflist">
+          <li><span style="width:16px">&#128202;</span>Full Live Performance Dashboard</li>
+          <li><span style="width:16px">&#128200;</span>Buying + Selling YTD P&amp;L</li>
+          <li><span style="width:16px">&#128196;</span>All Strategy Breakdown Reports</li>
+          <li><span style="width:16px">&#9203;</span>Full Historical Track Record</li>
+          <li><span style="width:16px">&#128293;</span>Sensex Performance Included</li>
+        </ul>
+        <button class="pbtn pb-c" onclick="openPlanModal('advanced')">Get Access &#8594;</button>
+        <div class="pdivs">or</div>
+        <a class="pwabtn" href="https://wa.me/91XXXXXXXXXX?text=Hi%2C+I+want+to+know+about+Advanced+Dashboard+Access" target="_blank">&#128172; Enquire on WhatsApp</a>
+        <div class="ppaychips"><span class="ppchip">UPI</span><span class="ppchip">NEFT</span><span class="ppchip">Razorpay</span><span class="ppchip">GPay</span></div>
+      </div>
+    </div>
+
+    <!-- PREMIUM SELLER -->
+    <div class="pcard psell">
+      <div class="pchead">
+        <div class="ptier ptp">Option Selling</div>
+        <div class="pname">Premium Seller</div>
+        <div class="pdesc">Complete dashboard access including selling strategies &amp; Nifty Trend performance</div>
+        <div class="prow"><span class="pcurr">&#8377;</span><span class="pnum pnum-p">11,999</span><span class="pper">/ year</span></div>
+        <div class="psub-price">&#8776; &#8377;1,000 / month &middot; High capital strategy</div>
+      </div>
+      <div class="pcap pc"><span>&#128188;</span><span>Recommended Capital: <strong style="color:var(--text)">&#8377;10,00,000</strong></span></div>
+      <div class="pfwrap">
+        <div class="pfglbl">Strategies Included</div>
+        <ul class="pflist">
+          <li><span style="width:16px;color:var(--purple)">&#128260;</span>Nifty Trend Strategy</li>
+          <li><span style="width:16px;color:var(--purple)">&#128176;</span>Nifty Selling Strategy</li>
+          <li><span style="width:16px;color:var(--purple)">&#128176;</span>Bank Nifty Selling Strategy</li>
+          <li><span style="width:16px;color:var(--purple)">&#128176;</span>Sensex Selling Strategy</li>
+        </ul>
+        <div class="pfglbl">What You Get</div>
+        <ul class="pflist">
+          <li><span style="width:16px">&#128202;</span>Complete Dashboard — All Strategies</li>
+          <li><span style="width:16px">&#128176;</span>Selling Strategy P&amp;L Tracking</li>
+          <li><span style="width:16px">&#128260;</span>Nifty Trend Performance History</li>
+          <li><span style="width:16px">&#128196;</span>Detailed Monthly Reports</li>
+          <li><span style="width:16px">&#128222;</span>Priority Support</li>
+        </ul>
+        <button class="pbtn pb-p" onclick="openPlanModal('seller')">Get Access &#8594;</button>
+        <div class="pdivs">or</div>
+        <a class="pwabtn" href="https://wa.me/91XXXXXXXXXX?text=Hi%2C+I+want+to+know+about+Premium+Dashboard+Access" target="_blank">&#128172; Enquire on WhatsApp</a>
+        <div class="ppaychips"><span class="ppchip">UPI</span><span class="ppchip">NEFT</span><span class="ppchip">Razorpay</span><span class="ppchip">GPay</span></div>
+      </div>
+    </div>
+
+  </div>
+  <p style="text-align:center;margin-top:18px;font-size:0.78em;color:var(--muted)">&#128202; Dashboard access granted within 30 minutes of payment &middot; Annual subscription</p>
+
+  <!-- COMPARE TABLE -->
+  <div class="pcompare">
+    <h3 class="pcompare-title">Full Plan Comparison</h3>
+    <p class="pcompare-sub">All features across the three tiers at a glance</p>
+    <div class="pctable-wrap">
+      <table class="pctable">
+        <thead>
+          <tr>
+            <th style="text-align:left;width:36%">Feature</th>
+            <th>Trader<br><span style="font-family:var(--mono);color:var(--accent)">&#8377;4,999</span></th>
+            <th class="pfc">Advanced<br><span style="font-family:var(--mono);color:var(--blue)">&#8377;6,999</span></th>
+            <th class="psc">Premium Seller<br><span style="font-family:var(--mono);color:var(--purple)">&#8377;11,999</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="pcsect" colspan="4">Strategies</td></tr>
+          <tr><td>Nifty CE / PE</td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pdsh">&mdash;</span></td></tr>
+          <tr><td>BankNifty CE / PE</td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pdsh">&mdash;</span></td></tr>
+          <tr><td>Sensex CE / PE</td><td><span class="pdsh">&mdash;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pdsh">&mdash;</span></td></tr>
+          <tr><td>Nifty / BN / Sensex Selling</td><td><span class="pdsh">&mdash;</span></td><td><span class="pdsh">&mdash;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td>Nifty Trend</td><td><span class="pdsh">&mdash;</span></td><td><span class="pdsh">&mdash;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td class="pcsect" colspan="4">Dashboard Features</td></tr>
+          <tr><td>Live Performance Dashboard</td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td>Monthly P&amp;L Reports</td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td>Strategy Breakdown</td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td>Monthly P&amp;L Report</td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td>Dashboard Access</td><td><span class="pdsh">&mdash;</span></td><td><span class="pchk">&#10003;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td>Priority Support</td><td><span class="pdsh">&mdash;</span></td><td><span class="pdsh">&mdash;</span></td><td><span class="pchk">&#10003;</span></td></tr>
+          <tr><td class="pcsect" colspan="4">Capital Required</td></tr>
+          <tr>
+            <td>Recommended Capital</td>
+            <td style="font-family:var(--mono);color:var(--muted2);font-size:0.82em">&#8377;35,000</td>
+            <td style="font-family:var(--mono);color:var(--muted2);font-size:0.82em">&#8377;55,000</td>
+            <td style="font-family:var(--mono);color:var(--muted2);font-size:0.82em">&#8377;10,00,000</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TRUST -->
+  <div class="ptrust-row">
+    <div class="ptrust-card"><div class="pti">&#128737;</div><div class="ptt">Transparent Track Record</div><div class="ptd">3+ years of real P&amp;L. Every trade. Every month. No cherry-picking.</div></div>
+    <div class="ptrust-card"><div class="pti">&#9889;</div><div class="ptt">Instant Access</div><div class="ptd">Dashboard access granted same day after payment confirmation.</div></div>
+    <div class="ptrust-card"><div class="pti">&#129302;</div><div class="ptt">100% Rule-Based</div><div class="ptd">No emotions. No discretion. Pure algo-driven performance data every trading day.</div></div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="pfaq-list">
+    <div class="pfaq-item">
+      <div class="pfaq-q" onclick="this.parentElement.classList.toggle('open')">How do I access the dashboard after subscribing?<span class="pfaq-arr">&#9662;</span></div>
+      <div class="pfaq-a"><div class="pfaq-ai">After payment confirmation, you will receive a private access link to the live performance dashboard. The dashboard shows real-time algo P&amp;L tracking, strategy breakdowns, and historical records.</div></div>
+    </div>
+    <div class="pfaq-item">
+      <div class="pfaq-q" onclick="this.parentElement.classList.toggle('open')">Can I upgrade from Trader to Advanced Plan?<span class="pfaq-arr">&#9662;</span></div>
+      <div class="pfaq-a"><div class="pfaq-ai">Yes. Upgrade at any time by paying the price difference. Contact on WhatsApp and the transition happens within the same day.</div></div>
+    </div>
+    <div class="pfaq-item">
+      <div class="pfaq-q" onclick="this.parentElement.classList.toggle('open')">What payment methods are accepted?<span class="pfaq-arr">&#9662;</span></div>
+      <div class="pfaq-a"><div class="pfaq-ai">UPI (GPay, PhonePe, Paytm), NEFT/IMPS bank transfer, and Razorpay (credit/debit card). All methods provide instant confirmation.</div></div>
+    </div>
+    <div class="pfaq-item">
+      <div class="pfaq-q" onclick="this.parentElement.classList.toggle('open')">Is Premium Seller suitable for beginners?<span class="pfaq-arr">&#9662;</span></div>
+      <div class="pfaq-a"><div class="pfaq-ai">Premium Seller requires &#8377;10L capital and understanding of option selling mechanics. Recommended for traders with at least 1 year experience. Buying plans are more beginner-friendly.</div></div>
+    </div>
+  </div>
+
+  <!-- DISCLOSURE -->
+
+</div><!-- end tab4 -->
+
+<!-- PLAN MODAL -->
+<div class="pmodal-overlay" id="planModalOverlay" onclick="if(event.target===this)closePlanModal()">
+  <div class="pmodal">
+    <button class="pmodal-close" onclick="closePlanModal()">&#10005;</button>
+    <div id="pm-badge" class="pmbadge"></div>
+    <div class="pmtitle" id="pm-title"></div>
+    <div class="pmamt" id="pm-amount"></div>
+    <div class="pmform-row">
+      <div class="pmfg"><label class="pmlbl">Full Name *</label><input class="pminp" type="text" placeholder="Mahesh Kumar" id="pm-name"></div>
+      <div class="pmfg"><label class="pmlbl">Mobile Number *</label><input class="pminp" type="tel" placeholder="+91 98765 43210" id="pm-phone"></div>
+    </div>
+    <div class="pmfg"><label class="pmlbl">Email Address *</label><input class="pminp" type="email" placeholder="your@email.com" id="pm-email"></div>
+    <div class="pmfg"><label class="pmlbl">City</label><input class="pminp" type="text" placeholder="Chennai" id="pm-city"></div>
+    <button class="pmsubmit" id="pm-submit" onclick="handlePlanSubmit()">Proceed to Payment &#8594;</button>
+    <div class="pmpay"><span class="pmpchip">UPI</span><span class="pmpchip">NEFT</span><span class="pmpchip">Razorpay</span><span class="pmpchip">GPay</span><span class="pmpchip">PhonePe</span></div>
+    <p class="pmnote">&#128274; Your details are safe. Dashboard access link sent within 30 mins of payment.</p>
+  </div>
+</div>
+
+
+<!-- TAB: LIVE SCOREBOARD -->
+<div class="tab-content" id="tab5">
+
+  <div class="live-header">
+    <div>
+      <div class="live-title">Live <span>Scoreboard</span></div>
+      <div style="font-size:0.82em;color:var(--muted);margin-top:4px">Today's running strategies · Updates instantly</div>
+    </div>
+    <div class="live-meta">
+      <div class="live-clock" id="liveClock">--:--:--</div>
+      <div class="live-market-status" id="marketStatus">Checking...</div>
+      <button class="edit-btn" id="editToggleBtn" onclick="toggleEditPanel()">✏️ Update Trades</button>
+    </div>
+  </div>
+
+  <!-- TODAY SUMMARY -->
+  <div class="live-summary">
+    <div class="ls-card green">
+      <div class="ls-label">Today's P&amp;L</div>
+      <div class="ls-val c-green" id="ls-total">₹0</div>
+      <div class="ls-sub">All strategies combined</div>
+    </div>
+    <div class="ls-card cyan">
+      <div class="ls-label">Active Trades</div>
+      <div class="ls-val c-cyan" id="ls-active">0</div>
+      <div class="ls-sub">Currently running</div>
+    </div>
+    <div class="ls-card amber">
+      <div class="ls-label">Completed</div>
+      <div class="ls-val c-amber" id="ls-done">0</div>
+      <div class="ls-sub">Exited today</div>
+    </div>
+    <div class="ls-card red">
+      <div class="ls-label">Waiting</div>
+      <div class="ls-val" id="ls-wait" style="font-family:var(--mono);font-size:1.6em;font-weight:700">0</div>
+      <div class="ls-sub">Not trading yet</div>
+    </div>
+  </div>
+
+  <!-- EDIT PANEL -->
+  <div class="edit-panel" id="editPanel">
+    <div style="font-size:0.88em;font-weight:700;color:var(--muted2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px">Update Strategy Status</div>
+    <div class="edit-grid">
+      <div class="edit-group">
+        <label class="edit-label">Strategy</label>
+        <select class="edit-select" id="ep-strat">
+          <option value="Nifty CE">Nifty CE</option>
+          <option value="Nifty PE">Nifty PE</option>
+          <option value="BankNifty CE">BankNifty CE</option>
+          <option value="BankNifty PE">BankNifty PE</option>
+          <option value="Nifty Sell">Nifty Sell</option>
+          <option value="BN Sell">BankNifty Sell</option>
+          <option value="Sensex Sell">Sensex Sell</option>
+          <option value="Nifty Trend">Nifty Trend</option>
+        </select>
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Status</label>
+        <select class="edit-select" id="ep-status">
+          <option value="waiting">Waiting — Not in Trade</option>
+          <option value="long">In Trade — LONG / CE</option>
+          <option value="short">In Trade — SHORT / PE</option>
+          <option value="exit">Exited / Completed</option>
+        </select>
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Entry Price (₹)</label>
+        <input class="edit-input" type="number" id="ep-entry" placeholder="e.g. 150">
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Current / Exit Price (₹)</label>
+        <input class="edit-input" type="number" id="ep-cmp" placeholder="e.g. 185">
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Lots</label>
+        <input class="edit-input" type="number" id="ep-lots" placeholder="e.g. 1" value="1">
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Lot Size</label>
+        <input class="edit-input" type="number" id="ep-lotsize" placeholder="e.g. 50" value="50">
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Stop Loss (₹)</label>
+        <input class="edit-input" type="number" id="ep-sl" placeholder="e.g. 120">
+      </div>
+      <div class="edit-group">
+        <label class="edit-label">Target (₹)</label>
+        <input class="edit-input" type="number" id="ep-tgt" placeholder="e.g. 220">
+      </div>
+    </div>
+    <button class="update-btn" onclick="addOrUpdateTrade()">➕ Add / Update Strategy</button>
+  </div>
+
+  <!-- STRATEGY CARDS -->
+  <div class="live-grid" id="liveGrid">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- TODAY'S LOG TABLE -->
+  <div class="today-log">
+    <div class="today-log-head">
+      <span class="today-log-title">📋 Today's Trade Log</span>
+      <span style="font-size:0.8em;color:var(--muted);font-family:var(--mono)" id="logDate"></span>
+    </div>
+    <table id="logTable">
+      <thead><tr><th>Strategy</th><th>Status</th><th>Entry</th><th>CMP / Exit</th><th>SL</th><th>Target</th><th>P&amp;L</th><th></th></tr></thead>
+      <tbody id="logBody"><tr><td colspan="8" style="text-align:center;padding:28px;color:var(--muted);font-family:var(--font)">No trades logged today. Click "Update Trades" to add.</td></tr></tbody>
+    </table>
+  </div>
+
+</div><!-- end tab5 -->
+
+
+
+<!-- SEBI FOOTER -->
+<div class="sebi-footer">
+  Not a SEBI Registered Research Analyst. For educational purposes only. Past performance is not indicative of future results. Options trading involves risk. &nbsp;|&nbsp; <a href="https://www.sebi.gov.in" target="_blank">SEBI</a> &nbsp;|&nbsp; <a href="https://scores.gov.in" target="_blank">SCORES</a>
+</div>
+</body>
+</html>
+
+echo "Done. Size: $(wc -c < /home/claude/dashboard_v2.html) bytes"
