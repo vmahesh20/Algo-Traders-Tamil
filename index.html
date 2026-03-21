@@ -836,51 +836,55 @@ function parseSellingRow(row) {
 function parseBuyingStratSheet(text) {
   const MONTHS = ['january','february','march','april','may','june',
                   'july','august','september','october','november','december'];
-  const lines = text.trim().split(/\r?\n/).map(l =>
+
+  // Strip all \r, normalize, then parse
+  const lines = text.replace(/\r/g,'').trim().split('\n').map(l =>
     l.split(',').map(v => v.trim().replace(/^"|"$/g,''))
   );
+
   const result = [];
   let cur = null;
 
   for (const row of lines) {
-    const col0 = (row[0] || '').trim();
+    const col0 = (row[0] || '').replace(/\r/g,'').trim();
     const col0low = col0.toLowerCase();
 
-    // Detect month header — any case (JANUARY, January, january all work)
+    // ── Month header (any case) ──
     if (MONTHS.includes(col0low)) {
       if (cur && cur.rows.length) result.push(cur);
-      cur = { month: col0.charAt(0).toUpperCase() + col0.slice(1).toLowerCase(), rows: [] };
+      cur = { month: col0low.charAt(0).toUpperCase() + col0low.slice(1), rows: [] };
       continue;
     }
     if (!cur) continue;
 
-    // Skip non-data rows
-    if (col0 === '' || col0low === 'date' || col0low === 'capital' ||
-        col0low === 'monthly total' || col0low === 'total' ||
-        /^strategy|^option/i.test(col0)) continue;
+    // ── Skip non-data rows ──
+    if (!col0) continue;
+    if (['date','capital','total','monthly total','option buying',
+         'buying daily'].some(s => col0low.startsWith(s))) continue;
+    if (/^strategy|^option/i.test(col0)) continue;
 
-    // Only parse date rows DD/MM/YYYY
-    const dateMatch = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-    if (!dateMatch) continue;
+    // ── Only DD/MM/YYYY date rows ──
+    const dm = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!dm) continue;
 
-    const [,dd,mm] = dateMatch;
-    const dateStr = `${dd}/${mm}`;
-    const isHoliday = (row[1] || '').toLowerCase() === 'holiday';
+    const dateStr = dm[1] + '/' + dm[2];
+    const c1 = (row[1] || '').trim();
 
-    if (isHoliday) {
+    if (c1.toLowerCase() === 'holiday') {
       cur.rows.push({ date: dateStr, holiday: true, nce:0, bnce:0, snx:0, npe:0, bnpe:0, total:0 });
       continue;
     }
+
+    // Skip truly blank rows
+    const hasAnyData = row.slice(1,7).some(v => v !== '' && v !== '0');
+    if (!hasAnyData) continue;
+
     const nce  = parseFloat(row[1]) || 0;
     const bnce = parseFloat(row[2]) || 0;
     const snx  = parseFloat(row[3]) || 0;
     const npe  = parseFloat(row[4]) || 0;
     const bnpe = parseFloat(row[5]) || 0;
     const total = parseFloat(row[6]) || (nce+bnce+snx+npe+bnpe);
-
-    // Skip completely empty trading days
-    if (nce===0 && bnce===0 && snx===0 && npe===0 && bnpe===0 && total===0 &&
-        row[1]==='' && row[2]==='' && row[3]==='' && row[4]==='') continue;
 
     cur.rows.push({ date: dateStr, nce, bnce, snx, npe, bnpe, total });
   }
@@ -891,50 +895,55 @@ function parseBuyingStratSheet(text) {
 function parseSellingStratSheet(text) {
   const MONTHS = ['january','february','march','april','may','june',
                   'july','august','september','october','november','december'];
-  const lines = text.trim().split(/\r?\n/).map(l =>
+
+  // Normalize line endings, split, strip ALL whitespace + quotes + \r from each cell
+  const lines = text.replace(/\r/g,'').trim().split('\n').map(l =>
     l.split(',').map(v => v.trim().replace(/^"|"$/g,''))
   );
+
   const result = [];
   let cur = null;
 
   for (const row of lines) {
-    const col0 = (row[0] || '').trim();
+    const col0 = (row[0] || '').replace(/\r/g,'').trim();
     const col0low = col0.toLowerCase();
 
-    // Detect month header — matches any case variant of month names
+    // ── Month header detection (any case: JANUARY / January / january) ──
     if (MONTHS.includes(col0low)) {
       if (cur && cur.rows.length) result.push(cur);
-      cur = { month: col0.charAt(0).toUpperCase() + col0.slice(1).toLowerCase(), rows: [] };
+      cur = { month: col0low.charAt(0).toUpperCase() + col0low.slice(1), rows: [] };
       continue;
     }
     if (!cur) continue;
 
-    // Skip header/meta rows
-    if (col0 === '' || col0low === 'date' || col0low === 'capital' ||
-        col0low === 'total' || /^strategy|^option/i.test(col0)) continue;
+    // ── Skip all non-data rows ──
+    if (!col0) continue;
+    if (['date','capital','total','monthly total','option selling',
+         'strategy wise'].some(s => col0low.startsWith(s))) continue;
+    if (/^strategy|^option/i.test(col0)) continue;
 
-    // Only parse date rows DD/MM/YYYY
-    const dateMatch = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-    if (!dateMatch) continue;
+    // ── Only process DD/MM/YYYY date rows ──
+    const dm = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!dm) continue;
 
-    const [,dd,mm] = dateMatch;
-    const dateStr = `${dd}/${mm}`;
-    const isHoliday = (row[1] || '').toLowerCase() === 'holiday';
+    const dateStr = dm[1] + '/' + dm[2];
+    const c1 = (row[1] || '').trim();
 
-    if (isHoliday) {
+    // Holiday row
+    if (c1.toLowerCase() === 'holiday') {
       cur.rows.push({ date: dateStr, holiday: true, nifty:0, bnf:0, sensex:0, trend:0, total:0 });
       continue;
     }
+
+    // Skip truly blank rows (no data entered at all)
+    const hasAnyData = row.slice(1,6).some(v => v !== '' && v !== '0');
+    if (!hasAnyData) continue;
 
     const nifty  = parseFloat(row[1]) || 0;
     const bnf    = parseFloat(row[2]) || 0;
     const sensex = parseFloat(row[3]) || 0;
     const trend  = parseFloat(row[4]) || 0;
     const total  = parseFloat(row[5]) || (nifty+bnf+sensex+trend);
-
-    // Skip completely empty trading days
-    if (nifty===0 && bnf===0 && sensex===0 && trend===0 && total===0 &&
-        row[1]==='' && row[2]==='' && row[3]==='' && row[4]==='') continue;
 
     cur.rows.push({ date: dateStr, nifty, bnf, sensex, trend, total });
   }
