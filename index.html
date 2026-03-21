@@ -620,8 +620,12 @@ function loadFallback() {
   loadDashboard(fb);
 }
 
-// Load PRELOADED data immediately so charts render instantly
-loadDashboard(PRELOADED);
+// Load PRELOADED data as soon as DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() { loadDashboard(PRELOADED); });
+} else {
+  loadDashboard(PRELOADED);
+}
 
 // Then try to fetch fresh data in background
 setTimeout(function() {
