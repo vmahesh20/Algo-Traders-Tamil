@@ -97,6 +97,33 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 /* ── CONTENT TABS ── */
 .perf-tab{display:none}.perf-tab.on{display:block}
 
+/* ── STRATEGY DAILY TAB ── */
+.strat-kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.month-section{background:var(--surface);border:1px solid var(--border);border-radius:11px;overflow:hidden;margin-bottom:16px}
+.month-header{display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:var(--surface2);border-bottom:1px solid var(--border);cursor:pointer;user-select:none}
+.month-header:hover{background:var(--surface3)}
+.month-name{font-weight:700;font-size:0.88em;color:var(--text);display:flex;align-items:center;gap:10px}
+.month-total{font-family:var(--mono);font-size:0.9em;font-weight:700}
+.month-arr{color:var(--muted);font-size:0.8em;transition:.2s}
+.month-section.open .month-arr{transform:rotate(180deg)}
+.month-body{display:none}
+.month-section.open .month-body{display:block}
+.dtable{width:100%;border-collapse:collapse;font-size:0.82em}
+.dtable th{padding:8px 12px;text-align:right;color:var(--muted);font-weight:600;font-size:0.72em;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid var(--border);background:var(--surface2);white-space:nowrap}
+.dtable th:first-child{text-align:left;width:90px}
+.dtable td{padding:9px 12px;text-align:right;border-bottom:1px solid rgba(0,0,0,0.04);font-family:var(--mono);font-size:0.82em}
+.dtable td:first-child{text-align:left;font-family:var(--font);color:var(--muted2);font-size:0.8em}
+.dtable tr:last-child td{border-bottom:none}
+.dtable tr:hover td{background:rgba(0,0,0,0.02)}
+.dtable .total-row td{background:rgba(2,132,199,0.05);font-weight:700;border-top:2px solid var(--border)}
+.dtable .total-row td:first-child{color:var(--text)}
+.holiday-row td{color:var(--muted)!important;font-style:italic}
+.strat-bar-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.strat-mini{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.strat-mini-name{font-size:0.72em;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);font-weight:600;margin-bottom:6px}
+.strat-mini-val{font-family:var(--mono);font-size:1.3em;font-weight:700;line-height:1}
+.strat-mini-cap{font-size:0.72em;color:var(--muted);margin-top:3px}
+
 /* ── SKELETON ── */
 .skeleton{background:linear-gradient(90deg,#e2e8f0 25%,#f1f5f9 50%,#e2e8f0 75%);background-size:400% 100%;animation:shimmer 1.4s infinite;border-radius:6px}
 @keyframes shimmer{0%{background-position:100% 0}100%{background-position:-100% 0}}
@@ -384,7 +411,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
     <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');return false">⭐ Reviews</a></li>
     <li><a href="#" id="nav-sebi-disc" onclick="showPage('sebi-disc');return false">📋 SEBI</a></li>
   </ul>
-  <a class="nav-cta-btn" href="#" onclick="openModal('Combo Elite','₹6,999/month','All 5 Buying + All 4 Selling Signals');return false">Subscribe Now</a>
+  <a class="nav-cta-btn" href="#" onclick="openModal('Combo Elite','₹6,999/month','All 3 Buying + All 4 Selling Signals');return false">Subscribe Now</a>
 </nav>
 
 <!-- ═══ PAGE: PERFORMANCE (original content) ═══ -->
@@ -410,6 +437,8 @@ tr:hover td{background:rgba(0,0,0,0.025)}
     <div class="tab-btns">
       <button class="tb on" id="tab-buy" onclick="switchTab('buy')">📈 Algo Buying</button>
       <button class="tb" id="tab-sell" onclick="switchTab('sell')">🛡️ Algo Selling</button>
+      <button class="tb" id="tab-buystrat" onclick="switchTab('buystrat')">📊 Buying 2026</button>
+      <button class="tb" id="tab-sellstrat" onclick="switchTab('sellstrat')">📊 Selling 2026</button>
       <button class="tb" id="tab-hist" onclick="switchTab('hist')">📅 Full History</button>
     </div>
     <div style="display:flex;align-items:center;gap:10px">
@@ -423,11 +452,55 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 
   <div id="errorBox" style="display:none"></div>
 
-  <!-- ══════════ BUYING TAB ══════════ -->
+  <!-- ══════════ BUYING STRATEGY 2026 TAB ══════════ -->
+  <div class="perf-tab" id="perf-buystrat">
+    <div class="strat-bar-row" id="bs-kpi-row">
+      <div class="strat-mini"><div class="strat-mini-name">Nifty CE Rider</div><div class="strat-mini-val cg" id="bsk-nce">₹—</div><div class="strat-mini-cap">Capital ₹15,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">BNF CE Rider</div><div class="strat-mini-val cg" id="bsk-bnce">₹—</div><div class="strat-mini-cap">Capital ₹15,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">Sensex CE & PE</div><div class="strat-mini-val cg" id="bsk-snx">₹—</div><div class="strat-mini-cap">Capital ₹15,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">Nifty PE Rider</div><div class="strat-mini-val cg" id="bsk-npe">₹—</div><div class="strat-mini-cap">Capital ₹15,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">BNF PE Rider</div><div class="strat-mini-val cg" id="bsk-bnpe">₹—</div><div class="strat-mini-cap">Capital ₹15,000</div></div>
+    </div>
+    <div class="chart-grid-22" style="margin-bottom:16px">
+      <div class="chart-box">
+        <div class="chart-hdr"><div class="chart-hdr-left"><div class="chart-ttl">Strategy-wise Total P&L · 2026</div><div class="chart-sub">All 5 strategies compared</div></div></div>
+        <canvas id="bsStratBar" style="height:220px!important"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-hdr"><div class="chart-hdr-left"><div class="chart-ttl">Daily P&L Trend · Combined</div><div class="chart-sub">Each trading day · 2026</div></div></div>
+        <canvas id="bsDailyLine" style="height:220px!important"></canvas>
+      </div>
+    </div>
+    <div id="bs-months-container"></div>
+  </div>
+
+  <!-- ══════════ SELLING STRATEGY 2026 TAB ══════════ -->
+  <div class="perf-tab" id="perf-sellstrat">
+    <div class="strat-bar-row" id="ss-kpi-row">
+      <div class="strat-mini"><div class="strat-mini-name">Nifty Selling</div><div class="strat-mini-val cg" id="ssk-nf">₹—</div><div class="strat-mini-cap">Capital ₹2,50,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">BNF Selling</div><div class="strat-mini-val cg" id="ssk-bnf">₹—</div><div class="strat-mini-cap">Capital ₹2,50,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">Sensex Selling</div><div class="strat-mini-val cg" id="ssk-snx">₹—</div><div class="strat-mini-cap">Capital ₹2,50,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">Nifty Trend</div><div class="strat-mini-val cg" id="ssk-trd">₹—</div><div class="strat-mini-cap">Capital ₹1,00,000</div></div>
+      <div class="strat-mini"><div class="strat-mini-name">Total P&L</div><div class="strat-mini-val cc" id="ssk-tot">₹—</div><div class="strat-mini-cap">All strategies</div></div>
+    </div>
+    <div class="chart-grid-22" style="margin-bottom:16px">
+      <div class="chart-box">
+        <div class="chart-hdr"><div class="chart-hdr-left"><div class="chart-ttl">Strategy-wise Total P&L · 2026</div><div class="chart-sub">4 selling strategies compared</div></div></div>
+        <canvas id="ssStratBar" style="height:220px!important"></canvas>
+      </div>
+      <div class="chart-box">
+        <div class="chart-hdr"><div class="chart-hdr-left"><div class="chart-ttl">Daily P&L Trend · Combined Selling</div><div class="chart-sub">Each trading day · 2026</div></div></div>
+        <canvas id="ssDailyLine" style="height:220px!important"></canvas>
+      </div>
+    </div>
+    <div id="ss-months-container"></div>
+  </div>
+
+  <!-- ══════════ FULL HISTORY TAB ══════════ -->
   <div class="perf-tab on" id="perf-buy">
     <div class="kpi-strip">
       <div class="kpi c"><div class="kpi-lbl">Total P&L · Buying</div><div class="kpi-val cc" id="b-total">₹—</div><div class="kpi-sub">All months combined</div></div>
-      <div class="kpi g"><div class="kpi-lbl">Capital / Instrument</div><div class="kpi-val cg">₹15,000</div><div class="kpi-sub">× 5 instruments = ₹75K</div></div>
+      <div class="kpi g"><div class="kpi-lbl">Capital / Instrument</div><div class="kpi-val cg">₹15,000</div><div class="kpi-sub">× 3 instruments = ₹50K</div></div>
       <div class="kpi a"><div class="kpi-lbl">Best Month</div><div class="kpi-val ca" id="b-best">—</div><div class="kpi-sub" id="b-best-m">—</div></div>
       <div class="kpi r"><div class="kpi-lbl">Max Drawdown</div><div class="kpi-val cr" id="b-dd">—</div><div class="kpi-sub">Peak-to-trough</div></div>
       <div class="kpi p"><div class="kpi-lbl">Win Rate</div><div class="kpi-val cp" id="b-wr">—</div><div class="kpi-sub">Profitable months</div></div>
@@ -463,7 +536,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
         <div class="chart-hdr">
           <div class="chart-hdr-left">
             <div class="chart-ttl">Monthly ROI %</div>
-            <div class="chart-sub">Return on ₹75K capital per month</div>
+            <div class="chart-sub">Return on ₹50K capital per month</div>
           </div>
         </div>
         <canvas id="bROI"></canvas>
@@ -658,6 +731,8 @@ const FALLBACK_SELLING = [
 /* live data holders — overwritten when sheet connects */
 let BUY = FALLBACK_BUYING.slice();
 let SELL = FALLBACK_SELLING.slice();
+let BUY_STRAT = [];   // daily strategy-wise buying
+let SELL_STRAT = [];  // daily strategy-wise selling
 let CHARTS = {};
 let sheetConnected = false;
 
@@ -669,6 +744,8 @@ let sheetConnected = false;
 ════════════════════════════════════════════════ */
 const BUY_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSg3CzlEkkijkaD_nkWCFp0wBup3Qo9duhSzCyhkihQaFwPYVjKTmaEPAFiTBD9494-jDG88sEcMMmY/pub?gid=1436932483&single=true&output=csv';
 const SELL_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSg3CzlEkkijkaD_nkWCFp0wBup3Qo9duhSzCyhkihQaFwPYVjKTmaEPAFiTBD9494-jDG88sEcMMmY/pub?gid=595579139&single=true&output=csv';
+const BUY_STRAT_URL  = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSg3CzlEkkijkaD_nkWCFp0wBup3Qo9duhSzCyhkihQaFwPYVjKTmaEPAFiTBD9494-jDG88sEcMMmY/pub?gid=0&single=true&output=csv';
+const SELL_STRAT_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSg3CzlEkkijkaD_nkWCFp0wBup3Qo9duhSzCyhkihQaFwPYVjKTmaEPAFiTBD9494-jDG88sEcMMmY/pub?gid=611301023&single=true&output=csv';
 
 function setSyncStatus(state, label) {
   const dot = document.getElementById('syncDot');
@@ -755,6 +832,91 @@ function parseSellingRow(row) {
   return { m: month + ' ' + String(year).slice(2), nifty, bnf, sensex, trend, total, roi };
 }
 
+/* ── STRATEGY DAILY SHEET PARSERS ── */
+function parseBuyingStratSheet(text) {
+  /* Format: title row, "Option Buying", MONTH header, Capital row, Date header, daily rows, Monthly Total */
+  const lines = text.trim().split(/\r?\n/).map(l => l.split(',').map(v => v.trim().replace(/^"|"$/g,'')));
+  const result = []; // [{month, rows:[{date,nce,bnce,snx,npe,bnpe,total}]}]
+  let cur = null;
+
+  for (const row of lines) {
+    const col0 = row[0] || '';
+    // Detect month header (all caps like JANUARY, FEBRUARY...)
+    if (/^[A-Z]{3,}$/.test(col0) && !col0.includes('Capital') && col0 !== 'Date') {
+      if (cur) result.push(cur);
+      cur = { month: col0, rows: [] };
+      continue;
+    }
+    // Skip non-data rows
+    if (!cur) continue;
+    if (col0 === 'Date' || col0 === 'Capital' || col0 === 'Monthly Total' ||
+        col0 === '' || col0 === 'Option Buying' || /^Strategy/.test(col0)) continue;
+
+    // Parse date row  DD/MM/YYYY
+    const dateMatch = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!dateMatch) continue;
+
+    const [,dd,mm,yyyy] = dateMatch;
+    const dateStr = `${dd}/${mm}`;
+    const isHoliday = (row[1] || '').toLowerCase() === 'holiday';
+
+    if (isHoliday) {
+      cur.rows.push({ date: dateStr, holiday: true, nce:0, bnce:0, snx:0, npe:0, bnpe:0, total:0 });
+      continue;
+    }
+    const nce  = parseFloat(row[1]) || 0;
+    const bnce = parseFloat(row[2]) || 0;
+    const snx  = parseFloat(row[3]) || 0;
+    const npe  = parseFloat(row[4]) || 0;
+    const bnpe = parseFloat(row[5]) || 0;
+    const total = parseFloat(row[6]) || (nce+bnce+snx+npe+bnpe);
+    if (nce===0 && bnce===0 && snx===0 && npe===0 && bnpe===0 && total===0) continue; // skip empty rows
+    cur.rows.push({ date: dateStr, nce, bnce, snx, npe, bnpe, total });
+  }
+  if (cur && cur.rows.length) result.push(cur);
+  return result;
+}
+
+function parseSellingStratSheet(text) {
+  const lines = text.trim().split(/\r?\n/).map(l => l.split(',').map(v => v.trim().replace(/^"|"$/g,'')));
+  const result = [];
+  let cur = null;
+
+  for (const row of lines) {
+    const col0 = row[0] || '';
+    // Month header: first letter capital, rest lowercase (January, February...)
+    if (/^[A-Z][a-z]+$/.test(col0) && col0.length > 2 && col0 !== 'Capital' && col0 !== 'Holiday') {
+      if (cur) result.push(cur);
+      cur = { month: col0, rows: [] };
+      continue;
+    }
+    if (!cur) continue;
+    if (col0 === 'Date' || col0 === 'Capital' || col0 === 'Monthly Total' ||
+        col0 === '' || /^Strategy|^Option/.test(col0)) continue;
+
+    const dateMatch = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!dateMatch) continue;
+
+    const [,dd,mm] = dateMatch;
+    const dateStr = `${dd}/${mm}`;
+    const isHoliday = (row[1] || '').toLowerCase() === 'holiday';
+
+    if (isHoliday) {
+      cur.rows.push({ date: dateStr, holiday: true, nifty:0, bnf:0, sensex:0, trend:0, total:0 });
+      continue;
+    }
+    const nifty  = parseFloat(row[1]) || 0;
+    const bnf    = parseFloat(row[2]) || 0;
+    const sensex = parseFloat(row[3]) || 0;
+    const trend  = parseFloat(row[4]) || 0;
+    const total  = parseFloat(row[5]) || (nifty+bnf+sensex+trend);
+    if (nifty===0 && bnf===0 && sensex===0 && trend===0 && total===0) continue;
+    cur.rows.push({ date: dateStr, nifty, bnf, sensex, trend, total });
+  }
+  if (cur && cur.rows.length) result.push(cur);
+  return result;
+}
+
 async function loadData() {
   const btn = document.getElementById('refreshBtn');
   btn.classList.add('spinning');
@@ -778,6 +940,19 @@ async function loadData() {
   } catch(e) {
     showError('Selling sheet error: ' + e.message);
   }
+
+  // Strategy daily sheets
+  try {
+    const bsCSV = await fetchCSV(BUY_STRAT_URL);
+    const bsData = parseBuyingStratSheet(bsCSV);
+    if (bsData.length > 0) BUY_STRAT = bsData;
+  } catch(e) { /* silent — tabs show empty state */ }
+
+  try {
+    const ssCSV = await fetchCSV(SELL_STRAT_URL);
+    const ssData = parseSellingStratSheet(ssCSV);
+    if (ssData.length > 0) SELL_STRAT = ssData;
+  } catch(e) { /* silent */ }
 
   if (buyOK && sellOK) {
     sheetConnected = true;
@@ -1065,14 +1240,222 @@ function renderHistory() {
 function renderAll() {
   renderBuying();
   renderSelling();
+  renderBuyingStrat();
+  renderSellingStrat();
   renderHistory();
+}
+
+/* ── BUYING STRATEGY RENDER ── */
+function renderBuyingStrat() {
+  if (!BUY_STRAT.length) return;
+  const fmt2 = v => (v>=0?'+':'')+fmtK(v);
+  const clr2 = v => v>=0?'var(--green)':'var(--red)';
+
+  // Aggregate per strategy
+  let totals = {nce:0,bnce:0,snx:0,npe:0,bnpe:0};
+  const dailyDates=[], dailyTotals=[];
+
+  BUY_STRAT.forEach(mo => {
+    mo.rows.forEach(r => {
+      if (r.holiday) return;
+      totals.nce  += r.nce;
+      totals.bnce += r.bnce;
+      totals.snx  += r.snx;
+      totals.npe  += r.npe;
+      totals.bnpe += r.bnpe;
+      if (r.total !== 0) { dailyDates.push(r.date); dailyTotals.push(r.total); }
+    });
+  });
+
+  // KPI cards
+  [['bsk-nce',totals.nce],['bsk-bnce',totals.bnce],['bsk-snx',totals.snx],
+   ['bsk-npe',totals.npe],['bsk-bnpe',totals.bnpe]].forEach(([id,v]) => {
+    const el = I(id); if(!el) return;
+    el.textContent = fmtK(v);
+    el.className = 'strat-mini-val ' + (v>=0?'cg':'cr');
+  });
+
+  // Strategy bar chart
+  destroyChart('bsStratBar');
+  const bsLabels = ['Nifty CE','BNF CE','Sensex CE/PE','Nifty PE','BNF PE'];
+  const bsVals   = [totals.nce,totals.bnce,totals.snx,totals.npe,totals.bnpe];
+  CHARTS['bsStratBar'] = new Chart(I('bsStratBar'), {
+    type: 'bar',
+    data: { labels: bsLabels, datasets: [{ data: bsVals,
+      backgroundColor: bsVals.map(v => v>=0?'rgba(5,150,105,0.78)':'rgba(220,38,38,0.75)'),
+      borderRadius: 6, maxBarThickness: 60 }] },
+    options: { ...BASE_OPT, indexAxis: 'y',
+      plugins: { ...BASE_OPT.plugins, tooltip: { ...BASE_OPT.plugins.tooltip,
+        callbacks: { label: ctx => '  ' + fmt(ctx.raw) } } } }
+  });
+
+  // Daily line chart
+  destroyChart('bsDailyLine');
+  CHARTS['bsDailyLine'] = new Chart(I('bsDailyLine'), {
+    type: 'bar',
+    data: { labels: dailyDates, datasets: [{ data: dailyTotals,
+      backgroundColor: dailyTotals.map(v => v>=0?'rgba(5,150,105,0.75)':'rgba(220,38,38,0.7)'),
+      borderRadius: 3, maxBarThickness: 18 }] },
+    options: { ...BASE_OPT }
+  });
+
+  // Month accordion tables
+  const cont = I('bs-months-container');
+  if (!cont) return;
+  cont.innerHTML = '';
+  BUY_STRAT.forEach((mo, mi) => {
+    const mTotal = mo.rows.reduce((a,r) => a + (r.total||0), 0);
+    const div = document.createElement('div');
+    div.className = 'month-section' + (mi===0?' open':'');
+    div.innerHTML = `
+      <div class="month-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="month-name">
+          <span>${mo.month}</span>
+          <span style="font-size:0.78em;font-family:var(--mono);color:var(--muted)">${mo.rows.filter(r=>!r.holiday).length} trading days</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="month-total" style="color:${clr2(mTotal)}">${fmt(mTotal)}</span>
+          <span class="month-arr">▼</span>
+        </div>
+      </div>
+      <div class="month-body">
+        <table class="dtable">
+          <thead><tr>
+            <th>Date</th><th>Nifty CE</th><th>BNF CE</th><th>Sensex</th><th>Nifty PE</th><th>BNF PE</th><th>Daily Total</th>
+          </tr></thead>
+          <tbody>
+            ${mo.rows.map(r => r.holiday
+              ? `<tr class="holiday-row"><td>${r.date}</td><td colspan="6" style="text-align:center;color:var(--muted);font-style:italic">Holiday</td></tr>`
+              : `<tr>
+                  <td>${r.date}</td>
+                  <td style="color:${clr2(r.nce)}">${r.nce!==0?fmt(r.nce):'–'}</td>
+                  <td style="color:${clr2(r.bnce)}">${r.bnce!==0?fmt(r.bnce):'–'}</td>
+                  <td style="color:${clr2(r.snx)}">${r.snx!==0?fmt(r.snx):'–'}</td>
+                  <td style="color:${clr2(r.npe)}">${r.npe!==0?fmt(r.npe):'–'}</td>
+                  <td style="color:${clr2(r.bnpe)}">${r.bnpe!==0?fmt(r.bnpe):'–'}</td>
+                  <td style="color:${clr2(r.total)};font-weight:700">${fmt(r.total)}</td>
+                </tr>`
+            ).join('')}
+            <tr class="total-row">
+              <td>Month Total</td><td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.nce,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.nce,0))}</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.bnce,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.bnce,0))}</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.snx,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.snx,0))}</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.npe,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.npe,0))}</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.bnpe,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.bnpe,0))}</td>
+              <td style="color:${clr2(mTotal)}">${fmt(mTotal)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    cont.appendChild(div);
+  });
+}
+
+/* ── SELLING STRATEGY RENDER ── */
+function renderSellingStrat() {
+  if (!SELL_STRAT.length) return;
+  const clr2 = v => v>=0?'var(--green)':'var(--red)';
+
+  let totals = {nifty:0,bnf:0,sensex:0,trend:0};
+  const dailyDates=[], dailyTotals=[];
+
+  SELL_STRAT.forEach(mo => {
+    mo.rows.forEach(r => {
+      if (r.holiday) return;
+      totals.nifty  += r.nifty;
+      totals.bnf    += r.bnf;
+      totals.sensex += r.sensex;
+      totals.trend  += r.trend;
+      if (r.total !== 0) { dailyDates.push(r.date); dailyTotals.push(r.total); }
+    });
+  });
+
+  const grandTotal = totals.nifty+totals.bnf+totals.sensex+totals.trend;
+
+  [['ssk-nf',totals.nifty],['ssk-bnf',totals.bnf],['ssk-snx',totals.sensex],
+   ['ssk-trd',totals.trend],['ssk-tot',grandTotal]].forEach(([id,v]) => {
+    const el = I(id); if(!el) return;
+    el.textContent = fmtK(v);
+    el.className = 'strat-mini-val ' + (v>=0?'cg':'cr') + (id==='ssk-tot'?' cc':'');
+  });
+
+  destroyChart('ssStratBar');
+  const ssLabels = ['Nifty Sell','BNF Sell','Sensex Sell','Nifty Trend'];
+  const ssVals   = [totals.nifty,totals.bnf,totals.sensex,totals.trend];
+  CHARTS['ssStratBar'] = new Chart(I('ssStratBar'), {
+    type: 'bar',
+    data: { labels: ssLabels, datasets: [{ data: ssVals,
+      backgroundColor: ssVals.map(v => v>=0?'rgba(2,132,199,0.78)':'rgba(220,38,38,0.75)'),
+      borderRadius: 6, maxBarThickness: 60 }] },
+    options: { ...BASE_OPT, indexAxis: 'y',
+      plugins: { ...BASE_OPT.plugins, tooltip: { ...BASE_OPT.plugins.tooltip,
+        callbacks: { label: ctx => '  ' + fmt(ctx.raw) } } } }
+  });
+
+  destroyChart('ssDailyLine');
+  CHARTS['ssDailyLine'] = new Chart(I('ssDailyLine'), {
+    type: 'bar',
+    data: { labels: dailyDates, datasets: [{ data: dailyTotals,
+      backgroundColor: dailyTotals.map(v => v>=0?'rgba(2,132,199,0.72)':'rgba(220,38,38,0.7)'),
+      borderRadius: 3, maxBarThickness: 18 }] },
+    options: { ...BASE_OPT }
+  });
+
+  const cont = I('ss-months-container');
+  if (!cont) return;
+  cont.innerHTML = '';
+  SELL_STRAT.forEach((mo, mi) => {
+    const mTotal = mo.rows.reduce((a,r) => a + (r.total||0), 0);
+    const div = document.createElement('div');
+    div.className = 'month-section' + (mi===0?' open':'');
+    div.innerHTML = `
+      <div class="month-header" onclick="this.parentElement.classList.toggle('open')">
+        <div class="month-name">
+          <span>${mo.month}</span>
+          <span style="font-size:0.78em;font-family:var(--mono);color:var(--muted)">${mo.rows.filter(r=>!r.holiday).length} trading days</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <span class="month-total" style="color:${clr2(mTotal)}">${fmt(mTotal)}</span>
+          <span class="month-arr">▼</span>
+        </div>
+      </div>
+      <div class="month-body">
+        <table class="dtable">
+          <thead><tr>
+            <th>Date</th><th>Nifty Sell</th><th>BNF Sell</th><th>Sensex Sell</th><th>Nifty Trend</th><th>Daily Total</th>
+          </tr></thead>
+          <tbody>
+            ${mo.rows.map(r => r.holiday
+              ? `<tr class="holiday-row"><td>${r.date}</td><td colspan="5" style="text-align:center;color:var(--muted);font-style:italic">Holiday</td></tr>`
+              : `<tr>
+                  <td>${r.date}</td>
+                  <td style="color:${clr2(r.nifty)}">${r.nifty!==0?fmt(r.nifty):'–'}</td>
+                  <td style="color:${clr2(r.bnf)}">${r.bnf!==0?fmt(r.bnf):'–'}</td>
+                  <td style="color:${clr2(r.sensex)}">${r.sensex!==0?fmt(r.sensex):'–'}</td>
+                  <td style="color:${clr2(r.trend)}">${r.trend!==0?fmt(r.trend):'–'}</td>
+                  <td style="color:${clr2(r.total)};font-weight:700">${fmt(r.total)}</td>
+                </tr>`
+            ).join('')}
+            <tr class="total-row">
+              <td>Month Total</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.nifty,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.nifty,0))}</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.bnf,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.bnf,0))}</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.sensex,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.sensex,0))}</td>
+              <td style="color:${clr2(mo.rows.reduce((a,r)=>a+r.trend,0))}">${fmt(mo.rows.reduce((a,r)=>a+r.trend,0))}</td>
+              <td style="color:${clr2(mTotal)}">${fmt(mTotal)}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>`;
+    cont.appendChild(div);
+  });
 }
 
 /* ════════════════════════════════════════════════
    SECTION 5: TAB SWITCHING
 ════════════════════════════════════════════════ */
 function switchTab(t) {
-  ['buy','sell','hist'].forEach(x => {
+  ['buy','sell','buystrat','sellstrat','hist'].forEach(x => {
     I('perf-'+x).classList.toggle('on', x===t);
     I('tab-'+x).classList.toggle('on', x===t);
   });
@@ -1203,7 +1586,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="plan-price-row"><span class="plan-curr">₹</span><span class="plan-amt" style="color:var(--accent)">2,999</span><span class="plan-per">/month</span></div>
         <div class="plan-save">Quarterly ₹7,999 — save ₹1,000</div>
       </div>
-      <div class="plan-cap">💰 Capital needed: ₹75,000 (₹15K × 5 instruments)</div>
+      <div class="plan-cap">💰 Capital needed: ₹50,000 (₹15K × 3 instruments)</div>
       <div class="plan-body">
         <div class="plan-feat-lbl">What's included</div>
         <ul class="plan-feats">
@@ -1218,7 +1601,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><span class="feat-x">–</span><span style="color:var(--muted)">Selling strategy</span></li>
           <li><span class="feat-x">–</span><span style="color:var(--muted)">Priority WhatsApp support</span></li>
         </ul>
-        <button class="plan-btn pb-outline" onclick="openModal('Buying Pro','₹2,999/month','All 5 Buying Signals')">Subscribe to Buying Pro</button>
+        <button class="plan-btn pb-outline" onclick="openModal('Buying Pro','₹2,999/month','All 3 Buying Signals')">Subscribe to Buying Pro</button>
         <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Buying+Pro" target="_blank">💬 Ask on WhatsApp first</a>
       </div>
     </div>
@@ -1233,11 +1616,11 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="plan-price-row"><span class="plan-curr">₹</span><span class="plan-amt" style="color:var(--green)">6,999</span><span class="plan-per">/month</span></div>
         <div class="plan-save">Quarterly ₹17,999 — save ₹3,000 &nbsp;·&nbsp; Save ₹2K vs buying separate</div>
       </div>
-      <div class="plan-cap" style="border-left-color:var(--green)">💰 Capital: ₹75K (buying) + ₹9L (selling)</div>
+      <div class="plan-cap" style="border-left-color:var(--green)">💰 Capital: ₹50K (buying) + ₹9L (selling)</div>
       <div class="plan-body">
         <div class="plan-feat-lbl">Everything in both plans</div>
         <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>All 5 Buying signals (CE + PE)</li>
+          <li><span class="feat-check">✓</span>All 3 Buying signals (CE + PE)</li>
           <li><span class="feat-check">✓</span>All 4 Selling signals</li>
           <li><span class="feat-check">✓</span>Entry · SL · Target levels</li>
           <li><span class="feat-check">✓</span>Real-time Telegram alerts</li>
@@ -1246,7 +1629,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><span class="feat-check">✓</span>Priority WhatsApp support</li>
           <li><span class="feat-check">✓</span>Strategy webinar access</li>
         </ul>
-        <button class="plan-btn pb-accent" onclick="openModal('Combo Elite','₹6,999/month','All 5 Buying + All 4 Selling Signals')">Subscribe to Combo Elite</button>
+        <button class="plan-btn pb-accent" onclick="openModal('Combo Elite','₹6,999/month','All 3 Buying + All 4 Selling Signals')">Subscribe to Combo Elite</button>
         <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Combo+Elite" target="_blank">💬 Ask on WhatsApp first</a>
       </div>
     </div>
