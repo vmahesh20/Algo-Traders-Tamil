@@ -581,30 +581,42 @@ document.addEventListener('DOMContentLoaded', function() {
   var _lbEl=document.getElementById('topDate');
   if(_lbEl)_lbEl.insertAdjacentHTML('afterend','<span id="loadingBar" style="font-size:10px;color:#f59e0b;margin-left:12px">&#x21BB; Loading live data...</span>');
 });
-fetch(SHEET_URL, {redirect:'follow', mode:'cors'})
-  .then(function(r){
-    if(!r.ok) throw new Error('HTTP '+r.status);
-    return r.text();
-  })
-  .then(function(t){
-    var d = JSON.parse(t);
-    loadDashboard(mergeSheetData(d));
-  })
-  .catch(function(err){
-    console.warn('Sheet fetch failed:',err);
-    // Try with no-cors mode via script tag injection as fallback
-    window._gsCB = function(d){ loadDashboard(mergeSheetData(d)); };
-    var s = document.createElement('script');
-    s.src = SHEET_URL + '&callback=_gsCB';
-    s.onerror = function(){
-      var lb=document.getElementById('loadingBar');
-      if(lb){lb.textContent='⚠ Cached';lb.style.color='#ef4444';}
-      var fb={buy2026:{records:[],monthly:[],total_profit:54498,win_rate:66.67,max_dd:-4716,return_pct:109.0,strategies:[]},sell2026:{records:[],monthly:[],total_profit:32046,win_rate:51.11,max_dd:-24600,return_pct:3.56,strategies:[]},combined2026:{records:[],monthly:[],total_profit:86544,win_rate:63.04,max_dd:-21834,return_pct:8.24}};
-      fb.hist_buying=HIST_BUYING;fb.hist_selling=HIST_SELLING;
-      loadDashboard(fb);
-    };
-    document.head.appendChild(s);
-  });
+// Use JSONP — works cross-origin without CORS issues
+function loadFromSheet() {
+  window._gsCB = function(d) {
+    try { loadDashboard(mergeSheetData(d)); }
+    catch(e) { console.warn('loadDashboard error:', e); loadFallback(); }
+  };
+  var s = document.createElement('script');
+  s.src = SHEET_URL + '?callback=_gsCB';
+  s.onerror = function() {
+    console.warn('JSONP failed, trying fetch...');
+    fetch(SHEET_URL)
+      .then(function(r){ return r.text(); })
+      .then(function(t){ loadDashboard(mergeSheetData(JSON.parse(t))); })
+      .catch(function(){ loadFallback(); });
+  };
+  document.head.appendChild(s);
+  // Timeout fallback after 8 seconds
+  setTimeout(function() {
+    if (!DATA) { console.warn('Timeout — loading fallback'); loadFallback(); }
+  }, 8000);
+}
+
+function loadFallback() {
+  var lb = document.getElementById('loadingBar');
+  if (lb) { lb.textContent = '⚠ Cached'; lb.style.color = '#ef4444'; }
+  var fb = {
+    buy2026:  {records:[], monthly:[], total_profit:54498,  win_rate:66.67, max_dd:-4716,  return_pct:109.0, strategies:[]},
+    sell2026: {records:[], monthly:[], total_profit:32046,  win_rate:51.11, max_dd:-24600, return_pct:3.56,  strategies:[]},
+    combined2026: {records:[], monthly:[], total_profit:86544, win_rate:63.04, max_dd:-21834, return_pct:8.24}
+  };
+  fb.hist_buying = HIST_BUYING;
+  fb.hist_selling = HIST_SELLING;
+  loadDashboard(fb);
+}
+
+loadFromSheet();
 
 // Utils
 const fmt = v => {
@@ -667,7 +679,7 @@ function initBuying() {
   (document.getElementById('b-eq-val')||{}).textContent = fmt(total);
   (document.getElementById('tbuy-badge')||{}).textContent = pct(d.return_pct);
 
-  const bestM = d.monthly.reduce((a,b) => b.PnL > a.PnL ? b : a);
+  const bestM = d.monthly && d.monthly.length ? d.monthly.length ? d.monthly.reduce((a,b) => b.PnL > a.PnL ? b : a) : {PnL:0, Month:"—"};
   (document.getElementById('b-best')||{}).textContent = fmt(bestM.PnL);
   (document.getElementById('b-best-m')||{}).textContent = mLabel(bestM.Month);
 
@@ -752,7 +764,7 @@ function initSelling() {
   (document.getElementById('s-eq-val')||{}).textContent = fmt(total);
   (document.getElementById('tsell-badge')||{}).textContent = pct(d.return_pct);
 
-  const bestM = d.monthly.reduce((a,b) => b.PnL > a.PnL ? b : a);
+  const bestM = d.monthly && d.monthly.length ? d.monthly.length ? d.monthly.reduce((a,b) => b.PnL > a.PnL ? b : a) : {PnL:0, Month:"—"};
   (document.getElementById('s-best')||{}).textContent = fmt(bestM.PnL);
   (document.getElementById('s-best-m')||{}).textContent = mLabel(bestM.Month);
 
