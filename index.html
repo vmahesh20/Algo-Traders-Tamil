@@ -834,29 +834,36 @@ function parseSellingRow(row) {
 
 /* ── STRATEGY DAILY SHEET PARSERS ── */
 function parseBuyingStratSheet(text) {
-  /* Format: title row, "Option Buying", MONTH header, Capital row, Date header, daily rows, Monthly Total */
-  const lines = text.trim().split(/\r?\n/).map(l => l.split(',').map(v => v.trim().replace(/^"|"$/g,'')));
-  const result = []; // [{month, rows:[{date,nce,bnce,snx,npe,bnpe,total}]}]
+  const MONTHS = ['january','february','march','april','may','june',
+                  'july','august','september','october','november','december'];
+  const lines = text.trim().split(/\r?\n/).map(l =>
+    l.split(',').map(v => v.trim().replace(/^"|"$/g,''))
+  );
+  const result = [];
   let cur = null;
 
   for (const row of lines) {
-    const col0 = row[0] || '';
-    // Detect month header (all caps like JANUARY, FEBRUARY...)
-    if (/^[A-Z]{3,}$/.test(col0) && !col0.includes('Capital') && col0 !== 'Date') {
-      if (cur) result.push(cur);
-      cur = { month: col0, rows: [] };
+    const col0 = (row[0] || '').trim();
+    const col0low = col0.toLowerCase();
+
+    // Detect month header — any case (JANUARY, January, january all work)
+    if (MONTHS.includes(col0low)) {
+      if (cur && cur.rows.length) result.push(cur);
+      cur = { month: col0.charAt(0).toUpperCase() + col0.slice(1).toLowerCase(), rows: [] };
       continue;
     }
-    // Skip non-data rows
     if (!cur) continue;
-    if (col0 === 'Date' || col0 === 'Capital' || col0 === 'Monthly Total' ||
-        col0 === '' || col0 === 'Option Buying' || /^Strategy/.test(col0)) continue;
 
-    // Parse date row  DD/MM/YYYY
+    // Skip non-data rows
+    if (col0 === '' || col0low === 'date' || col0low === 'capital' ||
+        col0low === 'monthly total' || col0low === 'total' ||
+        /^strategy|^option/i.test(col0)) continue;
+
+    // Only parse date rows DD/MM/YYYY
     const dateMatch = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
     if (!dateMatch) continue;
 
-    const [,dd,mm,yyyy] = dateMatch;
+    const [,dd,mm] = dateMatch;
     const dateStr = `${dd}/${mm}`;
     const isHoliday = (row[1] || '').toLowerCase() === 'holiday';
 
@@ -870,7 +877,11 @@ function parseBuyingStratSheet(text) {
     const npe  = parseFloat(row[4]) || 0;
     const bnpe = parseFloat(row[5]) || 0;
     const total = parseFloat(row[6]) || (nce+bnce+snx+npe+bnpe);
-    if (nce===0 && bnce===0 && snx===0 && npe===0 && bnpe===0 && total===0) continue; // skip empty rows
+
+    // Skip completely empty trading days
+    if (nce===0 && bnce===0 && snx===0 && npe===0 && bnpe===0 && total===0 &&
+        row[1]==='' && row[2]==='' && row[3]==='' && row[4]==='') continue;
+
     cur.rows.push({ date: dateStr, nce, bnce, snx, npe, bnpe, total });
   }
   if (cur && cur.rows.length) result.push(cur);
@@ -878,22 +889,31 @@ function parseBuyingStratSheet(text) {
 }
 
 function parseSellingStratSheet(text) {
-  const lines = text.trim().split(/\r?\n/).map(l => l.split(',').map(v => v.trim().replace(/^"|"$/g,'')));
+  const MONTHS = ['january','february','march','april','may','june',
+                  'july','august','september','october','november','december'];
+  const lines = text.trim().split(/\r?\n/).map(l =>
+    l.split(',').map(v => v.trim().replace(/^"|"$/g,''))
+  );
   const result = [];
   let cur = null;
 
   for (const row of lines) {
-    const col0 = row[0] || '';
-    // Month header: first letter capital, rest lowercase (January, February...)
-    if (/^[A-Z][a-z]+$/.test(col0) && col0.length > 2 && col0 !== 'Capital' && col0 !== 'Holiday') {
-      if (cur) result.push(cur);
-      cur = { month: col0, rows: [] };
+    const col0 = (row[0] || '').trim();
+    const col0low = col0.toLowerCase();
+
+    // Detect month header — matches any case variant of month names
+    if (MONTHS.includes(col0low)) {
+      if (cur && cur.rows.length) result.push(cur);
+      cur = { month: col0.charAt(0).toUpperCase() + col0.slice(1).toLowerCase(), rows: [] };
       continue;
     }
     if (!cur) continue;
-    if (col0 === 'Date' || col0 === 'Capital' || col0 === 'Monthly Total' ||
-        col0 === '' || /^Strategy|^Option/.test(col0)) continue;
 
+    // Skip header/meta rows
+    if (col0 === '' || col0low === 'date' || col0low === 'capital' ||
+        col0low === 'total' || /^strategy|^option/i.test(col0)) continue;
+
+    // Only parse date rows DD/MM/YYYY
     const dateMatch = col0.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
     if (!dateMatch) continue;
 
@@ -905,12 +925,17 @@ function parseSellingStratSheet(text) {
       cur.rows.push({ date: dateStr, holiday: true, nifty:0, bnf:0, sensex:0, trend:0, total:0 });
       continue;
     }
+
     const nifty  = parseFloat(row[1]) || 0;
     const bnf    = parseFloat(row[2]) || 0;
     const sensex = parseFloat(row[3]) || 0;
     const trend  = parseFloat(row[4]) || 0;
     const total  = parseFloat(row[5]) || (nifty+bnf+sensex+trend);
-    if (nifty===0 && bnf===0 && sensex===0 && trend===0 && total===0) continue;
+
+    // Skip completely empty trading days
+    if (nifty===0 && bnf===0 && sensex===0 && trend===0 && total===0 &&
+        row[1]==='' && row[2]==='' && row[3]==='' && row[4]==='') continue;
+
     cur.rows.push({ date: dateStr, nifty, bnf, sensex, trend, total });
   }
   if (cur && cur.rows.length) result.push(cur);
