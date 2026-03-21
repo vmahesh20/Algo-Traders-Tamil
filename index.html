@@ -577,8 +577,34 @@ const HIST_BUYING=[{"year": 2023, "month": "October", "profit": 13177.0, "roi": 
 const HIST_SELLING=[{"year": 2025, "month": "January", "nifty": 20288.0, "banknifty": 28668.0, "sensex": 7595.0, "trend": 0, "total": 56551.0, "roi": 7.54}, {"year": 2025, "month": "February", "nifty": 9451.0, "banknifty": 26062.0, "sensex": 22762.0, "trend": 3220.0, "total": 61495.0, "roi": 6.15}, {"year": 2025, "month": "March", "nifty": 7055.0, "banknifty": 22789.0, "sensex": 19218.0, "trend": 13438.0, "total": 62500.0, "roi": 6.25}, {"year": 2025, "month": "April", "nifty": -1321.0, "banknifty": 7032.0, "sensex": -5470.0, "trend": 11753.0, "total": 11994.0, "roi": 1.2}, {"year": 2025, "month": "May", "nifty": 14172.0, "banknifty": 18590.0, "sensex": -9669.0, "trend": 14097.0, "total": 37190.0, "roi": 4.13}, {"year": 2025, "month": "June", "nifty": 3522.0, "banknifty": 9609.0, "sensex": -1363.0, "trend": 2469.0, "total": 14237.0, "roi": 1.58}, {"year": 2025, "month": "July", "nifty": 9393.0, "banknifty": 4985.0, "sensex": 0, "trend": 19328.0, "total": 33706.0, "roi": 3.75}, {"year": 2025, "month": "August", "nifty": 7349.0, "banknifty": 5850.0, "sensex": 0, "trend": -1266.0, "total": 11933.0, "roi": 1.33}, {"year": 2025, "month": "September", "nifty": 4761.0, "banknifty": 7400.0, "sensex": 5861.0, "trend": 8269.0, "total": 26291.0, "roi": 2.63}, {"year": 2025, "month": "October", "nifty": -6556.0, "banknifty": -17704.0, "sensex": -2342.0, "trend": 7219.0, "total": -19383.0, "roi": -1.94}, {"year": 2025, "month": "November", "nifty": 9323.0, "banknifty": -2446.0, "sensex": 10881.0, "trend": -7123.0, "total": 10635.0, "roi": 1.06}, {"year": 2025, "month": "December", "nifty": 17592.0, "banknifty": 19501.0, "sensex": 10076.0, "trend": 8337.0, "total": 55506.0, "roi": 5.55}, {"year": 2026, "month": "January", "nifty": -6042.0, "banknifty": -4723.0, "sensex": 6616.0, "trend": -2287.0, "total": -6436.0, "roi": 0.0}, {"year": 2026, "month": "Februaary", "nifty": 4008.0, "banknifty": -3871.0, "sensex": 11592.0, "trend": 11075.0, "total": 22804.0, "roi": 0.0}];
 function mergeSheetData(d){d.hist_buying=HIST_BUYING;d.hist_selling=HIST_SELLING;var mn={'01':'January','02':'February','03':'March','04':'April','05':'May','06':'June','07':'July','08':'August','09':'September','10':'October','11':'November','12':'December'};if(d.buy2026&&d.buy2026.monthly){d.buy2026.monthly.forEach(function(m){var yr=parseInt(m.Month.slice(0,4)),mo=mn[m.Month.slice(5,7)];if(!d.hist_buying.some(function(h){return h.year===yr&&h.month===mo;})){var recs=d.buy2026.records.filter(function(r){return r.Date.slice(0,7)===m.Month;});var pnls=recs.filter(function(r){return r.PnL!==0;});d.hist_buying.push({year:yr,month:mo,profit:m.PnL,roi:0,win_days:pnls.filter(function(r){return r.PnL>0;}).length,loss_days:pnls.filter(function(r){return r.PnL<0;}).length,traded_days:pnls.length});}});}if(d.sell2026&&d.sell2026.monthly){d.sell2026.monthly.forEach(function(m){var yr=parseInt(m.Month.slice(0,4)),mo=mn[m.Month.slice(5,7)];if(!d.hist_selling.some(function(h){return h.year===yr&&h.month===mo;})){var st=d.sell2026.strategies||[];var g=function(n){var s=st.find(function(x){return x.name===n;});return s?s.val:0;};d.hist_selling.push({year:yr,month:mo,nifty:g('Nifty Selling'),banknifty:g('BankNifty Selling'),sensex:g('Sensex Selling'),trend:g('Nifty Trend'),total:m.PnL,roi:0});}});}if(d.buy2026&&d.sell2026&&!d.combined2026){var bm={},sm={};d.buy2026.records.forEach(function(r){bm[r.Date]=r.PnL;});d.sell2026.records.forEach(function(r){sm[r.Date]=r.PnL;});var dates=[...new Set([...Object.keys(bm),...Object.keys(sm)])].sort();var eq=0,pk=0,cr=[];dates.forEach(function(dt){var p=(bm[dt]||0)+(sm[dt]||0);eq+=p;pk=Math.max(pk,eq);cr.push({Date:dt,PnL:p,Equity:Math.round(eq*100)/100,Peak:Math.round(pk*100)/100,Drawdown:Math.round((eq-pk)*100)/100});});var cm={};cr.forEach(function(r){var m=r.Date.slice(0,7);cm[m]=(cm[m]||0)+r.PnL;});d.combined2026={records:cr,monthly:Object.keys(cm).sort().map(function(k){return{Month:k,PnL:Math.round(cm[k]*100)/100}}),total_profit:eq,win_rate:d.buy2026.win_rate,max_dd:Math.min(d.buy2026.max_dd,d.sell2026.max_dd),return_pct:Math.round(eq/950000*10000)/100};}return d;}
 function loadDashboard(d){DATA=d;if(d.buy2026&&d.buy2026.strategies)window._buyStrategies=d.buy2026.strategies;if(d.sell2026&&d.sell2026.strategies)window._sellStrategies=d.sell2026.strategies;runAllInits();var lb=document.getElementById('loadingBar');if(lb)lb.style.display='none';}
-var _lbEl=document.getElementById('topDate');if(_lbEl)_lbEl.insertAdjacentHTML('afterend','<span id="loadingBar" style="font-size:10px;color:#f59e0b;margin-left:12px">⟳ Loading live data...</span>');
-fetch(SHEET_URL).then(function(r){return r.json();}).then(function(d){loadDashboard(mergeSheetData(d));}).catch(function(err){console.warn('Sheet fetch failed:',err);var lb=document.getElementById('loadingBar');if(lb){lb.textContent='⚠ Cached';lb.style.color='#ef4444';}var fb={buy2026:{records:[],monthly:[],total_profit:54498,win_rate:66.67,max_dd:-4716,return_pct:109.0,strategies:[]},sell2026:{records:[],monthly:[],total_profit:32046,win_rate:51.11,max_dd:-24600,return_pct:3.56,strategies:[]},combined2026:{records:[],monthly:[],total_profit:86544,win_rate:63.04,max_dd:-21834,return_pct:8.24}};fb.hist_buying=HIST_BUYING;fb.hist_selling=HIST_SELLING;loadDashboard(fb);});
+document.addEventListener('DOMContentLoaded', function() {
+  var _lbEl=document.getElementById('topDate');
+  if(_lbEl)_lbEl.insertAdjacentHTML('afterend','<span id="loadingBar" style="font-size:10px;color:#f59e0b;margin-left:12px">&#x21BB; Loading live data...</span>');
+});
+fetch(SHEET_URL, {redirect:'follow', mode:'cors'})
+  .then(function(r){
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    return r.text();
+  })
+  .then(function(t){
+    var d = JSON.parse(t);
+    loadDashboard(mergeSheetData(d));
+  })
+  .catch(function(err){
+    console.warn('Sheet fetch failed:',err);
+    // Try with no-cors mode via script tag injection as fallback
+    window._gsCB = function(d){ loadDashboard(mergeSheetData(d)); };
+    var s = document.createElement('script');
+    s.src = SHEET_URL + '&callback=_gsCB';
+    s.onerror = function(){
+      var lb=document.getElementById('loadingBar');
+      if(lb){lb.textContent='⚠ Cached';lb.style.color='#ef4444';}
+      var fb={buy2026:{records:[],monthly:[],total_profit:54498,win_rate:66.67,max_dd:-4716,return_pct:109.0,strategies:[]},sell2026:{records:[],monthly:[],total_profit:32046,win_rate:51.11,max_dd:-24600,return_pct:3.56,strategies:[]},combined2026:{records:[],monthly:[],total_profit:86544,win_rate:63.04,max_dd:-21834,return_pct:8.24}};
+      fb.hist_buying=HIST_BUYING;fb.hist_selling=HIST_SELLING;
+      loadDashboard(fb);
+    };
+    document.head.appendChild(s);
+  });
 
 // Utils
 const fmt = v => {
@@ -952,11 +978,7 @@ function runAllInits() {
   initHistory();
   initStratBreakdown();
 }
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', runAllInits);
-} else {
-  runAllInits();
-}
+// Data loads via fetch() — runAllInits() is called by loadDashboard() only
 
 
 
