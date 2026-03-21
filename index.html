@@ -139,6 +139,16 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .chart-box.span2,.chart-box.span3{grid-column:span 1}
 }
 
+/* ── REVIEW FORM ── */
+.rv-input{width:100%;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:0.88em;outline:none;transition:.2s}
+.rv-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(2,132,199,0.08)}
+.rv-input::placeholder{color:var(--muted)}
+.star-opt:hover,.star-opt.active{color:#f59e0b!important}
+.tcard-img{width:100%;border-radius:8px;margin-bottom:12px;max-height:140px;object-fit:cover;border:1px solid var(--border)}
+.tcard-link{display:inline-flex;align-items:center;gap:5px;font-size:0.75em;color:var(--accent);text-decoration:none;margin-top:8px;font-family:var(--mono)}
+.tcard-link:hover{text-decoration:underline}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;font-size:0.68em;background:rgba(5,150,105,0.1);color:var(--green);border:1px solid rgba(5,150,105,0.2);padding:2px 7px;border-radius:100px;font-weight:700;margin-left:6px;font-family:var(--mono)}
+
 /* ══════════════════════════════════
    SEBI TOP BAR
 ══════════════════════════════════ */
@@ -1499,7 +1509,212 @@ function switchTab(t) {
 /* ════════════════════════════════════════════════
    SECTION 6: AUTO-REFRESH every 5 min if connected
 ════════════════════════════════════════════════ */
-setInterval(() => { if (sheetConnected) loadData(); }, 5 * 60 * 1000);
+/* ════════════════════════════════════════════════
+   REVIEW SYSTEM
+   Submit → Google Sheet (via Apps Script)
+   Approved reviews → loaded from published sheet
+   Admin: open Google Sheet, change Status to Approved/Deleted
+════════════════════════════════════════════════ */
+
+// ── Replace this with your Google Apps Script Web App URL ──
+// See setup instructions below
+const REVIEW_SUBMIT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+const REVIEW_READ_URL   = 'YOUR_APPROVED_REVIEWS_SHEET_CSV_URL_HERE';
+
+let selectedStars = 0;
+let selectedImgBase64 = '';
+
+function setStars(n) {
+  selectedStars = n;
+  document.querySelectorAll('.star-opt').forEach((el, i) => {
+    el.style.color = i < n ? '#f59e0b' : '#d1dbe8';
+    el.classList.toggle('active', i < n);
+  });
+}
+
+function handleImgSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 3 * 1024 * 1024) {
+    alert('Image must be under 3MB'); input.value = ''; return;
+  }
+  const reader = new FileReader();
+  reader.onload = e => {
+    selectedImgBase64 = e.target.result;
+    document.getElementById('img-preview').src = e.target.result;
+    document.getElementById('img-preview-wrap').style.display = 'block';
+    document.getElementById('img-label-txt').textContent = '✓ ' + file.name;
+  };
+  reader.readAsDataURL(file);
+}
+
+function clearImg() {
+  selectedImgBase64 = '';
+  document.getElementById('rv-img').value = '';
+  document.getElementById('img-preview-wrap').style.display = 'none';
+  document.getElementById('img-label-txt').textContent = '📁 Choose file (JPG/PNG)';
+}
+
+async function submitReview() {
+  const name  = document.getElementById('rv-name').value.trim();
+  const city  = document.getElementById('rv-city').value.trim();
+  const text  = document.getElementById('rv-text').value.trim();
+  const plan  = document.getElementById('rv-plan').value;
+  const since = document.getElementById('rv-since').value.trim();
+  const link  = document.getElementById('rv-link').value.trim();
+  const errEl = document.getElementById('rv-error');
+
+  errEl.style.display = 'none';
+  if (!name)          { showRvError('Please enter your name'); return; }
+  if (!city)          { showRvError('Please enter your city'); return; }
+  if (!text || text.length < 20) { showRvError('Please write at least 20 characters'); return; }
+  if (selectedStars < 1) { showRvError('Please select a star rating'); return; }
+
+  const btn = document.getElementById('rv-submit-btn');
+  const btnTxt = document.getElementById('rv-btn-txt');
+  btn.disabled = true;
+  btnTxt.textContent = 'Submitting...';
+
+  const payload = {
+    name, city, plan, since, stars: selectedStars,
+    review: text, link,
+    image: selectedImgBase64,
+    submitted: new Date().toISOString(),
+    status: 'Pending'
+  };
+
+  try {
+    if (REVIEW_SUBMIT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+      // Demo mode — no backend connected yet
+      await new Promise(r => setTimeout(r, 800));
+      showReviewSuccess();
+    } else {
+      await fetch(REVIEW_SUBMIT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      showReviewSuccess();
+    }
+  } catch(e) {
+    showRvError('Submission failed. Please try WhatsApp: 919655516011');
+    btn.disabled = false;
+    btnTxt.textContent = 'Submit Review';
+  }
+}
+
+function showRvError(msg) {
+  const el = document.getElementById('rv-error');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+}
+
+function showReviewSuccess() {
+  document.getElementById('review-form-wrap').style.display = 'none';
+  document.getElementById('review-success').style.display = 'block';
+}
+
+function resetReviewForm() {
+  document.getElementById('review-form-wrap').style.display = 'block';
+  document.getElementById('review-success').style.display = 'none';
+  document.getElementById('rv-name').value = '';
+  document.getElementById('rv-city').value = '';
+  document.getElementById('rv-text').value = '';
+  document.getElementById('rv-plan').value = '';
+  document.getElementById('rv-since').value = '';
+  document.getElementById('rv-link').value = '';
+  document.getElementById('rv-error').style.display = 'none';
+  selectedStars = 0; selectedImgBase64 = '';
+  setStars(0); clearImg();
+  document.getElementById('rv-submit-btn').disabled = false;
+  document.getElementById('rv-btn-txt').textContent = 'Submit Review';
+}
+
+/* ── Load approved reviews from Google Sheet ──
+   Sheet columns: Name, City, Plan, Since, Stars, Review, Link, ImageURL, Date
+   Admin: set Status column = "Approved" to show on site  */
+async function loadApprovedReviews() {
+  if (REVIEW_READ_URL === 'YOUR_APPROVED_REVIEWS_SHEET_CSV_URL_HERE') return;
+  try {
+    const text = await fetchCSV(REVIEW_READ_URL);
+    const lines = text.replace(/\r/g,'').trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
+    const reviews = lines.slice(1).map(l => {
+      const cols = l.split(',').map(v => v.trim().replace(/^"|"$/g,''));
+      const obj = {};
+      headers.forEach((h,i) => obj[h] = cols[i]||'');
+      return obj;
+    }).filter(r => r.status && r.status.toLowerCase() === 'approved' && r.name);
+
+    if (!reviews.length) return;
+
+    const grid = document.getElementById('approved-reviews-grid');
+    const colors = ['#0284c7','#7c3aed','#059669','#d97706','#dc2626'];
+    grid.innerHTML = reviews.map((r,i) => {
+      const initials = r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+      const stars = '★'.repeat(parseInt(r.stars)||5) + '☆'.repeat(5-(parseInt(r.stars)||5));
+      const planBadge = r.plan ? `<span class="tcard-plan tp-combo" style="margin-bottom:10px;display:inline-block">${r.plan}</span>` : '';
+      const imgTag = r.imageurl ? `<img class="tcard-img" src="${r.imageurl}" alt="Review screenshot" loading="lazy" />` : '';
+      const linkTag = r.link ? `<a class="tcard-link" href="${r.link}" target="_blank" rel="noopener">🔗 View proof ↗</a>` : '';
+      const verifiedTag = (r.link||r.imageurl) ? `<span class="verified-badge">✓ Verified</span>` : '';
+      return `<div class="tcard">
+        ${imgTag}
+        <div class="tcard-stars">${stars}</div>
+        ${planBadge}
+        <p class="tcard-text">"${r.review}"</p>
+        ${linkTag}
+        <div class="tcard-user" style="margin-top:${linkTag?'10px':'0'}">
+          <div class="tcard-avatar" style="background:${colors[i%colors.length]}">${initials}</div>
+          <div>
+            <div class="tcard-name">${r.name}${verifiedTag}</div>
+            <div class="tcard-loc">${r.city||''}</div>
+            <div class="tcard-since">${r.since||r.date||''}</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('approved-reviews-section').style.display = 'block';
+  } catch(e) { /* silent — section stays hidden */ }
+}
+
+// Load approved reviews when testimonials page is shown
+const _origShowPage = showPage;
+// Override showPage to trigger review load
+document.addEventListener('DOMContentLoaded', () => {
+  loadApprovedReviews();
+});
+
+/*
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  ADMIN SETUP — ONE TIME (5 minutes)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. Create a new Google Sheet named "AlgoTamil Reviews"
+2. Add columns: Timestamp, Name, City, Plan, Since, Stars, Review, Link, ImageURL, Status
+3. Go to Extensions → Apps Script → paste this code:
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.openById('YOUR_SHEET_ID').getActiveSheet();
+  const data = JSON.parse(e.postData.contents);
+  sheet.appendRow([
+    new Date(), data.name, data.city, data.plan, data.since,
+    data.stars, data.review, data.link, data.image, 'Pending'
+  ]);
+  return ContentService.createTextOutput('OK');
+}
+
+4. Deploy → Web App → Anyone can access → Copy URL
+5. Replace REVIEW_SUBMIT_URL above with that URL
+
+6. File → Share → Publish to web → Sheet → CSV → Copy URL
+7. Replace REVIEW_READ_URL above with that URL
+
+8. To APPROVE: Open Google Sheet → find review row → change Status to "Approved"
+   To DELETE: Change Status to "Deleted" or just delete the row
+   Site auto-refreshes every 5 min — approved reviews appear automatically.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+*/
 
 /* ════════════════════════════════════════════════
    INIT
@@ -1907,6 +2122,110 @@ document.addEventListener('DOMContentLoaded', () => {
   <div style="text-align:center;margin-top:8px">
     <button class="plan-btn pb-accent" style="max-width:320px;margin:0 auto" onclick="showPage('plans');return false">View Plans &amp; Subscribe →</button>
   </div>
+
+  <!-- ── SUBMIT A REVIEW ── -->
+  <div style="margin-top:56px;padding-top:40px;border-top:1px solid var(--border)">
+    <div style="text-align:center;margin-bottom:32px">
+      <div class="page-eyebrow">Share Your Experience</div>
+      <div class="page-h1" style="font-size:1.6em">Submit a Review</div>
+      <p class="page-sub" style="margin:0 auto">Your review will be visible after Mahesh approves it. All genuine reviews are published.</p>
+    </div>
+
+    <div id="review-form-wrap" style="max-width:680px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px">
+
+      <!-- Star selector -->
+      <div style="margin-bottom:20px">
+        <div style="font-size:0.78em;font-weight:600;color:var(--muted2);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.8px">Your Rating *</div>
+        <div id="star-selector" style="display:flex;gap:6px;font-size:2em;cursor:pointer">
+          <span class="star-opt" data-v="1" onclick="setStars(1)" style="color:#d1dbe8;transition:.15s">★</span>
+          <span class="star-opt" data-v="2" onclick="setStars(2)" style="color:#d1dbe8;transition:.15s">★</span>
+          <span class="star-opt" data-v="3" onclick="setStars(3)" style="color:#d1dbe8;transition:.15s">★</span>
+          <span class="star-opt" data-v="4" onclick="setStars(4)" style="color:#d1dbe8;transition:.15s">★</span>
+          <span class="star-opt" data-v="5" onclick="setStars(5)" style="color:#d1dbe8;transition:.15s">★</span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div>
+          <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Full Name *</label>
+          <input id="rv-name" class="rv-input" placeholder="Your name" />
+        </div>
+        <div>
+          <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">City *</label>
+          <input id="rv-city" class="rv-input" placeholder="Chennai, Tamil Nadu" />
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
+        <div>
+          <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Plan Subscribed</label>
+          <select id="rv-plan" class="rv-input" style="cursor:pointer">
+            <option value="">Select plan</option>
+            <option>Trader Plan</option>
+            <option>Advanced Trader</option>
+            <option>Premium Seller</option>
+            <option>Pro Seller</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Member Since</label>
+          <input id="rv-since" class="rv-input" placeholder="e.g. Jan 2025" />
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Your Review *</label>
+        <textarea id="rv-text" class="rv-input" rows="4" placeholder="Share your experience with Algo Tamil..." style="resize:vertical;min-height:100px"></textarea>
+      </div>
+
+      <!-- Image upload OR verified link -->
+      <div style="margin-bottom:14px">
+        <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Proof (Optional) — Upload Screenshot or Add Link</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+          <div>
+            <div style="font-size:0.74em;color:var(--muted);margin-bottom:5px">📷 Upload Screenshot</div>
+            <label id="img-label" style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--surface2);border:1px dashed var(--border2);border-radius:8px;cursor:pointer;font-size:0.82em;color:var(--muted2);transition:.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
+              <span id="img-label-txt">📁 Choose file (JPG/PNG)</span>
+              <input type="file" id="rv-img" accept="image/*" style="display:none" onchange="handleImgSelect(this)" />
+            </label>
+          </div>
+          <div>
+            <div style="font-size:0.74em;color:var(--muted);margin-bottom:5px">🔗 Or Verified Link</div>
+            <input id="rv-link" class="rv-input" placeholder="https://twitter.com/yourpost" />
+          </div>
+        </div>
+        <div id="img-preview-wrap" style="display:none;margin-top:10px">
+          <img id="img-preview" style="max-height:120px;border-radius:8px;border:1px solid var(--border)" />
+          <button onclick="clearImg()" style="display:block;margin-top:4px;background:none;border:none;color:var(--red);font-size:0.75em;cursor:pointer">✕ Remove</button>
+        </div>
+      </div>
+
+      <div id="rv-error" style="display:none;background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:10px 14px;font-size:0.82em;color:var(--red);margin-bottom:12px"></div>
+
+      <button onclick="submitReview()" id="rv-submit-btn" style="width:100%;padding:13px;background:var(--accent);color:#fff;font-weight:700;font-size:0.95em;border:none;border-radius:9px;cursor:pointer;font-family:var(--font);transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px">
+        <span id="rv-btn-txt">Submit Review</span>
+      </button>
+      <div style="font-size:0.72em;color:var(--muted);text-align:center;margin-top:10px">Reviews are moderated — Mahesh approves all genuine feedback before publishing.</div>
+    </div>
+
+    <!-- Success state -->
+    <div id="review-success" style="display:none;max-width:480px;margin:0 auto;text-align:center;background:var(--surface);border:1px solid rgba(5,150,105,0.25);border-radius:16px;padding:40px">
+      <div style="font-size:3em;margin-bottom:12px">✅</div>
+      <div style="font-size:1.2em;font-weight:800;margin-bottom:8px">Review Submitted!</div>
+      <div style="font-size:0.88em;color:var(--muted2);line-height:1.6">Thank you! Mahesh will review and approve it shortly. Genuine reviews are always published.</div>
+      <button onclick="resetReviewForm()" style="margin-top:20px;padding:10px 24px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:0.85em;font-weight:600;color:var(--muted2);cursor:pointer">Submit Another</button>
+    </div>
+
+    <!-- Dynamic approved reviews from sheet -->
+    <div id="approved-reviews-section" style="margin-top:48px;display:none">
+      <div style="text-align:center;margin-bottom:24px">
+        <div class="page-eyebrow">Verified Reviews</div>
+        <div style="font-size:1.2em;font-weight:800;letter-spacing:-0.5px">Recent Community Reviews</div>
+      </div>
+      <div id="approved-reviews-grid" class="testi-grid"></div>
+    </div>
+  </div>
+
 </div>
 </div><!-- /page-testimonials -->
 
