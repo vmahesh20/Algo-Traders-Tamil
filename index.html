@@ -1955,8 +1955,12 @@ async function loadApprovedReviews() {
     const rows = parseCSV(text.trim());
     if (rows.length < 2) return;
 
-    const headers = rows[0].map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
-    const reviews = rows.slice(1).map(cols => {
+    // Skip title/instruction rows — find the real header row containing 'status'
+    let headerIdx = rows.findIndex(r => r.some(c => c.trim().toLowerCase() === 'status'));
+    if (headerIdx < 0) headerIdx = 0;
+
+    const headers = rows[headerIdx].map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
+    const reviews = rows.slice(headerIdx + 1).map(cols => {
       const obj = {};
       headers.forEach((h,i) => obj[h] = (cols[i]||'').trim());
       return obj;
