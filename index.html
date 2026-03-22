@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Algo Tamil — Algorithmic Trading Signals by Mahesh</title>
+<title>Algo Tamil — Algorithmic Trading Strategies by Mahesh</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -468,14 +468,14 @@ tr:hover td{background:rgba(0,0,0,0.025)}
     <li><a href="#" id="nav-faq" onclick="showPage('faq');closeNav();return false">❓ FAQ</a></li>
     <li><a href="#" id="nav-sebi-disc" onclick="showPage('sebi-disc');closeNav();return false">📋 SEBI</a></li>
     <li style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);list-style:none" class="mob-only">
-      <a href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Signals');closeNav();return false"
+      <a href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Strategies');closeNav();return false"
         style="background:var(--accent);color:#fff;border-radius:9px;text-align:center;justify-content:center;font-weight:700">
         Subscribe Now
       </a>
     </li>
   </ul>
   <div style="display:flex;align-items:center;gap:10px">
-    <a class="nav-cta-btn" href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Signals');return false">Subscribe Now</a>
+    <a class="nav-cta-btn" href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Strategies');return false">Subscribe Now</a>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu"
       style="background:none;border:1px solid var(--border);border-radius:8px;padding:8px 11px;cursor:pointer;font-size:1.2em;color:var(--muted2);display:none;align-items:center;line-height:1">
       ☰
@@ -1992,9 +1992,7 @@ async function loadApprovedReviews() {
 // Load approved reviews when testimonials page is shown
 const _origShowPage = showPage;
 // Override showPage to trigger review load
-document.addEventListener('DOMContentLoaded', () => {
-  loadApprovedReviews();
-});
+// Reviews loaded via main DOMContentLoaded above
 
 /*
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2077,6 +2075,22 @@ document.addEventListener('click', e => {
 /* ════════════════════════════════════════════════
    PAGE NAVIGATION
 ════════════════════════════════════════════════ */
+// Hash → page mapping
+const PAGE_HASHES = {
+  'performance': '#performance',
+  'plans': '#plans',
+  'testimonials': '#reviews',
+  'faq': '#faq',
+  'sebi-disc': '#sebi'
+};
+const HASH_PAGES = {
+  '#performance': 'performance',
+  '#plans': 'plans',
+  '#reviews': 'testimonials',
+  '#faq': 'faq',
+  '#sebi': 'sebi-disc'
+};
+
 function showPage(id) {
   document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-links-row a').forEach(a => a.classList.remove('active'));
@@ -2085,7 +2099,25 @@ function showPage(id) {
   const nav = document.getElementById('nav-' + id);
   if (nav) nav.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Update URL hash without triggering scroll
+  const hash = PAGE_HASHES[id] || '#performance';
+  history.pushState(null, '', hash);
 }
+
+// On load — read hash and show correct page
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.toLowerCase();
+  const pageId = HASH_PAGES[hash] || 'performance';
+  showPage(pageId);
+  loadApprovedReviews();
+});
+
+// Handle browser back/forward
+window.addEventListener('popstate', () => {
+  const hash = window.location.hash.toLowerCase();
+  const pageId = HASH_PAGES[hash] || 'performance';
+  showPage(pageId);
+});
 
 /* ════════════════════════════════════════════════
    PAYMENT MODAL
@@ -2379,7 +2411,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <th class="pur">Pro Seller</th>
         </tr></thead>
         <tbody>
-          <tr><td class="ct-sect" colspan="4">Signals</td></tr>
+          <tr><td class="ct-sect" colspan="4">Access</td></tr>
           <tr><td>Nifty CE &amp; PE Rider</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td></tr>
           <tr><td>Bank Nifty CE &amp; PE Rider</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td></tr>
           <tr><td>Sensex CE &amp; PE</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td></tr>
@@ -2388,7 +2420,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <tr><td>Sensex Selling</td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
           <tr><td>Nifty Trend</td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td></tr>
           <tr><td class="ct-sect" colspan="4">Support &amp; Reports</td></tr>
-          <tr><td>Telegram Alerts (Real-time)</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
+          <tr><td>Telegram Channel Access</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
           <tr><td>Daily P&amp;L Report</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
           <tr><td>Priority WhatsApp Support</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
           <tr><td>Monthly Performance Review</td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
@@ -2497,7 +2529,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="tcard">
       <div class="tcard-stars">★★★★☆</div>
       <span class="tcard-plan tp-buy">Buying Pro</span>
-      <p class="tcard-text">"Good service. Signals are clear with entry, SL and targets. Would appreciate slightly more detail on rationale but results have been consistently good over 6 months."</p>
+      <p class="tcard-text">"Good service. Strategy levels are clear with entry, SL and targets. Would appreciate slightly more detail on rationale but results have been consistently good over 6 months."</p>
       <div class="tcard-user">
         <div class="tcard-avatar" style="background:linear-gradient(135deg,#0369a1,#0e7490)">MG</div>
         <div><div class="tcard-name">Meena Gopal</div><div class="tcard-loc">Chennai, Tamil Nadu</div><div class="tcard-since">Member since Aug 2025</div></div>
@@ -2645,7 +2677,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span>What is Algo Tamil?</span><span class="faq-arr">▼</span>
       </button>
       <div class="faq-ans">
-        Algo Tamil is an algorithmic trading performance dashboard by Mahesh, tracking live P&amp;L of rule-based strategies across Nifty, Bank Nifty and Sensex. All signals are system-generated — no emotions, no discretion.
+        Algo Tamil is an algorithmic trading performance dashboard by Mahesh, tracking live P&amp;L of rule-based strategies across Nifty, Bank Nifty and Sensex. All strategies are system-generated — no emotions, no discretion.
       </div>
     </div>
 
@@ -2710,7 +2742,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span>Is there a refund policy?</span><span class="faq-arr">▼</span>
       </button>
       <div class="faq-ans">
-        Refunds are available within <strong>7 days</strong> if you have not accessed any signals or dashboard. Contact Mahesh on WhatsApp: <a href="https://wa.me/919655516011" style="color:var(--accent)">9655516011</a>.
+        Refunds are available within <strong>7 days</strong> if you have not accessed any strategies or dashboard. Contact Mahesh on WhatsApp: <a href="https://wa.me/919655516011" style="color:var(--accent)">9655516011</a>.
       </div>
     </div>
 
@@ -2790,7 +2822,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span>What is the Stop Loss for buying strategies?</span><span class="faq-arr">▼</span>
       </button>
       <div class="faq-ans">
-        Each buying strategy has a defined stop loss per trade. The system exits automatically when the stop loss is hit — no manual intervention needed. Stop loss levels are shared with each signal alert.
+        Each buying strategy has a defined stop loss per trade. The system exits automatically when the stop loss is hit — no manual intervention needed. Stop loss levels are defined per strategy.
       </div>
     </div>
 
@@ -2808,7 +2840,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span>How many trades happen per month?</span><span class="faq-arr">▼</span>
       </button>
       <div class="faq-ans">
-        Buying strategies average <strong>15–20 trading days</strong> per month. Selling strategies maintain positions with entry, adjustment and exit signals as per market conditions.
+        Buying strategies average <strong>15–20 trading days</strong> per month. Selling strategies maintain positions with entry, adjustment and exit levels as per market conditions.
       </div>
     </div>
 
@@ -2874,7 +2906,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ Algo Tamil is <strong style="color:var(--text)">NOT</strong> a SEBI Registered Research Analyst</li>
         <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ NOT a SEBI Registered Investment Advisor (IA)</li>
         <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ NOT a Portfolio Management Service (PMS)</li>
-        <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ Signals shared for educational purposes only</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ Strategy levels shared for educational purposes only</li>
         <li style="padding:5px 0">→ Apply your own judgment before every trade</li>
       </ul>
     </div>
@@ -2893,9 +2925,9 @@ document.addEventListener('DOMContentLoaded', () => {
     <div style="background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:12px;padding:24px">
       <div style="font-weight:700;font-size:0.95em;margin-bottom:12px">📋 Nature of Service</div>
       <ul style="list-style:none;font-size:0.85em;color:var(--muted2);line-height:1.8">
-        <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ Signals are algorithmic — rule-based, not discretionary</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ Strategies are algorithmic — rule-based, not discretionary</li>
         <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ All content is informational &amp; educational only</li>
-        <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ Subscribers must independently verify all signals</li>
+        <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ Subscribers must independently verify all information</li>
         <li style="padding:5px 0;border-bottom:1px solid var(--border)">→ No guarantee of profitability is made or implied</li>
         <li style="padding:5px 0">→ Market conditions can change rapidly without notice</li>
       </ul>
@@ -2916,11 +2948,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <div style="background:rgba(217,119,6,0.06);border:1px solid rgba(217,119,6,0.25);border-radius:12px;padding:28px;font-size:0.83em;color:var(--muted);line-height:1.9">
     <strong style="color:var(--amber);display:block;font-size:1.05em;margin-bottom:10px">⚠ Full Statutory Disclaimer</strong>
-    Algo Tamil is <strong style="color:var(--text)">NOT registered with SEBI</strong> as a Research Analyst under SEBI (Research Analysts) Regulations, 2014, or as an Investment Advisor under SEBI (Investment Advisers) Regulations, 2013. All information, signals, trade setups, and performance data shared through this service are strictly for <strong style="color:var(--text)">educational and informational purposes only</strong> and do not constitute investment advice, a recommendation, or a solicitation to buy or sell any securities.
+    Algo Tamil is <strong style="color:var(--text)">NOT registered with SEBI</strong> as a Research Analyst under SEBI (Research Analysts) Regulations, 2014, or as an Investment Advisor under SEBI (Investment Advisers) Regulations, 2013. All information, trade setups, and performance data shared through this service are strictly for <strong style="color:var(--text)">educational and informational purposes only</strong> and do not constitute investment advice, a recommendation, or a solicitation to buy or sell any securities.
     <br><br>
     Trading in equity derivatives (F&amp;O) is subject to market risk. The performance data displayed reflects historical results from a live trading system presented transparently including both profitable and loss-making months. However, <strong style="color:var(--text)">past performance is not indicative of future results</strong>. Markets can and do behave differently from historical patterns.
     <br><br>
-    Subscribers are solely responsible for their trading decisions. The operator of this service shall not be liable for any losses, direct or indirect, arising from the use of signals or information provided herein. By subscribing, you confirm that you have read, understood, and accepted all risk disclosures, and that you are trading with capital you can afford to lose.
+    Subscribers are solely responsible for their trading decisions. The operator of this service shall not be liable for any losses, direct or indirect, arising from the use of information provided herein. By subscribing, you confirm that you have read, understood, and accepted all risk disclosures, and that you are trading with capital you can afford to lose.
     <br><br>
     <strong style="color:var(--muted2)">Regulatory Reference:</strong> &nbsp;
     SEBI Helpline: <strong style="color:var(--text)">1800-22-7575</strong> &nbsp;|&nbsp;
@@ -3060,7 +3092,7 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
             <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.82em">
               <span style="background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78em;flex-shrink:0;margin-top:1px">3</span>
-              <span style="color:var(--muted2);line-height:1.5">Join the private channel → Start receiving <strong style="color:var(--text)">live algo signals</strong></span>
+              <span style="color:var(--muted2);line-height:1.5">Join the private channel → Start receiving <strong style="color:var(--text)">live algo results</strong></span>
             </div>
           </div>
         </div>
@@ -3087,14 +3119,15 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="sebi-footer-top">
       <div>
         <div class="sebi-footer-brand">Algo<span>Tamil</span></div>
-        <div class="sebi-footer-tagline">Algorithmic Trading Signals by Mahesh · Nifty · Bank Nifty · Sensex</div>
+        <div class="sebi-footer-tagline">Algorithmic Trading Strategies by Mahesh · Nifty · Bank Nifty · Sensex</div>
         <div class="sebi-footer-links">
           <a href="#" onclick="showPage('performance');return false">Performance</a>
           <a href="#" onclick="showPage('plans');return false">Plans</a>
           <a href="#" onclick="showPage('testimonials');return false">Reviews</a>
           <a href="#" onclick="showPage('faq');return false">FAQ</a>
           <a href="#" onclick="showPage('sebi-disc');return false">SEBI Disclosures</a>
-          <a href="/cdn-cgi/l/email-protection#d6bbb7beb3a5be96bbb7beb3a5beb7bab1b9f8bfb8">Contact</a>
+          <a href="https://wa.me/919655516011?text=Hi+Mahesh+I+have+a+question+about+Algo+Tamil" target="_blank">WhatsApp</a>
+          <a href="https://t.me/Algotradersadmin" target="_blank">Telegram</a>
         </div>
       </div>
       <div class="sebi-footer-reg">
@@ -3107,7 +3140,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
     <div class="sebi-footer-disc">
-      <strong>⚠ Statutory Disclaimer:</strong> Algo Tamil is NOT a SEBI-registered Research Analyst or Investment Advisor. All signals and content are strictly for educational and informational purposes only. Trading in F&amp;O involves substantial risk of loss and is not suitable for all investors. Past performance of algorithmic signals does not guarantee future results. Please consult a qualified financial advisor before making any investment decisions. Trade responsibly and only with capital you can afford to lose.
+      <strong>⚠ Statutory Disclaimer:</strong> Algo Tamil is NOT a SEBI-registered Research Analyst or Investment Advisor. All content is strictly for educational and informational purposes only. Trading in F&amp;O involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results. Please consult a qualified financial advisor before making any investment decisions. Trade responsibly and only with capital you can afford to lose.
     </div>
     <div class="sebi-footer-copy">
       <span>© 2026 Algo Tamil &nbsp;·&nbsp; Salem, Tamil Nadu</span>
