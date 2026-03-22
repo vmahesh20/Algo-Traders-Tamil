@@ -236,7 +236,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .pstat-lbl{font-size:0.65em;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);font-weight:600}
 .plans-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px;align-items:start}
 @media(max-width:1200px){.plans-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.plans-grid{grid-template-columns:1fr}}
+@media(max-width:600px){.plans-grid{grid-template-columns:1fr;gap:12px}}
 .plan-card{
   background:var(--surface);border:1px solid var(--border);
   border-radius:16px;overflow:hidden;
@@ -406,6 +406,14 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 /* ── RESPONSIVE additions ── */
 @media(max-width:900px){
   .plan-card.featured{transform:none}
+  .plan-card:hover{transform:none}
+  .plan-card.featured:hover{transform:none}
+  .plans-grid{grid-template-columns:1fr;gap:12px}
+  .plan-amt{font-size:1.8em}
+  .plan-name{font-size:1.15em}
+  .plan-head{padding:16px 16px 0}
+  .plan-body{padding:0 16px 16px}
+  .plan-cap{margin:0 16px 12px}
   .testi-grid{grid-template-columns:1fr}
   .compare-wrap{display:none}
   .rating-hero{flex-direction:column;gap:20px}
@@ -2332,13 +2340,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><span class="feat-check">✓</span>📈 Bank Nifty CE Strategy</li>
           <li><span class="feat-check">✓</span>📉 Bank Nifty PE Strategy</li>
         </ul>
-        <div class="plan-feat-lbl">What You Get</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>📊 Live Performance Dashboard</li>
-          <li><span class="feat-check">✓</span>📈 YTD &amp; Monthly P&amp;L Tracking</li>
-          <li><span class="feat-check">✓</span>📄 Strategy-wise Breakdown Reports</li>
-          <li><span class="feat-check">✓</span>⏳ Historical Track Record (2023–)</li>
-        </ul>
         <button class="plan-btn pb-outline" onclick="openModal('Trader Plan','₹4,999/year','Nifty CE/PE · Bank Nifty CE/PE Strategies')">Get Access →</button>
         <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Trader+Plan" target="_blank">💬 Enquire on WhatsApp</a>
       </div>
@@ -2361,14 +2362,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><span class="feat-check">✓</span>📈 Nifty CE &amp; PE Strategy</li>
           <li><span class="feat-check">✓</span>📈 Bank Nifty CE &amp; PE Strategy</li>
           <li><span class="feat-check">✓</span>📈 Sensex CE &amp; PE Strategy <span style="background:rgba(5,150,105,0.12);color:var(--green);font-size:0.68em;padding:1px 6px;border-radius:3px;font-weight:700;font-family:var(--mono)">+NEW</span></li>
-        </ul>
-        <div class="plan-feat-lbl">What You Get</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>📊 Full Live Performance Dashboard</li>
-          <li><span class="feat-check">✓</span>📈 Buying + Selling YTD P&amp;L</li>
-          <li><span class="feat-check">✓</span>📄 All Strategy Breakdown Reports</li>
-          <li><span class="feat-check">✓</span>⏳ Full Historical Track Record</li>
-          <li><span class="feat-check">✓</span>🔥 Sensex Performance Included</li>
         </ul>
         <button class="plan-btn pb-accent" onclick="openModal('Advanced Trader','₹6,999/year','Nifty · Bank Nifty · Sensex Buying Strategies')">Get Access →</button>
         <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Advanced+Trader" target="_blank">💬 Enquire on WhatsApp</a>
@@ -2393,14 +2386,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><span class="feat-check">✓</span>💰 Bank Nifty Selling Strategy</li>
           <li><span class="feat-check">✓</span>💰 Sensex Selling Strategy</li>
         </ul>
-        <div class="plan-feat-lbl">What You Get</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>📊 Complete Dashboard — All Strategies</li>
-          <li><span class="feat-check">✓</span>💰 Selling Strategy P&amp;L Tracking</li>
-          <li><span class="feat-check">✓</span>🔄 Nifty Trend Performance History</li>
-          <li><span class="feat-check">✓</span>📄 Detailed Monthly Reports</li>
-          <li><span class="feat-check">✓</span>📞 Priority Support</li>
-        </ul>
         <button class="plan-btn pb-purple" onclick="openModal('Premium Seller','₹11,999/year','All 4 Selling Strategies')">Get Access →</button>
         <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Premium+Seller" target="_blank">💬 Enquire on WhatsApp</a>
       </div>
@@ -2423,14 +2408,6 @@ document.addEventListener('DOMContentLoaded', () => {
           <li><span class="feat-check">✓</span>💰 Bank Nifty Selling</li>
           <li><span class="feat-check">✓</span>💰 Sensex Selling</li>
           <li style="font-size:0.78em;color:var(--muted);padding:4px 0;border:none">All strategies are Directional Selling with Adjustments</li>
-        </ul>
-        <div class="plan-feat-lbl">What You Get</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>📊 Complete Dashboard</li>
-          <li><span class="feat-check">✓</span>💰 Selling P&amp;L Tracking</li>
-          <li><span class="feat-check">✓</span>🔄 Trend History</li>
-          <li><span class="feat-check">✓</span>📄 Monthly Reports</li>
-          <li><span class="feat-check">✓</span>📞 Priority Support</li>
         </ul>
         <button class="plan-btn pb-purple" onclick="openModal('Pro Seller','₹11,999/year','3 Directional Selling Strategies')">Get Access →</button>
         <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Pro+Seller" target="_blank">💬 Enquire on WhatsApp</a>
