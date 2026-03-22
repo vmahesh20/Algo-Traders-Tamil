@@ -408,6 +408,8 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .plan-card.featured{transform:none}
   .plan-card:hover{transform:none}
   .plan-card.featured:hover{transform:none}
+  .plan-label-buy{grid-column:1!important}
+  .plan-label-sell{grid-column:1!important}
   .plans-grid{grid-template-columns:1fr;gap:12px}
   .plan-amt{font-size:1.8em}
   .plan-name{font-size:1.15em}
@@ -2315,10 +2317,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <div class="plans-grid">
     <!-- BUYING PLANS label -->
-    <div style="grid-column:1/3;display:flex;align-items:center;gap:10px;padding-bottom:4px;border-bottom:2px solid rgba(2,132,199,0.2);margin-bottom:4px">
+    <div style="grid-column:1/3;display:flex;align-items:center;gap:10px;padding-bottom:4px;border-bottom:2px solid rgba(2,132,199,0.2);margin-bottom:4px" class="plan-label-buy">
       <span style="font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-family:var(--mono)">📈 Option Buying Plans</span>
     </div>
-    <div style="grid-column:3/5;display:flex;align-items:center;gap:10px;padding-bottom:4px;border-bottom:2px solid rgba(124,58,237,0.2);margin-bottom:4px">
+    <div style="grid-column:3/5;display:flex;align-items:center;gap:10px;padding-bottom:4px;border-bottom:2px solid rgba(124,58,237,0.2);margin-bottom:4px" class="plan-label-sell">
       <span style="font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--purple);font-family:var(--mono)">🛡️ Option Selling Plans</span>
     </div>
 
