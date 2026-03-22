@@ -1962,7 +1962,10 @@ async function loadApprovedReviews() {
       return obj;
     }).filter(r => r.status && r.status.toLowerCase() === 'approved' && r.name);
 
-    if (!reviews.length) return;
+    if (!reviews.length) {
+      document.getElementById('no-reviews-msg').style.display = 'block';
+      return;
+    }
 
     // Hide static hardcoded reviews, show only sheet reviews
     const staticGrid = document.getElementById('static-reviews-grid');
@@ -2451,99 +2454,8 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 
-  <div class="testi-grid" id="static-reviews-grid">
+  <div class="testi-grid" id="static-reviews-grid" style="display:none"></div>
 
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <span class="tcard-plan tp-combo">Combo Elite</span>
-      <p class="tcard-text">"Been following for 8 months. The Bank Nifty selling strategy alone has paid for the subscription 10x over. The algo discipline is what I was missing in my own trading."</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#0284c7,#0891b2)">RK</div>
-        <div><div class="tcard-name">Rajesh Kumar</div><div class="tcard-loc">Mumbai, Maharashtra</div><div class="tcard-since">Member since Jul 2025</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <span class="tcard-plan tp-buy">Buying Pro</span>
-      <p class="tcard-text">"Transparency of showing both winning and losing months is what made me trust this. The Nifty CE Rider in July 2024 was spectacular — 125% ROI in one month!"</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">SP</div>
-        <div><div class="tcard-name">Suresh Pandian</div><div class="tcard-loc">Chennai, Tamil Nadu</div><div class="tcard-since">Member since Sep 2024</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★☆</div>
-      <span class="tcard-plan tp-sell">Selling Pro</span>
-      <p class="tcard-text">"Selling strategy is perfect for my risk appetite. Consistent returns without the roller coaster of buying. WhatsApp support replies within minutes during market hours."</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#059669,#0d9488)">PV</div>
-        <div><div class="tcard-name">Priya Venkat</div><div class="tcard-loc">Hyderabad, Telangana</div><div class="tcard-since">Member since Feb 2025</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <span class="tcard-plan tp-combo">Combo Elite</span>
-      <p class="tcard-text">"Started with Buying Pro. After seeing the discipline and results I upgraded to Combo Elite. The Sensex strategy is a dark horse — consistently positive when others struggle."</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#d97706,#b45309)">AM</div>
-        <div><div class="tcard-name">Arun Murugesan</div><div class="tcard-loc">Coimbatore, Tamil Nadu</div><div class="tcard-since">Member since Jan 2025</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <span class="tcard-plan tp-combo">Combo Elite</span>
-      <p class="tcard-text">"The daily P&amp;L report keeps me accountable. No more revenge trading. I follow the algo 100% and results are reflecting it. Best ₹7K I spend every month."</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#dc2626,#9f1239)">VS</div>
-        <div><div class="tcard-name">Vivek Sharma</div><div class="tcard-loc">Pune, Maharashtra</div><div class="tcard-since">Member since Oct 2024</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <span class="tcard-plan tp-buy">Buying Pro</span>
-      <p class="tcard-text">"As a full-time IT professional I can't watch markets. Algo Tamil's Telegram alerts let me trade profitably without screen time. Feb 2026 was my best month ever — ₹22K!"</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#0284c7,#059669)">NR</div>
-        <div><div class="tcard-name">Naveen Reddy</div><div class="tcard-loc">Bengaluru, Karnataka</div><div class="tcard-since">Member since Mar 2025</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <span class="tcard-plan tp-sell">Selling Pro</span>
-      <p class="tcard-text">"I was skeptical at first but the live results dashboard showing every single month convinced me. 13 out of 14 months profitable in selling. That consistency is rare."</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#7c3aed,#db2777)">KS</div>
-        <div><div class="tcard-name">Karthik Subramaniam</div><div class="tcard-loc">Salem, Tamil Nadu</div><div class="tcard-since">Member since Apr 2025</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★☆</div>
-      <span class="tcard-plan tp-buy">Buying Pro</span>
-      <p class="tcard-text">"Good service. Signals are clear with entry, SL and targets. Would appreciate slightly more detail on rationale but results have been consistently good over 6 months."</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#0369a1,#0e7490)">MG</div>
-        <div><div class="tcard-name">Meena Gopal</div><div class="tcard-loc">Chennai, Tamil Nadu</div><div class="tcard-since">Member since Aug 2025</div></div>
-      </div>
-    </div>
-
-    <div class="tcard">
-      <div class="tcard-stars">★★★★★</div>
-      <span class="tcard-plan tp-combo">Combo Elite</span>
-      <p class="tcard-text">"The buying strategy had a rough patch in late 2024 but Mahesh was transparent about it. He didn't hide the drawdown. That honesty is why I renewed for another year."</p>
-      <div class="tcard-user">
-        <div class="tcard-avatar" style="background:linear-gradient(135deg,#16a34a,#0284c7)">RP</div>
-        <div><div class="tcard-name">Ravi Prakash</div><div class="tcard-loc">Ahmedabad, Gujarat</div><div class="tcard-since">Member since Nov 2024</div></div>
-      </div>
-    </div>
-
-  </div><!-- /testi-grid -->
 
   <div style="text-align:center;margin-top:8px">
     <button class="plan-btn pb-accent" style="max-width:320px;margin:0 auto" onclick="showPage('plans');return false">View Plans &amp; Subscribe →</button>
@@ -2643,7 +2555,12 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
 
     <!-- Dynamic approved reviews from sheet -->
-    <div id="approved-reviews-section" style="margin-top:48px;display:none">
+    <div id="approved-reviews-section" style="margin-top:48px;display:block">
+      <div id="no-reviews-msg" style="display:none;text-align:center;padding:48px 24px;color:var(--muted)">
+        <div style="font-size:2.5em;margin-bottom:12px">⭐</div>
+        <div style="font-weight:700;font-size:1em;margin-bottom:6px;color:var(--text)">No Reviews Yet</div>
+        <div style="font-size:0.85em">Be the first to share your experience with Algo Tamil!</div>
+      </div>
       <div style="text-align:center;margin-bottom:24px">
         <div class="page-eyebrow">Verified Reviews</div>
         <div style="font-size:1.2em;font-weight:800;letter-spacing:-0.5px">Recent Community Reviews</div>
