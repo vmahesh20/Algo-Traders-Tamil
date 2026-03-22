@@ -1806,7 +1806,7 @@ function switchTab(t) {
 
 // ── Replace this with your Google Apps Script Web App URL ──
 // See setup instructions below
-const REVIEW_SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzLBzd5Zx7rvQRx9VyX4BsERoo9ctNPoVQFusB02L_OR4lYpZHq9zmrNDEwj3RGmxvZ/exec';
+const REVIEW_SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxELXiOO09EKcw7W5_7I3RFkvDr-n4pZ7qA8wrJi2zDwatItjjHTZnXPdBMBWDIENLZ/exec';
 const REVIEW_READ_URL   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSG2y67gAaS1XcAh2FcNfzLVddsFfVL6q2TSBu5tjBs2fVLAZS9qO1QDUyisowoMgipZgzeJHk9AY0N/pub?gid=69181907&single=true&output=csv';
 
 let selectedStars = 0;
@@ -1964,6 +1964,10 @@ async function loadApprovedReviews() {
 
     if (!reviews.length) return;
 
+    // Hide static hardcoded reviews, show only sheet reviews
+    const staticGrid = document.getElementById('static-reviews-grid');
+    if (staticGrid) staticGrid.style.display = 'none';
+
     const grid = document.getElementById('approved-reviews-grid');
     const colors = ['#0284c7','#7c3aed','#059669','#d97706','#dc2626'];
     grid.innerHTML = reviews.map((r,i) => {
@@ -1971,14 +1975,13 @@ async function loadApprovedReviews() {
       const stars = '★'.repeat(parseInt(r.stars)||5) + '☆'.repeat(5-(parseInt(r.stars)||5));
       const planBadge = r.plan ? `<span class="tcard-plan tp-combo" style="margin-bottom:10px;display:inline-block">${r.plan}</span>` : '';
 
-      // Image — base64 or URL both work
+      // Image — prefer Drive URL (imageurl col), fallback base64 if short enough
       let imgTag = '';
-      if (r.image && r.image.length > 100) {
-        // base64 stored in sheet
+      if (r.imageurl && r.imageurl.startsWith('http')) {
+        imgTag = `<img class="tcard-img" src="${r.imageurl}" alt="Review screenshot" loading="lazy" />`;
+      } else if (r.image && r.image.length > 200 && r.image.length < 500000) {
         const mime = r.image.startsWith('/9j/') ? 'image/jpeg' : 'image/png';
         imgTag = `<img class="tcard-img" src="data:${mime};base64,${r.image}" alt="Review screenshot" loading="lazy" />`;
-      } else if (r.imageurl && r.imageurl.startsWith('http')) {
-        imgTag = `<img class="tcard-img" src="${r.imageurl}" alt="Review screenshot" loading="lazy" />`;
       }
 
       const linkTag = r.link && r.link.startsWith('http')
@@ -2003,6 +2006,7 @@ async function loadApprovedReviews() {
     }).join('');
 
     document.getElementById('approved-reviews-section').style.display = 'block';
+    document.getElementById('approved-reviews-section').style.marginTop = '0';
   } catch(e) { console.warn('Review load failed:', e); }
 }
 
@@ -2447,7 +2451,7 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 
-  <div class="testi-grid">
+  <div class="testi-grid" id="static-reviews-grid">
 
     <div class="tcard">
       <div class="tcard-stars">★★★★★</div>
