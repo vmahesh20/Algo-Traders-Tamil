@@ -520,8 +520,8 @@ setInterval(updateBannerDate, 60000);
     <div class="tab-btns">
       <button class="tb on" id="tab-buy" onclick="switchTab('buy')">📈 Algo Buying</button>
       <button class="tb" id="tab-sell" onclick="switchTab('sell')">🛡️ Algo Selling</button>
-      <button class="tb" id="tab-buystrat" onclick="switchTab('buystrat')">📊 Buying 2026</button>
-      <button class="tb" id="tab-sellstrat" onclick="switchTab('sellstrat')">📊 Selling 2026</button>
+      <button class="tb" id="tab-buystrat" onclick="switchTab('buystrat')">📅 Buying Daily Update</button>
+      <button class="tb" id="tab-sellstrat" onclick="switchTab('sellstrat')">📅 Selling Daily Update</button>
       <button class="tb" id="tab-hist" onclick="switchTab('hist')">📅 Full History</button>
     </div>
     <div style="display:flex;align-items:center;gap:10px">
@@ -583,7 +583,7 @@ setInterval(updateBannerDate, 60000);
   <div class="perf-tab on" id="perf-buy">
 
     <!-- TODAY + MONTH SUMMARY STRIP -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;overflow:hidden">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;border-radius:11px;overflow:hidden;border:1px solid rgba(2,132,199,0.3);background:linear-gradient(135deg,rgba(2,132,199,0.06) 0%,rgba(124,58,237,0.04) 100%)">
       <div style="padding:14px 18px;border-right:1px solid var(--border)">
         <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Last Trading Day</div>
         <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-last-pnl">₹—</div>
@@ -685,6 +685,36 @@ setInterval(updateBannerDate, 60000);
 
   <!-- ══════════ SELLING TAB ══════════ -->
   <div class="perf-tab" id="perf-sell">
+
+    <!-- SELLING SUMMARY STRIP -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;border-radius:11px;overflow:hidden;border:1px solid rgba(5,150,105,0.3);background:linear-gradient(135deg,rgba(5,150,105,0.06) 0%,rgba(2,132,199,0.04) 100%)">
+      <div style="padding:14px 18px;border-right:1px solid rgba(5,150,105,0.15)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Last Trading Day</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="s-last-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="s-last-date">—</div>
+      </div>
+      <div style="padding:14px 18px;border-right:1px solid rgba(5,150,105,0.15)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Previous Month</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="s-prev-month-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="s-prev-month-name">—</div>
+      </div>
+      <div style="padding:14px 18px;border-right:1px solid rgba(5,150,105,0.15)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Current Month P&L</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="s-cur-month-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="s-cur-month-name">—</div>
+      </div>
+      <div style="padding:14px 18px;border-right:1px solid rgba(5,150,105,0.15)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">2026 Total P&L</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="s-ytd-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px">Jan 2026 → Now</div>
+      </div>
+      <div style="padding:14px 18px">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">All Time P&L</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="s-alltime-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px">Jan 2025 → Now</div>
+      </div>
+    </div>
+
     <div class="kpi-strip">
       <div class="kpi c"><div class="kpi-lbl">Total P&L · Selling</div><div class="kpi-val cc" id="s-total">₹—</div><div class="kpi-sub">Jan 2025 onwards</div></div>
       <div class="kpi g"><div class="kpi-lbl">Capital Deployed</div><div class="kpi-val cg">₹9,00,000</div><div class="kpi-sub">4 instruments · Hedged</div></div>
@@ -1275,7 +1305,20 @@ function renderBuying() {
   // ── 2026 only (for main KPI) ──
   const data26 = data.filter(d => d.m.includes('26'));
   const profits26 = data26.map(d => d.p);
-  const total26 = profits26.reduce((a,b) => a+b, 0);
+  // Base 2026 total from monthly sheet (Jan + Feb completed months)
+  let total26 = profits26.reduce((a,b) => a+b, 0);
+  // Add current month running P&L from BUY_STRAT if not already in monthly sheet
+  // (monthly sheet only has completed months; current month is live in daily data)
+  if (BUY_STRAT.length) {
+    const lastStratMonth = BUY_STRAT[BUY_STRAT.length-1];
+    const lastStratLabel = lastStratMonth.month.slice(0,3) + ' 26'; // e.g. "Mar 26"
+    const alreadyInMonthly = data26.some(d => d.m === lastStratLabel);
+    if (!alreadyInMonthly) {
+      // Current month not yet in monthly sheet — add its running total
+      const curMonthRunning = lastStratMonth.rows.reduce((a,r) => a+(r.total||0), 0);
+      total26 += curMonthRunning;
+    }
+  }
 
   // ── Current month = detect from BUY_STRAT (has live daily data) ──
   // If BUY_STRAT has March data, curMonth = March; fallback to last in data26
@@ -1378,6 +1421,60 @@ function renderSelling() {
   const bestIdx = totals.indexOf(Math.max(...totals));
   const worstIdx = totals.indexOf(Math.min(...totals));
   const avgROI = data.reduce((a,d) => a+d.roi, 0) / data.length;
+
+  // ── Strip: 2026, current/prev month, last day ──
+  const data26s = data.filter(d => d.m.includes('26'));
+  let total26s = data26s.reduce((a,d) => a+d.total, 0);
+  // Add current month from SELL_STRAT if not yet in monthly sheet
+  if (SELL_STRAT.length) {
+    const lastSM = SELL_STRAT[SELL_STRAT.length-1];
+    const lastSMLabel = lastSM.month.slice(0,3) + ' 26';
+    const alreadyIn = data26s.some(d => d.m === lastSMLabel);
+    if (!alreadyIn) {
+      total26s += lastSM.rows.reduce((a,r) => a+(r.total||0), 0);
+    }
+  }
+
+  // Current & previous month from SELL_STRAT daily
+  let sCurPnl=0, sCurName='—', sPrevPnl=0, sPrevName='—';
+  let sLastPnl=0, sLastDate='—';
+  if (SELL_STRAT.length) {
+    const last = SELL_STRAT[SELL_STRAT.length-1];
+    sCurPnl = last.rows.reduce((a,r) => a+(r.total||0), 0);
+    sCurName = last.month + ' 2026';
+    const tradingRows = last.rows.filter(r => !r.holiday && r.total !== 0);
+    if (tradingRows.length) {
+      const lr = tradingRows[tradingRows.length-1];
+      sLastPnl = lr.total;
+      sLastDate = lr.date + ' ' + last.month;
+    }
+    if (SELL_STRAT.length >= 2) {
+      const prev = SELL_STRAT[SELL_STRAT.length-2];
+      sPrevPnl = prev.rows.reduce((a,r) => a+(r.total||0), 0);
+      sPrevName = prev.month + ' 2026';
+    }
+  } else if (data26s.length) {
+    sCurPnl = data26s[data26s.length-1].total;
+    sCurName = data26s[data26s.length-1].m;
+    if (data26s.length >= 2) {
+      sPrevPnl = data26s[data26s.length-2].total;
+      sPrevName = data26s[data26s.length-2].m;
+    }
+  }
+
+  const setSS = (id, val) => {
+    const el = I(id); if (!el) return;
+    el.textContent = fmt(val);
+    el.style.color = val >= 0 ? 'var(--green)' : 'var(--red)';
+  };
+  setSS('s-last-pnl', sLastPnl);
+  if (I('s-last-date')) I('s-last-date').textContent = sLastDate;
+  setSS('s-prev-month-pnl', sPrevPnl);
+  if (I('s-prev-month-name')) I('s-prev-month-name').textContent = sPrevName;
+  setSS('s-cur-month-pnl', sCurPnl);
+  if (I('s-cur-month-name')) I('s-cur-month-name').textContent = sCurName;
+  setSS('s-ytd-pnl', total26s);
+  setSS('s-alltime-pnl', totalP);
 
   // KPIs
   I('s-total').textContent = fmt(totalP);
