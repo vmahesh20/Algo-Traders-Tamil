@@ -1810,7 +1810,7 @@ const REVIEW_SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxDZoh80nDbyP
 const REVIEW_READ_URL   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSG2y67gAaS1XcAh2FcNfzLVddsFfVL6q2TSBu5tjBs2fVLAZS9qO1QDUyisowoMgipZgzeJHk9AY0N/pub?output=csv';
 
 let selectedStars = 0;
-let selectedImgBase64 = '';
+
 
 function setStars(n) {
   selectedStars = n;
@@ -1820,39 +1820,6 @@ function setStars(n) {
   });
 }
 
-function handleImgSelect(input) {
-  const file = input.files[0];
-  if (!file) return;
-  if (file.size > 5 * 1024 * 1024) {
-    alert('Image must be under 5MB'); input.value = ''; return;
-  }
-  const reader = new FileReader();
-  reader.onload = e => {
-    // Compress image to max 600px wide, quality 0.6 — keeps base64 under 80KB
-    const img = new Image();
-    img.onload = () => {
-      const MAX = 600;
-      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.round(img.width * scale);
-      canvas.height = Math.round(img.height * scale);
-      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
-      selectedImgBase64 = canvas.toDataURL('image/jpeg', 0.6);
-      document.getElementById('img-preview').src = selectedImgBase64;
-      document.getElementById('img-preview-wrap').style.display = 'block';
-      document.getElementById('img-label-txt').textContent = '✓ ' + file.name;
-    };
-    img.src = e.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function clearImg() {
-  selectedImgBase64 = '';
-  document.getElementById('rv-img').value = '';
-  document.getElementById('img-preview-wrap').style.display = 'none';
-  document.getElementById('img-label-txt').textContent = '📁 Choose file (JPG/PNG)';
-}
 
 async function submitReview() {
   const name  = document.getElementById('rv-name').value.trim();
@@ -1877,7 +1844,6 @@ async function submitReview() {
   const payload = {
     name, city, plan, since, stars: selectedStars,
     review: text, link,
-    image: selectedImgBase64,
     submitted: new Date().toISOString(),
     status: 'Pending'
   };
@@ -1887,16 +1853,7 @@ async function submitReview() {
       await new Promise(r => setTimeout(r, 800));
       showReviewSuccess();
     } else {
-      // Send text data first via POST (no-cors safe without image)
-      const textPayload = { name, city, plan, since, stars: selectedStars, review: text, link, submitted: new Date().toISOString(), status: 'Pending' };
-      await fetch(REVIEW_SUBMIT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(textPayload) });
-
-      // Send image separately via GET if present (avoids no-cors body drop)
-      if (selectedImgBase64 && selectedImgBase64.length > 50) {
-        const b64 = selectedImgBase64.includes(',') ? selectedImgBase64.split(',')[1] : selectedImgBase64;
-        const imgUrl = REVIEW_SUBMIT_URL + '?action=img&name=' + encodeURIComponent(name) + '&img=' + encodeURIComponent(b64);
-        await fetch(imgUrl, { mode: 'no-cors' });
-      }
+      await fetch(REVIEW_SUBMIT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
 
       showReviewSuccess();
     }
@@ -1928,8 +1885,8 @@ function resetReviewForm() {
   document.getElementById('rv-since').value = '';
   document.getElementById('rv-link').value = '';
   document.getElementById('rv-error').style.display = 'none';
-  selectedStars = 0; selectedImgBase64 = '';
-  setStars(0); clearImg();
+  selectedStars = 0;
+  setStars(0);
   document.getElementById('rv-submit-btn').disabled = false;
   document.getElementById('rv-btn-txt').textContent = 'Submit Review';
 }
@@ -2473,7 +2430,89 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 
-  <div class="testi-grid" id="static-reviews-grid" style="display:none"></div>
+  <div class="testi-grid" id="static-reviews-grid">
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <span class="tcard-plan tp-combo">Combo Elite</span>
+      <p class="tcard-text">"Been following for 8 months. The Bank Nifty selling strategy alone has paid for the subscription 10x over. The algo discipline is what I was missing in my own trading."</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#0284c7,#0891b2)">RK</div>
+        <div><div class="tcard-name">Rajesh Kumar</div><div class="tcard-loc">Mumbai, Maharashtra</div><div class="tcard-since">Member since Jul 2025</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <span class="tcard-plan tp-buy">Buying Pro</span>
+      <p class="tcard-text">"Transparency of showing both winning and losing months is what made me trust this. The Nifty CE Rider in July 2024 was spectacular — 125% ROI in one month!"</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#7c3aed,#4f46e5)">SP</div>
+        <div><div class="tcard-name">Suresh Pandian</div><div class="tcard-loc">Chennai, Tamil Nadu</div><div class="tcard-since">Member since Sep 2024</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★☆</div>
+      <span class="tcard-plan tp-sell">Selling Pro</span>
+      <p class="tcard-text">"Selling strategy is perfect for my risk appetite. Consistent returns without the roller coaster of buying. WhatsApp support replies within minutes during market hours."</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#059669,#0d9488)">PV</div>
+        <div><div class="tcard-name">Priya Venkat</div><div class="tcard-loc">Hyderabad, Telangana</div><div class="tcard-since">Member since Feb 2025</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <span class="tcard-plan tp-combo">Combo Elite</span>
+      <p class="tcard-text">"Started with Buying Pro. After seeing the discipline and results I upgraded to Combo Elite. The Sensex strategy is a dark horse — consistently positive when others struggle."</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#d97706,#b45309)">AM</div>
+        <div><div class="tcard-name">Arun Murugesan</div><div class="tcard-loc">Coimbatore, Tamil Nadu</div><div class="tcard-since">Member since Jan 2025</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <span class="tcard-plan tp-combo">Combo Elite</span>
+      <p class="tcard-text">"The daily P&amp;L report keeps me accountable. No more revenge trading. I follow the algo 100% and results are reflecting it. Best ₹7K I spend every month."</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#dc2626,#9f1239)">VS</div>
+        <div><div class="tcard-name">Vivek Sharma</div><div class="tcard-loc">Pune, Maharashtra</div><div class="tcard-since">Member since Oct 2024</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <span class="tcard-plan tp-buy">Buying Pro</span>
+      <p class="tcard-text">"As a full-time IT professional I can't watch markets. Algo Tamil's Telegram alerts let me trade profitably without screen time. Feb 2026 was my best month ever — ₹22K!"</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#0284c7,#059669)">NR</div>
+        <div><div class="tcard-name">Naveen Reddy</div><div class="tcard-loc">Bengaluru, Karnataka</div><div class="tcard-since">Member since Mar 2025</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <span class="tcard-plan tp-sell">Selling Pro</span>
+      <p class="tcard-text">"I was skeptical at first but the live results dashboard showing every single month convinced me. 13 out of 14 months profitable in selling. That consistency is rare."</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#7c3aed,#db2777)">KS</div>
+        <div><div class="tcard-name">Karthik Subramaniam</div><div class="tcard-loc">Salem, Tamil Nadu</div><div class="tcard-since">Member since Apr 2025</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★☆</div>
+      <span class="tcard-plan tp-buy">Buying Pro</span>
+      <p class="tcard-text">"Good service. Signals are clear with entry, SL and targets. Would appreciate slightly more detail on rationale but results have been consistently good over 6 months."</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#0369a1,#0e7490)">MG</div>
+        <div><div class="tcard-name">Meena Gopal</div><div class="tcard-loc">Chennai, Tamil Nadu</div><div class="tcard-since">Member since Aug 2025</div></div>
+      </div>
+    </div>
+    <div class="tcard">
+      <div class="tcard-stars">★★★★★</div>
+      <span class="tcard-plan tp-combo">Combo Elite</span>
+      <p class="tcard-text">"The buying strategy had a rough patch in late 2024 but Mahesh was transparent about it. He didn't hide the drawdown. That honesty is why I renewed for another year."</p>
+      <div class="tcard-user">
+        <div class="tcard-avatar" style="background:linear-gradient(135deg,#16a34a,#0284c7)">RP</div>
+        <div><div class="tcard-name">Ravi Prakash</div><div class="tcard-loc">Ahmedabad, Gujarat</div><div class="tcard-since">Member since Nov 2024</div></div>
+      </div>
+    </div>
+  </div><!-- /testi-grid -->
 
 
   <div style="text-align:center;margin-top:8px">
@@ -2535,26 +2574,10 @@ document.addEventListener('DOMContentLoaded', () => {
         <textarea id="rv-text" class="rv-input" rows="4" placeholder="Share your experience with Algo Tamil..." style="resize:vertical;min-height:100px"></textarea>
       </div>
 
-      <!-- Image upload OR verified link -->
+      <!-- Verified link only -->
       <div style="margin-bottom:14px">
-        <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px">Proof (Optional) — Upload Screenshot or Add Link</label>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-          <div>
-            <div style="font-size:0.74em;color:var(--muted);margin-bottom:5px">📷 Upload Screenshot</div>
-            <label id="img-label" style="display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--surface2);border:1px dashed var(--border2);border-radius:8px;cursor:pointer;font-size:0.82em;color:var(--muted2);transition:.2s" onmouseover="this.style.borderColor='var(--accent)'" onmouseout="this.style.borderColor='var(--border2)'">
-              <span id="img-label-txt">📁 Choose file (JPG/PNG)</span>
-              <input type="file" id="rv-img" accept="image/*" style="display:none" onchange="handleImgSelect(this)" />
-            </label>
-          </div>
-          <div>
-            <div style="font-size:0.74em;color:var(--muted);margin-bottom:5px">🔗 Or Verified Link</div>
-            <input id="rv-link" class="rv-input" placeholder="https://twitter.com/yourpost" />
-          </div>
-        </div>
-        <div id="img-preview-wrap" style="display:none;margin-top:10px">
-          <img id="img-preview" style="max-height:120px;border-radius:8px;border:1px solid var(--border)" />
-          <button onclick="clearImg()" style="display:block;margin-top:4px;background:none;border:none;color:var(--red);font-size:0.75em;cursor:pointer">✕ Remove</button>
-        </div>
+        <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px">🔗 Verified Link (Optional)</label>
+        <input id="rv-link" class="rv-input" placeholder="https://twitter.com/yourpost or any proof link" />
       </div>
 
       <div id="rv-error" style="display:none;background:rgba(220,38,38,0.07);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:10px 14px;font-size:0.82em;color:var(--red);margin-bottom:12px"></div>
