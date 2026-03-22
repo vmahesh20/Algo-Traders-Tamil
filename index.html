@@ -1806,7 +1806,7 @@ function switchTab(t) {
 
 // ── Replace this with your Google Apps Script Web App URL ──
 // See setup instructions below
-const REVIEW_SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxRvpbeSPwOEf3ZfPHv52Opi0Og_XmYDri_Sl4cViFSprbvoRapyh56KH1xY4fRCx4O/exec';
+const REVIEW_SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzk-peVeta6iuE6_q1qE8BqKgLEe1G7bCtDttHYFSvOppcdUnCDDzCNVeYcQ1blgQh8/exec';
 const REVIEW_READ_URL   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSG2y67gAaS1XcAh2FcNfzLVddsFfVL6q2TSBu5tjBs2fVLAZS9qO1QDUyisowoMgipZgzeJHk9AY0N/pub?output=csv';
 
 let selectedStars = 0;
@@ -1880,7 +1880,6 @@ async function submitReview() {
       await fetch(REVIEW_SUBMIT_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
       showReviewSuccess();
