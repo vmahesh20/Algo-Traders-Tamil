@@ -2070,6 +2070,13 @@ function showPage(id) {
 ════════════════════════════════════════════════ */
 let _mPlan = '', _mPrice = '', _mAmt = 0;
 
+function mUpdatePlan(sel) {
+  const parts = sel.value.split('|');
+  _mPlan = parts[0]; _mAmt = parseInt(parts[1]); _mPrice = parts[2];
+  document.getElementById('mpp-name').textContent = _mPlan;
+  document.getElementById('mpp-price').textContent = _mPrice;
+}
+
 function openModal(plan, price, desc) {
   _mPlan = plan; _mPrice = price;
   _mAmt = parseInt(price.replace(/[^0-9]/g, ''));
@@ -2078,6 +2085,9 @@ function openModal(plan, price, desc) {
   document.getElementById('ms2-plan').textContent = plan;
   document.getElementById('ms2-price').textContent = '₹' + _mAmt.toLocaleString('en-IN');
   document.getElementById('mupi-amt').textContent = '₹' + _mAmt.toLocaleString('en-IN');
+  // sync the plan selector dropdown
+  const sel = document.getElementById('mPlanSelect');
+  for (let opt of sel.options) { if (opt.value.startsWith(plan + '|')) { opt.selected = true; break; } }
   showMStep(1);
   document.getElementById('payModal').classList.add('open');
 }
@@ -2100,6 +2110,9 @@ function mGoStep2() {
   if (!name) { alert('Please enter your full name'); return; }
   if (!phone || phone.length < 10) { alert('Please enter a valid mobile number'); return; }
   if (!email.includes('@')) { alert('Please enter a valid email address'); return; }
+  document.getElementById('ms2-plan').textContent = _mPlan;
+  document.getElementById('ms2-price').textContent = '₹' + _mAmt.toLocaleString('en-IN');
+  document.getElementById('mupi-amt').textContent = '₹' + _mAmt.toLocaleString('en-IN');
   showMStep(2);
   selUpiTab('qr');
 }
@@ -2111,24 +2124,34 @@ function selUpiTab(t) {
   });
 }
 
+function mFillConfirm() {
+  const name = document.getElementById('mName').value.trim();
+  const phone = document.getElementById('mPhone').value.trim();
+  const ref = 'AT' + Date.now().toString(36).toUpperCase().slice(-6);
+  document.getElementById('conf-name').textContent = name;
+  document.getElementById('conf-phone').textContent = phone;
+  document.getElementById('conf-plan').textContent = _mPlan;
+  document.getElementById('conf-amount').textContent = '₹' + _mAmt.toLocaleString('en-IN');
+  document.getElementById('conf-orderref').textContent = ref;
+  const msg = encodeURIComponent(`Hi Mahesh, I've completed payment for AlgoTamil ${_mPlan} (₹${_mAmt}). Order Ref: ${ref}. Name: ${name}, Mobile: ${phone}`);
+  document.getElementById('conf-wa-link').href = `https://wa.me/919655516011?text=${msg}`;
+  showMStep(3);
+}
+
 function mGPay() {
   window.open(`upi://pay?pa=algotamil@ybl&pn=Algo+Tamil&am=${_mAmt}&cu=INR&tn=${encodeURIComponent(_mPlan)}`, '_blank');
-  setTimeout(() => showMStep(3), 1800);
+  setTimeout(() => mFillConfirm(), 1800);
 }
 
 function mSendUPI() {
   const upi = document.getElementById('mUpiId').value.trim();
   if (!upi.includes('@')) { alert('Enter a valid UPI ID (e.g. name@ybl)'); return; }
-  showMStep(3);
+  mFillConfirm();
 }
 
-function mConfirmQR() { showMStep(3); }
+function mConfirmQR() { mFillConfirm(); }
 
-function buildConfirmStep() {
-  document.getElementById('conf-name').textContent = document.getElementById('mName').value;
-  document.getElementById('conf-phone').textContent = document.getElementById('mPhone').value;
-  showMStep(3);
-}
+function buildConfirmStep() { mFillConfirm(); }
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('payModal').addEventListener('click', e => { if (e.target.id === 'payModal') closeModal(); });
@@ -2893,8 +2916,17 @@ document.addEventListener('DOMContentLoaded', () => {
     <div id="mstep-1">
       <div style="font-weight:800;font-size:1.1em;margin-bottom:4px">Subscribe to Algo Tamil</div>
       <div style="font-size:0.8em;color:var(--muted);margin-bottom:16px">Telegram access within 2 hrs of payment confirmation</div>
+      <div class="mfield" style="margin-bottom:14px">
+        <label>Select Plan</label>
+        <select id="mPlanSelect" onchange="mUpdatePlan(this)" style="width:100%;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:0.88em;outline:none;transition:.2s;font-weight:600;cursor:pointer">
+          <option value="Trader Plan|4999|₹4,999/year">Trader Plan — ₹4,999/year</option>
+          <option value="Advanced Trader|6999|₹6,999/year" selected>Advanced Trader — ₹6,999/year</option>
+          <option value="Premium Seller|11999|₹11,999/year">Premium Seller — ₹11,999/year</option>
+          <option value="Pro Seller|11999|₹11,999/year">Pro Seller — ₹11,999/year</option>
+        </select>
+      </div>
       <div class="modal-plan-pill">
-        <span class="mpp-name" id="mpp-name">Combo Elite</span>
+        <span class="mpp-name" id="mpp-name">Advanced Trader</span>
         <span class="mpp-price" id="mpp-price">₹6,999/year</span>
       </div>
       <div class="mfield-row">
@@ -2986,19 +3018,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <!-- step 3: success -->
     <div id="mstep-3" style="display:none">
-      <div class="pay-done-screen" style="display:block">
-        <div class="pay-done-icon">✅</div>
-        <div class="pay-done-title">Payment Submitted!</div>
-        <div class="pay-done-sub">We'll verify and add you to the Telegram signal channel within <strong>2 hours</strong>.</div>
-        <div class="pay-done-detail">
-          <strong>Your Details</strong>
-          <span id="conf-name" style="display:block"></span>
-          <span id="conf-phone" style="color:var(--muted)"></span>
+      <div style="text-align:center;padding:8px 0 6px">
+        <div style="font-size:2.8em;margin-bottom:8px">✅</div>
+        <div style="font-size:1.15em;font-weight:800;color:var(--text);margin-bottom:6px">Payment Submitted!</div>
+        <div style="font-size:0.82em;color:var(--muted2);line-height:1.6;margin-bottom:18px">We'll verify and activate your account within <strong>2 hours</strong>.</div>
+
+        <!-- order ref -->
+        <div style="background:rgba(2,132,199,0.06);border:1px solid rgba(2,132,199,0.2);border-radius:9px;padding:10px 14px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:0.75em;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px">Order Ref</span>
+          <span id="conf-orderref" style="font-family:var(--mono);font-size:0.88em;font-weight:700;color:var(--accent)"></span>
         </div>
-        <a class="wa-confirm-btn" href="https://wa.me/919655516011?text=Hi+Mahesh+I+have+completed+payment+for+AlgoTamil+subscription" target="_blank">
-          💬 WhatsApp Mahesh to confirm faster
+
+        <!-- subscriber details -->
+        <div class="pay-done-detail" style="text-align:left;margin-bottom:16px">
+          <strong style="display:block;margin-bottom:8px;font-size:0.78em;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted)">Your Details</strong>
+          <div style="display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:0.85em">
+            <span style="color:var(--muted)">Plan</span><span id="conf-plan" style="font-weight:700;color:var(--accent)"></span>
+            <span style="color:var(--muted)">Amount</span><span id="conf-amount" style="font-weight:700;color:var(--green)"></span>
+            <span style="color:var(--muted)">Name</span><span id="conf-name" style="font-weight:600"></span>
+            <span style="color:var(--muted)">Mobile</span><span id="conf-phone" style="font-family:var(--mono)"></span>
+          </div>
+        </div>
+
+        <!-- what's next steps -->
+        <div style="background:var(--surface2);border:1px solid var(--border);border-radius:9px;padding:14px 16px;margin-bottom:16px;text-align:left">
+          <div style="font-size:0.75em;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted2);margin-bottom:10px">What Happens Next</div>
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.82em">
+              <span style="background:var(--accent);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78em;flex-shrink:0;margin-top:1px">1</span>
+              <span style="color:var(--muted2);line-height:1.5">Send your <strong style="color:var(--text)">payment screenshot</strong> on WhatsApp to Mahesh for instant activation</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.82em">
+              <span style="background:var(--amber);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78em;flex-shrink:0;margin-top:1px">2</span>
+              <span style="color:var(--muted2);line-height:1.5">Payment verified → You'll receive <strong style="color:var(--text)">Telegram invite link</strong> within 2 hours</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:0.82em">
+              <span style="background:var(--green);color:#fff;border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.78em;flex-shrink:0;margin-top:1px">3</span>
+              <span style="color:var(--muted2);line-height:1.5">Join the private channel → Start receiving <strong style="color:var(--text)">live algo signals</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <a id="conf-wa-link" class="wa-confirm-btn" href="#" target="_blank" style="width:100%;justify-content:center">
+          💬 WhatsApp Mahesh to Confirm Faster
         </a>
-        <div style="font-size:0.72em;color:var(--muted);margin-top:10px">Send your payment screenshot on WhatsApp for instant activation</div>
+        <div style="font-size:0.7em;color:var(--muted);margin-top:10px">Save your Order Ref for any future queries</div>
       </div>
     </div>
 
