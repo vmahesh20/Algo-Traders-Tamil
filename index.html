@@ -1927,22 +1927,11 @@ async function loadApprovedReviews() {
   try {
     const text = await fetchCSV(REVIEW_READ_URL);
     const lines = text.replace(/\r/g,'').trim().split('\n');
-    function parseCSVLine(line) {
-      const cols = []; let cur = '', inQ = false;
-      for (let i = 0; i < line.length; i++) {
-        const c = line[i];
-        if (c === '"') { inQ = !inQ; }
-        else if (c === ',' && !inQ) { cols.push(cur.trim()); cur = ''; }
-        else { cur += c; }
-      }
-      cols.push(cur.trim());
-      return cols;
-    }
-    const headers = parseCSVLine(lines[0]).map(h => h.toLowerCase().replace(/\s+/g,'_'));
-    const reviews = lines.slice(1).filter(l => l.trim()).map(l => {
-      const cols = parseCSVLine(l);
+    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
+    const reviews = lines.slice(1).map(l => {
+      const cols = l.split(',').map(v => v.trim().replace(/^"|"$/g,''));
       const obj = {};
-      headers.forEach((h,i) => obj[h] = (cols[i]||'').replace(/^"|"$/g,''));
+      headers.forEach((h,i) => obj[h] = cols[i]||'');
       return obj;
     }).filter(r => r.status && r.status.toLowerCase() === 'approved' && r.name);
 
