@@ -416,28 +416,62 @@ tr:hover td{background:rgba(0,0,0,0.025)}
     display:flex;flex-direction:column;gap:0;
     position:fixed;top:0;left:0;right:0;bottom:0;
     background:var(--surface);z-index:999;
-    padding:80px 24px 40px;
+    padding:72px 0 40px;overflow-y:auto;
     animation:slideIn .2s ease;
   }
+  .nav-links-row.open li{list-style:none}
   .nav-links-row.open a{
-    padding:16px 12px;font-size:1.05em;
+    padding:18px 24px;font-size:1em;font-weight:600;
     border-bottom:1px solid var(--border);border-radius:0;
-    display:flex;align-items:center;gap:10px;
+    display:flex;align-items:center;gap:12px;color:var(--text);
+    text-decoration:none;
   }
-  .nav-links-row.open a:last-child{border-bottom:none}
+  .nav-links-row.open a:hover,.nav-links-row.open a.active{
+    background:rgba(2,132,199,0.07);color:var(--accent);
+  }
   .nav-cta-btn{display:none}
   .hamburger{display:flex!important}
-  .mob-close{display:none}
-  .mob-close-li{list-style:none;position:fixed;top:16px;right:20px;z-index:1000}
-  .nav-links-row.open .mob-close{
-    display:flex;
-    background:none;border:1px solid var(--border);border-radius:8px;
-    padding:8px 12px;font-size:1.3em;cursor:pointer;color:var(--muted2);
-    align-items:center;justify-content:center;
+  .mob-close-li{display:none!important}
+  /* mobile close button — fixed top-right over the open menu */
+  .mob-close-btn{
+    display:none;position:fixed;top:14px;right:16px;z-index:1001;
+    background:var(--surface2);border:1px solid var(--border);border-radius:8px;
+    padding:8px 13px;font-size:1.2em;cursor:pointer;color:var(--muted2);
+    align-items:center;justify-content:center;line-height:1;
   }
+  .nav-open .mob-close-btn{display:flex}
+  /* kpi strip stacks on mobile */
+  .kpi-strip{grid-template-columns:repeat(2,1fr)}
+  .chart-grid-2,.chart-grid-3,.chart-grid-22{grid-template-columns:1fr}
+  .chart-box.span2,.chart-box.span3{grid-column:span 1}
+  .strat-kpi-row,.strat-bar-row{grid-template-columns:repeat(2,1fr)}
+  /* modal full width on mobile */
+  .modal-box{padding:24px 18px;border-radius:12px}
+  .mfield-row{grid-template-columns:1fr}
+  /* contact page grid */
+  #page-contact .section-wrap > div[style*="grid-template-columns:1fr 1fr"]{
+    grid-template-columns:1fr!important;
+  }
+  #page-contact [style*="grid-template-columns:1fr 1fr 1fr"]{
+    grid-template-columns:1fr!important;
+  }
+  #page-contact [style*="border-left:1px solid var(--border)"],
+  #page-contact [style*="border-right:1px solid var(--border)"]{
+    border-left:none!important;border-right:none!important;
+    border-top:1px solid var(--border);padding-top:16px;
+  }
+  /* sebi top bar wraps */
+  .sebi-topbar{font-size:0.65em;padding:6px 12px}
+  .section-wrap{padding:0 16px}
+  .perf-wrap{padding:20px 16px 60px}
 }
 @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-@media(min-width:901px){.hamburger{display:none!important}.mob-only{display:none!important}.mob-close-li{display:none!important}}
+@media(min-width:901px){
+  .hamburger{display:none!important}
+  .mob-only{display:none!important}
+  .mob-close-li{display:none!important}
+  .mob-close-btn{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -475,6 +509,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
       </a>
     </li>
   </ul>
+  <button class="mob-close-btn" id="mobCloseBtn" onclick="closeNav()" aria-label="Close menu">✕</button>
   <div style="display:flex;align-items:center;gap:10px">
     <a class="nav-cta-btn" href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Strategies');return false">Subscribe Now</a>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu"
@@ -2053,7 +2088,8 @@ function toggleNav() {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('hamburger');
   const isOpen = menu.classList.toggle('open');
-  btn.textContent = isOpen ? '✕' : '☰';
+  btn.textContent = isOpen ? '☰' : '☰';
+  document.body.classList.toggle('nav-open', isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
 }
 function closeNav() {
@@ -2061,14 +2097,18 @@ function closeNav() {
   const btn  = document.getElementById('hamburger');
   if (!menu) return;
   menu.classList.remove('open');
-  btn.textContent = '☰';
+  document.body.classList.remove('nav-open');
+  if (btn) btn.textContent = '☰';
   document.body.style.overflow = '';
 }
 document.addEventListener('click', e => {
   const menu = document.getElementById('navMenu');
   const btn  = document.getElementById('hamburger');
+  const closeBtn = document.getElementById('mobCloseBtn');
   if (menu && menu.classList.contains('open') &&
-      !menu.contains(e.target) && btn && !btn.contains(e.target)) {
+      !menu.contains(e.target) &&
+      btn && !btn.contains(e.target) &&
+      closeBtn && !closeBtn.contains(e.target)) {
     closeNav();
   }
 });
@@ -3017,7 +3057,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div style="border-left:1px solid var(--border);border-right:1px solid var(--border)">
       <div style="font-size:1.4em;margin-bottom:6px">📍</div>
       <div style="font-weight:700;font-size:0.88em;margin-bottom:4px">Location</div>
-      <div style="font-size:0.78em;color:var(--muted)">Salem, Tamil Nadu, India</div>
+      <div style="font-size:0.78em;color:var(--muted)">Ulundurpet, Tamil Nadu</div>
     </div>
     <div>
       <div style="font-size:1.4em;margin-bottom:6px">🕐</div>
@@ -3230,6 +3270,6 @@ document.addEventListener('DOMContentLoaded', () => {
       <strong>⚠ Statutory Disclaimer:</strong> Algo Tamil is NOT a SEBI-registered Research Analyst or Investment Advisor. All content is strictly for educational and informational purposes only. Trading in F&amp;O involves substantial risk of loss and is not suitable for all investors. Past performance does not guarantee future results. Please consult a qualified financial advisor before making any investment decisions. Trade responsibly and only with capital you can afford to lose.
     </div>
     <div class="sebi-footer-copy">
-      <span>© 2026 Algo Tamil &nbsp;·&nbsp; Salem, Tamil Nadu</span>
+      <span>© 2026 Algo Tamil</span>
       <span>Educational Service Only &nbsp;·&nbsp; Not SEBI Registered &nbsp;·&nbsp; <a href="#" onclick="showPage('sebi-disc');return false">Full Disclosures</a></span>
    
