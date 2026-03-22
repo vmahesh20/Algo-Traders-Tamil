@@ -1926,12 +1926,39 @@ async function loadApprovedReviews() {
   if (REVIEW_READ_URL === 'YOUR_APPROVED_REVIEWS_SHEET_CSV_URL_HERE') return;
   try {
     const text = await fetchCSV(REVIEW_READ_URL);
-    const lines = text.replace(/\r/g,'').trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
-    const reviews = lines.slice(1).map(l => {
-      const cols = l.split(',').map(v => v.trim().replace(/^"|"$/g,''));
+
+    // Proper CSV parser — handles quoted fields containing commas/newlines
+    function parseCSV(str) {
+      const rows = [];
+      let row = [], cur = '', inQ = false;
+      for (let i = 0; i < str.length; i++) {
+        const c = str[i];
+        if (inQ) {
+          if (c === '"' && str[i+1] === '"') { cur += '"'; i++; }
+          else if (c === '"') inQ = false;
+          else cur += c;
+        } else {
+          if (c === '"') inQ = true;
+          else if (c === ',') { row.push(cur); cur = ''; }
+          else if (c === '\n' || c === '\r') {
+            if (c === '\r' && str[i+1] === '\n') i++;
+            row.push(cur); cur = '';
+            if (row.some(x=>x)) rows.push(row);
+            row = [];
+          } else cur += c;
+        }
+      }
+      if (cur || row.length) { row.push(cur); if (row.some(x=>x)) rows.push(row); }
+      return rows;
+    }
+
+    const rows = parseCSV(text.trim());
+    if (rows.length < 2) return;
+
+    const headers = rows[0].map(h => h.trim().toLowerCase().replace(/\s+/g,'_'));
+    const reviews = rows.slice(1).map(cols => {
       const obj = {};
-      headers.forEach((h,i) => obj[h] = cols[i]||'');
+      headers.forEach((h,i) => obj[h] = (cols[i]||'').trim());
       return obj;
     }).filter(r => r.status && r.status.toLowerCase() === 'approved' && r.name);
 
@@ -1943,9 +1970,21 @@ async function loadApprovedReviews() {
       const initials = r.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
       const stars = '★'.repeat(parseInt(r.stars)||5) + '☆'.repeat(5-(parseInt(r.stars)||5));
       const planBadge = r.plan ? `<span class="tcard-plan tp-combo" style="margin-bottom:10px;display:inline-block">${r.plan}</span>` : '';
-      const imgTag = r.imageurl ? `<img class="tcard-img" src="${r.imageurl}" alt="Review screenshot" loading="lazy" />` : '';
-      const linkTag = r.link ? `<a class="tcard-link" href="${r.link}" target="_blank" rel="noopener">🔗 View proof ↗</a>` : '';
-      const verifiedTag = (r.link||r.imageurl) ? `<span class="verified-badge">✓ Verified</span>` : '';
+
+      // Image — base64 or URL both work
+      let imgTag = '';
+      if (r.image && r.image.length > 100) {
+        // base64 stored in sheet
+        const mime = r.image.startsWith('/9j/') ? 'image/jpeg' : 'image/png';
+        imgTag = `<img class="tcard-img" src="data:${mime};base64,${r.image}" alt="Review screenshot" loading="lazy" />`;
+      } else if (r.imageurl && r.imageurl.startsWith('http')) {
+        imgTag = `<img class="tcard-img" src="${r.imageurl}" alt="Review screenshot" loading="lazy" />`;
+      }
+
+      const linkTag = r.link && r.link.startsWith('http')
+        ? `<a class="tcard-link" href="${r.link}" target="_blank" rel="noopener">🔗 View proof ↗</a>` : '';
+      const verifiedTag = (r.link || imgTag) ? `<span class="verified-badge">✓ Verified</span>` : '';
+
       return `<div class="tcard">
         ${imgTag}
         <div class="tcard-stars">${stars}</div>
@@ -1964,7 +2003,7 @@ async function loadApprovedReviews() {
     }).join('');
 
     document.getElementById('approved-reviews-section').style.display = 'block';
-  } catch(e) { /* silent — section stays hidden */ }
+  } catch(e) { console.warn('Review load failed:', e); }
 }
 
 // Load approved reviews when testimonials page is shown
