@@ -1806,7 +1806,7 @@ function switchTab(t) {
 
 // ── Replace this with your Google Apps Script Web App URL ──
 // See setup instructions below
-const REVIEW_SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbzk-peVeta6iuE6_q1qE8BqKgLEe1G7bCtDttHYFSvOppcdUnCDDzCNVeYcQ1blgQh8/exec';
+const REVIEW_SUBMIT_URL = 'https://script.google.com/macros/s/AKfycbxDZoh80nDbyPARotvYazTYIJGXW4pwOEiaezsKlhITlT2RpN1hpjG_yyBd0302Qnea/exec';
 const REVIEW_READ_URL   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSG2y67gAaS1XcAh2FcNfzLVddsFfVL6q2TSBu5tjBs2fVLAZS9qO1QDUyisowoMgipZgzeJHk9AY0N/pub?output=csv';
 
 let selectedStars = 0;
@@ -1884,15 +1884,20 @@ async function submitReview() {
 
   try {
     if (REVIEW_SUBMIT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
-      // Demo mode — no backend connected yet
       await new Promise(r => setTimeout(r, 800));
       showReviewSuccess();
     } else {
-      await fetch(REVIEW_SUBMIT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify(payload)
-      });
+      // Send text data first via POST (no-cors safe without image)
+      const textPayload = { name, city, plan, since, stars: selectedStars, review: text, link, submitted: new Date().toISOString(), status: 'Pending' };
+      await fetch(REVIEW_SUBMIT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(textPayload) });
+
+      // Send image separately via GET if present (avoids no-cors body drop)
+      if (selectedImgBase64 && selectedImgBase64.length > 50) {
+        const b64 = selectedImgBase64.includes(',') ? selectedImgBase64.split(',')[1] : selectedImgBase64;
+        const imgUrl = REVIEW_SUBMIT_URL + '?action=img&name=' + encodeURIComponent(name) + '&img=' + encodeURIComponent(b64);
+        await fetch(imgUrl, { mode: 'no-cors' });
+      }
+
       showReviewSuccess();
     }
   } catch(e) {
