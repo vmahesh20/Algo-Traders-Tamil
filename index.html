@@ -408,6 +408,11 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .plan-card.featured{transform:none}
   .plan-card:hover{transform:none}
   .plan-card.featured:hover{transform:none}
+  .plans-stats-row{display:grid;grid-template-columns:1fr 1fr;max-width:100%;margin-bottom:24px}
+  .pstat{border-right:none;border-bottom:1px solid var(--border);padding:14px 10px}
+  .pstat:nth-child(odd){border-right:1px solid var(--border)}
+  .pstat:nth-last-child(-n+2){border-bottom:none}
+  .pstat-val{font-size:1.1em}
   .plan-label-buy{grid-column:1!important}
   .plan-label-sell{grid-column:1!important}
   .plans-grid{grid-template-columns:1fr;gap:12px}
@@ -452,6 +457,13 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .nav-open .mob-close-btn{display:flex}
   /* kpi strip stacks on mobile */
   .kpi-strip{grid-template-columns:repeat(2,1fr)}
+  /* performance tabs wrap on mobile */
+  .tab-row{flex-direction:column;align-items:stretch;gap:8px}
+  .tab-btns{flex-wrap:wrap;border-radius:9px}
+  .tb{flex:1 1 45%;padding:10px 8px;font-size:0.78em;border-right:none!important;border-bottom:1px solid var(--border);text-align:center}
+  .tb:nth-child(odd){border-right:1px solid var(--border)!important}
+  .tb.on{border-right:none!important}
+  .tab-row > div:last-child{justify-content:flex-start}
   .chart-grid-2,.chart-grid-3,.chart-grid-22{grid-template-columns:1fr}
   .chart-box.span2,.chart-box.span3{grid-column:span 1}
   .strat-kpi-row,.strat-bar-row{grid-template-columns:repeat(2,1fr)}
