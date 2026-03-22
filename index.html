@@ -583,11 +583,16 @@ setInterval(updateBannerDate, 60000);
   <div class="perf-tab on" id="perf-buy">
 
     <!-- TODAY + MONTH SUMMARY STRIP -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:20px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;overflow:hidden">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;overflow:hidden">
       <div style="padding:14px 18px;border-right:1px solid var(--border)">
-        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Last Trading Day P&L</div>
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Last Trading Day</div>
         <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-last-pnl">₹—</div>
         <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="b-last-date">—</div>
+      </div>
+      <div style="padding:14px 18px;border-right:1px solid var(--border)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Previous Month</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-prev-month-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="b-prev-month-name">—</div>
       </div>
       <div style="padding:14px 18px;border-right:1px solid var(--border)">
         <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Current Month P&L</div>
@@ -624,7 +629,7 @@ setInterval(updateBannerDate, 60000);
         <div class="chart-hdr">
           <div class="chart-hdr-left">
             <div class="chart-ttl">Monthly Equity Curve · Buying</div>
-            <div class="chart-sub">Cumulative P&L — each month stacked</div>
+            <div class="chart-sub">Cumulative P&L from Oct 2023 — All time</div>
           </div>
           <div class="chart-badge cc" id="b-eq-badge">₹—</div>
         </div>
@@ -1267,15 +1272,35 @@ function renderBuying() {
   const winMonths = profits.filter(p => p > 0).length;
   const winRate = Math.round(winMonths / profits.length * 100);
 
-  // ── 2026 only (for main KPI + equity chart) ──
+  // ── 2026 only (for main KPI) ──
   const data26 = data.filter(d => d.m.includes('26'));
   const profits26 = data26.map(d => d.p);
   const total26 = profits26.reduce((a,b) => a+b, 0);
 
-  // ── Current month (last entry in 2026 data) ──
-  const curMonth = data26.length ? data26[data26.length-1] : null;
-  const curMonthPnl = curMonth ? curMonth.p : 0;
-  const curMonthName = curMonth ? curMonth.m : '—';
+  // ── Current month = detect from BUY_STRAT (has live daily data) ──
+  // If BUY_STRAT has March data, curMonth = March; fallback to last in data26
+  let curMonthPnl = 0, curMonthName = '—';
+  let prevMonthPnl = 0, prevMonthName = '—';
+
+  if (BUY_STRAT.length) {
+    // Current month = last month in strategy data
+    const lastStrat = BUY_STRAT[BUY_STRAT.length - 1];
+    curMonthPnl = lastStrat.rows.reduce((a,r) => a + (r.total||0), 0);
+    curMonthName = lastStrat.month + ' 2026';
+    // Previous month
+    if (BUY_STRAT.length >= 2) {
+      const prevStrat = BUY_STRAT[BUY_STRAT.length - 2];
+      prevMonthPnl = prevStrat.rows.reduce((a,r) => a + (r.total||0), 0);
+      prevMonthName = prevStrat.month + ' 2026';
+    }
+  } else if (data26.length) {
+    const cur = data26[data26.length - 1];
+    curMonthPnl = cur.p; curMonthName = cur.m;
+    if (data26.length >= 2) {
+      const prev = data26[data26.length - 2];
+      prevMonthPnl = prev.p; prevMonthName = prev.m;
+    }
+  }
 
   // ── Last trading day P&L — from BUY_STRAT daily data ──
   let lastDayPnl = 0, lastDayDate = '—';
@@ -1297,6 +1322,8 @@ function renderBuying() {
   };
   setStrip('b-last-pnl', lastDayPnl);
   if (I('b-last-date')) I('b-last-date').textContent = lastDayDate;
+  setStrip('b-prev-month-pnl', prevMonthPnl);
+  if (I('b-prev-month-name')) I('b-prev-month-name').textContent = prevMonthName;
   setStrip('b-cur-month-pnl', curMonthPnl);
   if (I('b-cur-month-name')) I('b-cur-month-name').textContent = curMonthName;
   setStrip('b-ytd-pnl', total26);
@@ -1309,13 +1336,12 @@ function renderBuying() {
   I('b-best-m').textContent = labels[bestIdx];
   I('b-dd').textContent = fmt(worstDD < 0 ? worstDD : 0);
   I('b-wr').textContent = winRate + '%';
-  I('b-eq-badge').textContent = fmt(total26);
+  I('b-eq-badge').textContent = fmt(allTimeTotal);
 
-  // ── Equity curve — 2026 only ──
-  const labels26 = data26.map(d => d.m);
+  // ── Equity curve — ALL TIME from Oct 2023 ──
   let cum = 0;
-  const equity26 = profits26.map(p => { cum += p; return cum; });
-  makeEquity('bEquity', labels26, equity26, B);
+  const equity = profits.map(p => { cum += p; return cum; });
+  makeEquity('bEquity', labels, equity, B);
 
   // ── Monthly bar — all time ──
   makeBar('bMonthly', labels, profits);
