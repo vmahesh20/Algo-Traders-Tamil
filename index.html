@@ -464,6 +464,11 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .tb:nth-child(odd){border-right:1px solid var(--border)!important}
   .tb.on{border-right:none!important}
   .tab-row > div:last-child{justify-content:flex-start}
+  /* summary strip 6-col → 2-col on mobile */
+  .summary-strip{grid-template-columns:1fr 1fr!important}
+  .summary-strip > div{border-right:none!important;border-bottom:1px solid var(--border)}
+  .summary-strip > div:nth-child(odd){border-right:1px solid var(--border)!important}
+  .summary-strip > div:nth-last-child(-n+2){border-bottom:none}
   .chart-grid-2,.chart-grid-3,.chart-grid-22{grid-template-columns:1fr}
   .chart-box.span2,.chart-box.span3{grid-column:span 1}
   .strat-kpi-row,.strat-bar-row{grid-template-columns:repeat(2,1fr)}
@@ -641,7 +646,7 @@ setInterval(updateBannerDate, 60000);
   <div class="perf-tab on" id="perf-buy">
 
     <!-- TODAY + MONTH SUMMARY STRIP -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;border-radius:11px;overflow:hidden;border:1px solid rgba(2,132,199,0.3);background:linear-gradient(135deg,rgba(2,132,199,0.06) 0%,rgba(124,58,237,0.04) 100%)">
+    <div class="summary-strip" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;border-radius:11px;overflow:hidden;border:1px solid rgba(2,132,199,0.3);background:linear-gradient(135deg,rgba(2,132,199,0.06) 0%,rgba(124,58,237,0.04) 100%)">
       <div style="padding:14px 18px;border-right:1px solid var(--border)">
         <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Last Trading Day</div>
         <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-last-pnl">₹—</div>
@@ -750,7 +755,7 @@ setInterval(updateBannerDate, 60000);
   <div class="perf-tab" id="perf-sell">
 
     <!-- SELLING SUMMARY STRIP -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;border-radius:11px;overflow:hidden;border:1px solid rgba(5,150,105,0.3);background:linear-gradient(135deg,rgba(5,150,105,0.06) 0%,rgba(2,132,199,0.04) 100%)">
+    <div class="summary-strip" style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:0;margin-bottom:20px;border-radius:11px;overflow:hidden;border:1px solid rgba(5,150,105,0.3);background:linear-gradient(135deg,rgba(5,150,105,0.06) 0%,rgba(2,132,199,0.04) 100%)">
       <div style="padding:14px 18px;border-right:1px solid rgba(5,150,105,0.15)">
         <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Last Trading Day</div>
         <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="s-last-pnl">₹—</div>
