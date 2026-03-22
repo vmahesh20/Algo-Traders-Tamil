@@ -428,15 +428,16 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .nav-cta-btn{display:none}
   .hamburger{display:flex!important}
   .mob-close{display:none}
+  .mob-close-li{list-style:none;position:fixed;top:16px;right:20px;z-index:1000}
   .nav-links-row.open .mob-close{
-    display:flex;position:fixed;top:16px;right:20px;
+    display:flex;
     background:none;border:1px solid var(--border);border-radius:8px;
     padding:8px 12px;font-size:1.3em;cursor:pointer;color:var(--muted2);
-    z-index:1000;align-items:center;justify-content:center;
+    align-items:center;justify-content:center;
   }
 }
 @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
-@media(min-width:901px){.hamburger{display:none!important}.mob-only{display:none!important}}
+@media(min-width:901px){.hamburger{display:none!important}.mob-only{display:none!important}.mob-close-li{display:none!important}}
 </style>
 </head>
 <body>
@@ -460,7 +461,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 <nav class="site-nav">
   <a class="nav-brand" href="#" onclick="showPage('performance');return false">Algo<span>Tamil</span></a>
   <ul class="nav-links-row" id="navMenu">
-    <button class="mob-close" onclick="closeNav()" aria-label="Close menu">✕</button>
+    <li class="mob-close-li" style="list-style:none"><button class="mob-close" onclick="closeNav()" aria-label="Close menu">✕</button></li>
     <li><a href="#" id="nav-performance" class="active" onclick="showPage('performance');closeNav();return false">📊 Performance</a></li>
     <li><a href="#" id="nav-plans" onclick="showPage('plans');closeNav();return false">💳 Plans</a></li>
     <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');closeNav();return false">⭐ Reviews</a></li>
@@ -580,9 +581,38 @@ setInterval(updateBannerDate, 60000);
 
   <!-- ══════════ FULL HISTORY TAB ══════════ -->
   <div class="perf-tab on" id="perf-buy">
+
+    <!-- TODAY + MONTH SUMMARY STRIP -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin-bottom:20px;background:var(--surface2);border:1px solid var(--border);border-radius:11px;overflow:hidden">
+      <div style="padding:14px 18px;border-right:1px solid var(--border)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Last Trading Day P&L</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-last-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="b-last-date">—</div>
+      </div>
+      <div style="padding:14px 18px;border-right:1px solid var(--border)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Current Month P&L</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-cur-month-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="b-cur-month-name">—</div>
+      </div>
+      <div style="padding:14px 18px;border-right:1px solid var(--border)">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">2026 Total P&L</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-ytd-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px">Jan 2026 → Now</div>
+      </div>
+      <div style="padding:14px 18px">
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">All Time P&L</div>
+        <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-alltime-pnl">₹—</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px">Oct 2023 → Now</div>
+      </div>
+    </div>
+
     <div class="kpi-strip">
-      <div class="kpi c"><div class="kpi-lbl">Total P&L · Buying</div><div class="kpi-val cc" id="b-total">₹—</div><div class="kpi-sub">All months combined</div></div>
-      <div class="kpi g"><div class="kpi-lbl">Capital / Instrument</div><div class="kpi-val cg">₹15,000</div><div class="kpi-sub">× 3 instruments = ₹50K</div></div>
+      <div class="kpi c"><div class="kpi-lbl">Total P&L · 2026</div><div class="kpi-val cc" id="b-total">₹—</div><div class="kpi-sub">Jan 2026 onwards</div></div>
+      <div class="kpi g">
+        <div class="kpi-lbl">Capital</div>
+        <div class="kpi-val cg">₹50,000</div>
+        <div class="kpi-sub">₹15K × 3 instruments</div>
+      </div>
       <div class="kpi a"><div class="kpi-lbl">Best Month</div><div class="kpi-val ca" id="b-best">—</div><div class="kpi-sub" id="b-best-m">—</div></div>
       <div class="kpi r"><div class="kpi-lbl">Max Drawdown</div><div class="kpi-val cr" id="b-dd">—</div><div class="kpi-sub">Peak-to-trough</div></div>
       <div class="kpi p"><div class="kpi-lbl">Win Rate</div><div class="kpi-val cp" id="b-wr">—</div><div class="kpi-sub">Profitable months</div></div>
@@ -1229,27 +1259,65 @@ function renderBuying() {
   const data = BUY;
   const labels = data.map(d => d.m);
   const profits = data.map(d => d.p);
-  const totalP = profits.reduce((a,b) => a+b, 0);
+
+  // ── All-time stats (for all-time KPIs) ──
+  const allTimeTotal = profits.reduce((a,b) => a+b, 0);
   const bestIdx = profits.indexOf(Math.max(...profits));
   const worstDD = Math.min(...profits);
   const winMonths = profits.filter(p => p > 0).length;
   const winRate = Math.round(winMonths / profits.length * 100);
 
-  // KPIs
-  I('b-total').textContent = fmt(totalP);
-  I('b-total').className = 'kpi-val ' + (totalP >= 0 ? 'cc' : 'cr');
+  // ── 2026 only (for main KPI + equity chart) ──
+  const data26 = data.filter(d => d.m.includes('26'));
+  const profits26 = data26.map(d => d.p);
+  const total26 = profits26.reduce((a,b) => a+b, 0);
+
+  // ── Current month (last entry in 2026 data) ──
+  const curMonth = data26.length ? data26[data26.length-1] : null;
+  const curMonthPnl = curMonth ? curMonth.p : 0;
+  const curMonthName = curMonth ? curMonth.m : '—';
+
+  // ── Last trading day P&L — from BUY_STRAT daily data ──
+  let lastDayPnl = 0, lastDayDate = '—';
+  if (BUY_STRAT.length) {
+    const lastMo = BUY_STRAT[BUY_STRAT.length - 1];
+    const tradingRows = lastMo.rows.filter(r => !r.holiday && r.total !== 0);
+    if (tradingRows.length) {
+      const last = tradingRows[tradingRows.length - 1];
+      lastDayPnl = last.total;
+      lastDayDate = last.date + ' ' + lastMo.month;
+    }
+  }
+
+  // ── Populate summary strip ──
+  const setStrip = (id, val) => {
+    const el = I(id); if (!el) return;
+    el.textContent = fmt(val);
+    el.style.color = val >= 0 ? 'var(--green)' : 'var(--red)';
+  };
+  setStrip('b-last-pnl', lastDayPnl);
+  if (I('b-last-date')) I('b-last-date').textContent = lastDayDate;
+  setStrip('b-cur-month-pnl', curMonthPnl);
+  if (I('b-cur-month-name')) I('b-cur-month-name').textContent = curMonthName;
+  setStrip('b-ytd-pnl', total26);
+  setStrip('b-alltime-pnl', allTimeTotal);
+
+  // ── Main KPIs (2026) ──
+  I('b-total').textContent = fmt(total26);
+  I('b-total').className = 'kpi-val ' + (total26 >= 0 ? 'cc' : 'cr');
   I('b-best').textContent = fmt(profits[bestIdx]);
   I('b-best-m').textContent = labels[bestIdx];
   I('b-dd').textContent = fmt(worstDD < 0 ? worstDD : 0);
   I('b-wr').textContent = winRate + '%';
-  I('b-eq-badge').textContent = fmt(totalP);
+  I('b-eq-badge').textContent = fmt(total26);
 
-  // Equity curve — cumulative
+  // ── Equity curve — 2026 only ──
+  const labels26 = data26.map(d => d.m);
   let cum = 0;
-  const equity = profits.map(p => { cum += p; return cum; });
-  makeEquity('bEquity', labels, equity, B);
+  const equity26 = profits26.map(p => { cum += p; return cum; });
+  makeEquity('bEquity', labels26, equity26, B);
 
-  // Monthly bar
+  // ── Monthly bar — all time ──
   makeBar('bMonthly', labels, profits);
 
   // ROI bar
