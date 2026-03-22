@@ -600,9 +600,9 @@ setInterval(updateBannerDate, 60000);
         <div style="font-size:0.72em;color:var(--muted);margin-top:2px" id="b-prev-month-name">—</div>
       </div>
       <div style="padding:14px 18px;border-right:1px solid var(--border)">
-        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">Avg Monthly ROI</div>
+        <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">2026 ROI on Capital</div>
         <div style="font-family:var(--mono);font-size:1.3em;font-weight:700" id="b-avg-roi-strip">—</div>
-        <div style="font-size:0.72em;color:var(--muted);margin-top:2px">Per month on ₹50K</div>
+        <div style="font-size:0.72em;color:var(--muted);margin-top:2px">2026 P&L ÷ ₹50K</div>
       </div>
       <div style="padding:14px 18px;border-right:1px solid var(--border)">
         <div style="font-size:0.68em;text-transform:uppercase;letter-spacing:1px;color:var(--muted);font-weight:600;margin-bottom:4px">2026 Total P&L</div>
@@ -1382,8 +1382,8 @@ function renderBuying() {
   if (I('b-cur-month-name')) I('b-cur-month-name').textContent = curMonthName;
   setStrip('b-ytd-pnl', total26);
   setStrip('b-alltime-pnl', allTimeTotal);
-  // Avg monthly ROI on ₹50K capital
-  const bAvgRoi = (allTimeTotal / data.length / 50000 * 100);
+  // Avg monthly ROI on ₹50K — 2026 total / 50000
+  const bAvgRoi = (total26 / 50000 * 100);
   const bAvgEl = I('b-avg-roi-strip');
   if (bAvgEl) { bAvgEl.textContent = (bAvgRoi>=0?'+':'') + bAvgRoi.toFixed(2) + '%'; bAvgEl.style.color = bAvgRoi>=0?'var(--green)':'var(--red)'; }
 
