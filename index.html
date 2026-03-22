@@ -1823,15 +1823,26 @@ function setStars(n) {
 function handleImgSelect(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 3 * 1024 * 1024) {
-    alert('Image must be under 3MB'); input.value = ''; return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Image must be under 5MB'); input.value = ''; return;
   }
   const reader = new FileReader();
   reader.onload = e => {
-    selectedImgBase64 = e.target.result;
-    document.getElementById('img-preview').src = e.target.result;
-    document.getElementById('img-preview-wrap').style.display = 'block';
-    document.getElementById('img-label-txt').textContent = '✓ ' + file.name;
+    // Compress image to max 600px wide, quality 0.6 — keeps base64 under 80KB
+    const img = new Image();
+    img.onload = () => {
+      const MAX = 600;
+      const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+      selectedImgBase64 = canvas.toDataURL('image/jpeg', 0.6);
+      document.getElementById('img-preview').src = selectedImgBase64;
+      document.getElementById('img-preview-wrap').style.display = 'block';
+      document.getElementById('img-label-txt').textContent = '✓ ' + file.name;
+    };
+    img.src = e.target.result;
   };
   reader.readAsDataURL(file);
 }
