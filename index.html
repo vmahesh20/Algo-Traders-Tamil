@@ -139,6 +139,25 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .chart-box.span2,.chart-box.span3{grid-column:span 1}
 }
 
+/* ── FAQ PAGE ── */
+.faq-section-label{font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-family:var(--mono);margin:36px 0 12px;padding-bottom:8px;border-bottom:2px solid rgba(2,132,199,0.15)}
+.faq-list{display:flex;flex-direction:column;gap:0;margin-bottom:8px}
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:first-child{border-top:1px solid var(--border)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px 4px;background:none;border:none;cursor:pointer;font-family:var(--font);font-size:0.95em;font-weight:600;color:var(--text);text-align:left;transition:.15s}
+.faq-q:hover{color:var(--accent)}
+.faq-q.open{color:var(--accent)}
+.faq-arr{font-size:0.75em;color:var(--muted);transition:transform .25s;flex-shrink:0}
+.faq-q.open .faq-arr{transform:rotate(180deg);color:var(--accent)}
+.faq-ans{display:none;padding:0 4px 18px;font-size:0.88em;color:var(--muted2);line-height:1.8}
+.faq-ans.open{display:block}
+.faq-ans strong{color:var(--text)}
+.faq-ans a{color:var(--accent)}
+.faq-list-inner{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px}
+.faq-list-inner li{padding:6px 0 6px 16px;border-bottom:1px solid var(--border2);position:relative}
+.faq-list-inner li::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
+.faq-list-inner li:last-child{border-bottom:none}
+
 /* ── REVIEW FORM ── */
 .rv-input{width:100%;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font);font-size:0.88em;outline:none;transition:.2s}
 .rv-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(2,132,199,0.08)}
@@ -393,7 +412,31 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .sebi-footer-top{flex-direction:column}
   .sebi-footer-reg{text-align:left}
   .nav-links-row{display:none}
+  .nav-links-row.open{
+    display:flex;flex-direction:column;gap:0;
+    position:fixed;top:0;left:0;right:0;bottom:0;
+    background:var(--surface);z-index:999;
+    padding:80px 24px 40px;
+    animation:slideIn .2s ease;
+  }
+  .nav-links-row.open a{
+    padding:16px 12px;font-size:1.05em;
+    border-bottom:1px solid var(--border);border-radius:0;
+    display:flex;align-items:center;gap:10px;
+  }
+  .nav-links-row.open a:last-child{border-bottom:none}
+  .nav-cta-btn{display:none}
+  .hamburger{display:flex!important}
+  .mob-close{display:none}
+  .nav-links-row.open .mob-close{
+    display:flex;position:fixed;top:16px;right:20px;
+    background:none;border:1px solid var(--border);border-radius:8px;
+    padding:8px 12px;font-size:1.3em;cursor:pointer;color:var(--muted2);
+    z-index:1000;align-items:center;justify-content:center;
+  }
 }
+@keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:901px){.hamburger{display:none!important}.mob-only{display:none!important}}
 </style>
 </head>
 <body>
@@ -416,13 +459,27 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 <!-- ═══ NAV BAR ═══ -->
 <nav class="site-nav">
   <a class="nav-brand" href="#" onclick="showPage('performance');return false">Algo<span>Tamil</span></a>
-  <ul class="nav-links-row">
-    <li><a href="#" id="nav-performance" class="active" onclick="showPage('performance');return false">📊 Performance</a></li>
-    <li><a href="#" id="nav-plans" onclick="showPage('plans');return false">💳 Plans</a></li>
-    <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');return false">⭐ Reviews</a></li>
-    <li><a href="#" id="nav-sebi-disc" onclick="showPage('sebi-disc');return false">📋 SEBI</a></li>
+  <ul class="nav-links-row" id="navMenu">
+    <button class="mob-close" onclick="closeNav()" aria-label="Close menu">✕</button>
+    <li><a href="#" id="nav-performance" class="active" onclick="showPage('performance');closeNav();return false">📊 Performance</a></li>
+    <li><a href="#" id="nav-plans" onclick="showPage('plans');closeNav();return false">💳 Plans</a></li>
+    <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');closeNav();return false">⭐ Reviews</a></li>
+    <li><a href="#" id="nav-faq" onclick="showPage('faq');closeNav();return false">❓ FAQ</a></li>
+    <li><a href="#" id="nav-sebi-disc" onclick="showPage('sebi-disc');closeNav();return false">📋 SEBI</a></li>
+    <li style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);list-style:none" class="mob-only">
+      <a href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Signals');closeNav();return false"
+        style="background:var(--accent);color:#fff;border-radius:9px;text-align:center;justify-content:center;font-weight:700">
+        Subscribe Now
+      </a>
+    </li>
   </ul>
-  <a class="nav-cta-btn" href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Signals');return false">Subscribe Now</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <a class="nav-cta-btn" href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Signals');return false">Subscribe Now</a>
+    <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu"
+      style="background:none;border:1px solid var(--border);border-radius:8px;padding:8px 11px;cursor:pointer;font-size:1.2em;color:var(--muted2);display:none;align-items:center;line-height:1">
+      ☰
+    </button>
+  </div>
 </nav>
 
 <!-- ═══ PAGE: PERFORMANCE (original content) ═══ -->
@@ -431,17 +488,31 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 <!-- AUTO-SYNC STATUS BAR -->
 <div class="config-banner">
   <strong>📊 Live Data:</strong>
-  <span style="color:#7dd3fc;font-size:0.9em">Google Sheets — Auto synced · Buying &amp; Selling Monthly P&amp;L</span>
+  <span style="color:#7dd3fc;font-size:0.9em" id="bannerDate"></span>
   <div class="sync-status">
     <div class="sync-dot loading" id="syncDot"></div>
     <span id="syncLabel">Connecting...</span>
   </div>
 </div>
 
+<script>
+// Set banner date/time on load and update every minute
+function updateBannerDate() {
+  const now = new Date();
+  const opts = { weekday:'short', day:'2-digit', month:'short', year:'numeric' };
+  const date = now.toLocaleDateString('en-IN', opts);
+  const time = now.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true });
+  const el = document.getElementById('bannerDate');
+  if (el) el.textContent = date + ' · ' + time;
+}
+updateBannerDate();
+setInterval(updateBannerDate, 60000);
+</script>
+
 <div class="perf-wrap">
   <div class="section-label">Verified Track Record</div>
   <div class="section-title">Transparent Performance Data</div>
-  <p class="section-sub">Live-synced from Google Sheets. Updated daily after market close. No cherry-picks, no edits.</p>
+  <p class="section-sub">Live data updated daily after market close. No cherry-picks, no edits.</p>
 
   <!-- TAB ROW -->
   <div class="tab-row">
@@ -965,7 +1036,7 @@ function parseSellingStratSheet(text) {
 async function loadData() {
   const btn = document.getElementById('refreshBtn');
   btn.classList.add('spinning');
-  setSyncStatus('loading', 'Syncing...');
+  setSyncStatus('loading', 'Fetching data...');
   document.getElementById('errorBox').style.display = 'none';
 
   let buyOK = false, sellOK = false;
@@ -1001,15 +1072,15 @@ async function loadData() {
 
   if (buyOK && sellOK) {
     sheetConnected = true;
-    setSyncStatus('ok', 'Live · ' + new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }));
-    document.getElementById('lastSync').textContent = 'Synced ' + new Date().toLocaleTimeString('en-IN');
+    setSyncStatus('ok', 'Live Data Fetched');
+    document.getElementById('lastSync').textContent = 'Updated ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit',minute:'2-digit',hour12:true});
   } else if (buyOK || sellOK) {
     sheetConnected = true;
     setSyncStatus('ok', 'Partial sync · ' + (buyOK ? 'Buying ✓' : 'Buying ✗') + ' · ' + (sellOK ? 'Selling ✓' : 'Selling ✗'));
     document.getElementById('lastSync').textContent = 'Partial sync ' + new Date().toLocaleTimeString('en-IN');
   } else {
-    setSyncStatus('err', 'Offline — showing saved data');
-    document.getElementById('lastSync').textContent = 'Could not sync — showing offline data';
+    setSyncStatus('err', 'Using offline data');
+    document.getElementById('lastSync').textContent = 'Offline data';
   }
 
   renderAll();
@@ -1723,6 +1794,47 @@ window.addEventListener('DOMContentLoaded', () => {
   loadData();
 });
 
+/* ── FAQ TOGGLE ── */
+function toggleFaq(btn) {
+  const ans = btn.nextElementSibling;
+  const isOpen = btn.classList.contains('open');
+  // Close all others
+  document.querySelectorAll('.faq-q.open').forEach(q => {
+    q.classList.remove('open');
+    q.nextElementSibling.classList.remove('open');
+  });
+  // Open this one if it was closed
+  if (!isOpen) {
+    btn.classList.add('open');
+    ans.classList.add('open');
+  }
+}
+
+/* ── HAMBURGER NAV ── */
+function toggleNav() {
+  const menu = document.getElementById('navMenu');
+  const btn  = document.getElementById('hamburger');
+  const isOpen = menu.classList.toggle('open');
+  btn.textContent = isOpen ? '✕' : '☰';
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+function closeNav() {
+  const menu = document.getElementById('navMenu');
+  const btn  = document.getElementById('hamburger');
+  if (!menu) return;
+  menu.classList.remove('open');
+  btn.textContent = '☰';
+  document.body.style.overflow = '';
+}
+document.addEventListener('click', e => {
+  const menu = document.getElementById('navMenu');
+  const btn  = document.getElementById('hamburger');
+  if (menu && menu.classList.contains('open') &&
+      !menu.contains(e.target) && btn && !btn.contains(e.target)) {
+    closeNav();
+  }
+});
+
 /* ════════════════════════════════════════════════
    PAGE NAVIGATION
 ════════════════════════════════════════════════ */
@@ -2233,6 +2345,248 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- ══════════════════════════════════════════════════
      PAGE: SEBI DISCLOSURES
 ══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════
+     PAGE: FAQ
+══════════════════════════════════════════════════ -->
+<div class="page-section" id="page-faq">
+<div class="section-wrap" style="padding-top:48px;padding-bottom:64px;max-width:860px">
+  <div class="page-eyebrow">Frequently Asked Questions</div>
+  <div class="page-h1">Everything You Need to Know</div>
+  <p class="page-sub">Can't find your answer? WhatsApp Mahesh directly at <a href="https://wa.me/919655516011" target="_blank" style="color:var(--accent)">9655516011</a></p>
+
+  <!-- GENERAL -->
+  <div class="faq-section-label">General</div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What is Algo Trading?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Algo trading (algorithmic trading) is a method where buy and sell decisions are made automatically by a computer program based on pre-defined rules — price levels, indicators, time conditions. There is no human emotion or discretion involved. The system executes the same logic every day, every trade, without hesitation or bias.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What is Algo Tamil?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Algo Tamil is an algorithmic trading performance dashboard by Mahesh, tracking live P&amp;L of rule-based strategies across Nifty, Bank Nifty and Sensex. All signals are system-generated — no emotions, no discretion.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How long has Algo Tamil been live?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Buying strategies have been live since <strong>October 2023</strong>. Selling strategies since <strong>January 2025</strong>. All data shown is real — including loss months.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Is this SEBI registered?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        No. Algo Tamil is <strong>not a SEBI-registered Research Analyst or Investment Advisor</strong>. All content is for educational and informational purposes only. Please consult a qualified financial advisor before trading.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- PLANS & SUBSCRIPTION -->
+  <div class="faq-section-label">Plans &amp; Subscription</div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What plans are available?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        <ul class="faq-list-inner">
+          <li><strong>Trader Plan</strong> — ₹4,999/year · 2 Index Buying strategies</li>
+          <li><strong>Advanced Trader</strong> — ₹6,999/year · 3 Index Buying strategies</li>
+          <li><strong>Premium Seller</strong> — ₹11,999/year · 4 Selling strategies including Nifty Trend</li>
+          <li><strong>Pro Seller</strong> — ₹11,999/year · 3 Directional Selling strategies with adjustments</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How do I subscribe?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Click <strong>"Get Access"</strong> on any plan → fill your details → pay via UPI (QR / GPay / UPI ID) → WhatsApp Mahesh your payment screenshot → access granted within <strong>30 minutes</strong>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What payment methods are accepted?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        UPI (GPay, PhonePe, Paytm, BHIM), NEFT/IMPS bank transfer. Payment confirmation via WhatsApp.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Is there a refund policy?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Refunds are available within <strong>7 days</strong> if you have not accessed any signals or dashboard. Contact Mahesh on WhatsApp: <a href="https://wa.me/919655516011" style="color:var(--accent)">9655516011</a>.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I upgrade my plan?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Yes. Pay the price difference anytime and contact on WhatsApp — upgrade happens the same day.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I subscribe mid-year?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Yes. Your 1-year subscription runs from the date of payment, not from the 1st of the month.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DASHBOARD & ACCESS -->
+  <div class="faq-section-label">Dashboard &amp; Access</div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How often is the data updated?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Dashboard data is updated daily after market close — typically by <strong>4:30 PM IST</strong> on trading days.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Can I view the dashboard on mobile?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Yes. The dashboard is fully mobile-responsive and works on all devices and browsers.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CAPITAL & TRADING -->
+  <div class="faq-section-label">Capital &amp; Trading</div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How much capital do I need?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        <ul class="faq-list-inner">
+          <li><strong>Trader Plan:</strong> ₹35,000</li>
+          <li><strong>Advanced Trader:</strong> ₹55,000</li>
+          <li><strong>Premium Seller:</strong> ₹10,00,000 (2 non-directional selling + 1 directional)</li>
+          <li><strong>Pro Seller:</strong> ₹8,00,000 (2 directional selling + 1 hedged directional)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How much capital is actually used at one time for buying strategies?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Maximum <strong>3 strategies</strong> can trigger simultaneously — and only CE side <em>or</em> PE side triggers at a time, never both. So maximum capital used at any point is <strong>₹45,000</strong> (3 × ₹15,000). The remaining ₹10,000 is kept as a buffer for drawdown management.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What is the Stop Loss for buying strategies?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Each buying strategy has a defined stop loss per trade. The system exits automatically when the stop loss is hit — no manual intervention needed. Stop loss levels are shared with each signal alert.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Are there targets for buying strategies?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        <strong>CE side strategies do not have fixed targets</strong> — the position is trailed or exited at stop loss. <strong>PE side strategies have defined targets.</strong> This asymmetric approach maximises gains on trending moves while controlling downside.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>How many trades happen per month?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Buying strategies average <strong>15–20 trading days</strong> per month. Selling strategies maintain positions with entry, adjustment and exit signals as per market conditions.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>What instruments are traded?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Nifty, Bank Nifty and Sensex F&amp;O (Futures &amp; Options) on NSE and BSE.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RISK -->
+  <div class="faq-section-label">Risk</div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Is profit guaranteed?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        <strong>No.</strong> Past performance is not a guarantee of future results. F&amp;O trading involves substantial risk of loss. We show all months transparently — including losing months.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Is this suitable for beginners?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">
+        Buying plans are suitable for traders with basic options knowledge. Selling plans require understanding of option selling mechanics and sufficient capital. <strong>Not recommended for complete beginners.</strong>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center;margin-top:48px;padding:32px;background:var(--surface);border:1px solid var(--border);border-radius:16px">
+    <div style="font-size:1.1em;font-weight:800;margin-bottom:8px">Still have questions?</div>
+    <div style="font-size:0.88em;color:var(--muted2);margin-bottom:20px">WhatsApp Mahesh directly — replies within minutes during market hours.</div>
+    <a href="https://wa.me/919655516011?text=Hi+Mahesh+I+have+a+question+about+Algo+Tamil" target="_blank"
+      style="display:inline-flex;align-items:center;gap:8px;background:#25d366;color:#fff;font-weight:700;padding:12px 28px;border-radius:9px;text-decoration:none;font-size:0.92em;transition:.2s">
+      💬 WhatsApp Mahesh
+    </a>
+  </div>
+
+</div>
+</div><!-- /page-faq -->
+
 <div class="page-section" id="page-sebi-disc">
 <div class="section-wrap" style="padding-top:48px;padding-bottom:64px">
   <div class="page-eyebrow">Regulatory Compliance</div>
@@ -2448,6 +2802,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="#" onclick="showPage('performance');return false">Performance</a>
           <a href="#" onclick="showPage('plans');return false">Plans</a>
           <a href="#" onclick="showPage('testimonials');return false">Reviews</a>
+          <a href="#" onclick="showPage('faq');return false">FAQ</a>
           <a href="#" onclick="showPage('sebi-disc');return false">SEBI Disclosures</a>
           <a href="/cdn-cgi/l/email-protection#d6bbb7beb3a5be96bbb7beb3a5beb7bab1b9f8bfb8">Contact</a>
         </div>
