@@ -1382,8 +1382,12 @@ function renderBuying() {
   if (I('b-cur-month-name')) I('b-cur-month-name').textContent = curMonthName;
   setStrip('b-ytd-pnl', total26);
   setStrip('b-alltime-pnl', allTimeTotal);
-  // Avg monthly ROI on ₹50K — 2026 total / 50000
-  const bAvgRoi = (total26 / 50000 * 100);
+  // Avg Monthly ROI = (2026 Total ÷ months in 2026 so far) ÷ ₹50K × 100
+  // Count: completed months from monthly sheet + 1 if current month is live in BUY_STRAT
+  const completedMonths26 = data26.length;
+  const hasLiveCurMonth = BUY_STRAT.length > 0 && !data26.some(d => d.m === BUY_STRAT[BUY_STRAT.length-1].month.slice(0,3) + ' 26');
+  const totalMonths26 = Math.max(completedMonths26 + (hasLiveCurMonth ? 1 : 0), 1);
+  const bAvgRoi = (total26 / totalMonths26 / 50000 * 100);
   const bAvgEl = I('b-avg-roi-strip');
   if (bAvgEl) { bAvgEl.textContent = (bAvgRoi>=0?'+':'') + bAvgRoi.toFixed(2) + '%'; bAvgEl.style.color = bAvgRoi>=0?'var(--green)':'var(--red)'; }
 
@@ -1490,8 +1494,11 @@ function renderSelling() {
   if (I('s-cur-month-name')) I('s-cur-month-name').textContent = sCurName;
   setSS('s-ytd-pnl', total26s);
   setSS('s-alltime-pnl', totalP);
-  // Avg monthly ROI on ₹9L capital
-  const sAvgRoi = data.reduce((a,d) => a+d.roi, 0) / data.length;
+  // Avg Monthly ROI = (2026 Total ÷ months in 2026 so far) ÷ ₹9L × 100
+  const sCompleted26 = data26s.length;
+  const sHasLiveCur = SELL_STRAT.length > 0 && !data26s.some(d => d.m === SELL_STRAT[SELL_STRAT.length-1].month.slice(0,3) + ' 26');
+  const sTotalMonths26 = Math.max(sCompleted26 + (sHasLiveCur ? 1 : 0), 1);
+  const sAvgRoi = (total26s / sTotalMonths26 / 900000 * 100);
   const sAvgEl = I('s-avg-roi-strip');
   if (sAvgEl) { sAvgEl.textContent = (sAvgRoi>=0?'+':'') + sAvgRoi.toFixed(2) + '%'; sAvgEl.style.color = sAvgRoi>=0?'var(--green)':'var(--red)'; }
 
