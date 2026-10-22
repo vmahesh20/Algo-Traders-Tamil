@@ -603,11 +603,64 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .td-hero-sub{font-size:1.08em;opacity:0.9}
 .td-wl{margin-top:16px;height:10px;border-radius:999px;background:rgba(239,68,68,0.85);overflow:hidden;max-width:420px}
 .td-wl-bar{height:100%;width:0;background:#4ade80;border-radius:999px;transition:width .8s ease}
-.td-hero-r{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative;z-index:1}
+.td-hero-r{display:grid;grid-template-columns:1fr;gap:12px;position:relative;z-index:1}
 .td-stat{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.16);border-radius:14px;padding:16px 18px;backdrop-filter:blur(4px)}
 .td-stat b{display:block;font-family:var(--mono);font-size:2.2em;line-height:1.1}
 .td-stat span{font-size:0.9em;opacity:0.85;font-weight:600}
 .td-stat.g b{color:#4ade80}.td-stat.r b{color:#fca5a5}.td-stat.m b{color:#c4b5fd}
+.td-stat{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.td-stat b{font-size:1.65em!important;order:2}
+.td-stat span em{font-style:normal;opacity:0.75;font-size:0.9em}
+.td-board{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.td-side{display:flex;flex-direction:column;gap:16px}
+.td-side-h{border-radius:14px}
+.td-gcard{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 6px 18px -12px rgba(15,23,42,0.25);border-top:5px solid var(--accent)}
+.td-gcard.sell{border-top-color:var(--purple)}
+.td-gcard.hl{border-top-color:#f59e0b}
+.td-star{margin:16px 18px 6px;padding:14px 16px;border-radius:12px;background:linear-gradient(90deg,rgba(245,158,11,0.14),rgba(245,158,11,0.04));border:1px solid rgba(245,158,11,0.35);display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:0.9em;color:var(--muted2);font-weight:600}
+.td-star b{font-size:1.25em;color:var(--text)}
+.td-star em{margin-left:auto;font-style:normal;font-family:var(--mono);font-weight:800;font-size:1.35em;color:var(--green)}
+.td-top{padding:10px 18px 18px;display:flex;flex-direction:column;gap:14px}
+.td-top-r{display:flex;align-items:center;gap:12px}
+.td-top-n{width:30px;text-align:center;font-size:1.3em;font-weight:800;color:var(--muted)}
+.td-top-b{flex:1;min-width:0}
+.td-top-l{display:flex;justify-content:space-between;gap:8px;font-weight:700;font-size:1.05em;color:var(--text);margin-bottom:6px}
+.td-top-l b{font-family:var(--mono);color:var(--green);font-size:1.12em;white-space:nowrap}
+.td-top-bar{height:10px;border-radius:999px;background:var(--surface2);overflow:hidden}
+.td-top-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#34d399,#059669)}
+.td-gcard.other{border-top-color:var(--amber)}
+#td-side-other .td-gcard{margin-bottom:18px}
+.td-gcard-h>span:first-child{flex:1;min-width:0}
+.td-gcard-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px;font-weight:800;font-size:1.3em;color:var(--text);border-bottom:1px solid var(--border2)}
+.td-gcard-h small{display:block;font-size:0.68em;font-weight:600;color:var(--muted);letter-spacing:0.5px}
+.td-gcard .td-sh3 i{background:var(--surface2);color:var(--muted2);opacity:1}
+.td-gcard .td-soon{background:var(--surface2);color:var(--muted)}
+.td-side-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 20px;color:#fff;font-weight:800;font-size:1.3em}
+.td-side-h.buy{background:linear-gradient(90deg,#0369a1,#0284c7)}
+.td-side-h.sell{background:linear-gradient(90deg,#6d28d9,#7c3aed)}
+.td-side-h.oth{background:linear-gradient(90deg,#b45309,#d97706)}
+.td-sh3{display:flex;gap:8px}
+.td-sh3 i{font-style:normal;display:flex;flex-direction:column;align-items:flex-end;font-size:0.6em;font-weight:600;opacity:0.95;background:rgba(255,255,255,0.14);padding:5px 10px;border-radius:9px;text-transform:uppercase;letter-spacing:0.6px}
+.td-sh3 b{white-space:nowrap;font-family:var(--mono);font-size:1.7em;letter-spacing:0;text-transform:none}
+.td-soon{font-size:0.75em;background:rgba(255,255,255,0.18);padding:5px 12px;border-radius:9px}
+.td-t{table-layout:fixed}
+.td-t th:first-child,.td-t td:first-child{width:40%}
+@media(max-width:600px){.td-side-h,.td-gcard-h{flex-direction:column;align-items:flex-start}.td-sh3 b{font-size:1.45em}.td-sh3 i{padding:5px 7px}.td-sh3{width:100%}.td-sh3 i{flex:1}}
+.td-grp{border-top:1px solid var(--border2)}
+.td-grp-h{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:var(--surface2);font-weight:800;font-size:0.82em;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted2)}
+.td-t{width:100%;border-collapse:collapse}
+.td-t th{font-size:0.78em;text-transform:uppercase;letter-spacing:0.8px;color:var(--muted);font-weight:700;padding:8px 12px;text-align:right;background:none;border-bottom:1px solid var(--border2)}
+.td-t th:first-child,.td-t td:first-child{text-align:left;padding-left:20px}
+.td-t td{padding:14px 12px;font-family:var(--mono);font-size:1.18em;font-weight:800;text-align:right;border-bottom:1px solid var(--border2);white-space:nowrap}
+.td-t td:last-child,.td-t th:last-child{padding-right:20px}
+.td-t td.nm{font-family:var(--font);font-weight:700;color:var(--text);white-space:normal;font-size:1.08em}
+.td-t td.nm small{display:block;font-weight:500;color:var(--muted);font-size:0.78em}
+.td-t tr.hot td{background:rgba(5,150,105,0.05)}
+.td-t tr.hot.l td{background:rgba(220,38,38,0.05)}
+.td-t tr.sub td{background:var(--surface2);font-weight:800;border-bottom:none}
+.td-t .z{color:#94a3b8;font-weight:500;font-size:1em}
+.td-t .soon{color:var(--muted);font-family:var(--font);font-weight:500;font-size:0.85em}
+@media(max-width:900px){.td-board{grid-template-columns:1fr}.td-t td{font-size:1.02em;padding:12px 6px}.td-t td.nm{font-size:0.98em}.td-t th{padding:8px}.td-t th:first-child,.td-t td:first-child{padding-left:14px}.td-t td:last-child,.td-t th:last-child{padding-right:14px}}
 .td-sec{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 2px 12px;font-weight:800;font-size:1.15em;color:var(--text)}
 .td-sec small{font-weight:500;font-size:0.72em;color:var(--muted);font-family:var(--mono)}
 .td-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:22px}
@@ -635,7 +688,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .share-btn:hover{background:#16a34a}
 .share-btn:disabled{opacity:.5;cursor:not-allowed}
 #td-body td:not(:first-child){white-space:nowrap}
-@media(max-width:600px){#td-body .pill{font-size:0.62em}#td-table-wrap th:nth-child(4),#td-body td:nth-child(4){display:none}}
+
 .empty-card{background:var(--surface);border:1px dashed var(--border);border-radius:11px;padding:32px 20px;text-align:center;color:var(--muted);font-size:0.9em;margin-bottom:16px}
 .empty-card strong{display:block;color:var(--text);font-size:1.05em;margin-bottom:6px}
 .bt-controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:14px 18px;margin-bottom:16px}
@@ -730,7 +783,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   <div class="td-head">
     <div>
       <div class="section-label">Live Update · ₹ P&amp;L per Lot</div>
-      <div class="section-title">Strategies Triggered Today</div>
+      <div class="section-title">Live Strategy P&amp;L</div>
       <p class="section-sub" style="margin-bottom:0" id="td-date">—</p>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -755,21 +808,20 @@ tr:hover td{background:rgba(0,0,0,0.025)}
       <div class="td-wl"><div class="td-wl-bar" id="td-wlbar"></div></div>
     </div>
     <div class="td-hero-r">
-      <div class="td-stat"><b id="td-count">—</b><span>Triggered</span></div>
-      <div class="td-stat g"><b id="td-win">—</b><span>In Profit</span></div>
-      <div class="td-stat r"><b id="td-loss">—</b><span>In Loss</span></div>
-      <div class="td-stat m"><b id="td-open">—</b><span>No Signal</span></div>
+      <div class="td-stat"><b id="td-wk">—</b><span>This Week</span></div>
+      <div class="td-stat"><b id="td-mo">—</b><span id="td-molbl">This Month</span></div>
+      <div class="td-stat"><b id="td-count">—</b><span>Traded Today <em id="td-wl"></em></span></div>
     </div>
   </div>
 
   <div id="td-empty" class="empty-card" style="display:none"></div>
   <div id="td-table-wrap" style="display:none">
-    <div class="td-sec"><span id="td-ttl">Today's Triggers</span><small>₹ per lot · live account</small></div>
-    <div class="td-cards" id="td-body"></div>
-  </div>
-  <div id="td-idle-wrap" style="display:none">
-    <div class="td-sec"><span>⏳ Running · No Signal Today</span><small>Rule-based — no trade is also a decision</small></div>
-    <div class="td-chips" id="td-idle"></div>
+    <div class="td-sec"><span id="td-ttl">Strategy-wise P&amp;L</span><small>₹ per lot · live account</small></div>
+    <div class="td-board">
+      <div class="td-side" id="td-side-buy"></div>
+      <div class="td-side" id="td-side-sell"></div>
+    </div>
+    <div id="td-side-other"></div>
   </div>
 
   <div class="td-cta">
@@ -3561,7 +3613,7 @@ const fmtDay = iso => { const [y, m, d] = iso.split('-'); return d + ' ' + MNAME
 
 /* Monthly sheet → latest day with data (today if updated).
    Returns { date, holiday, rows:[{strategy, cat, pnl}] } — only ONE day is ever kept. */
-let TD_INFO = { date: '', holiday: false, idle: 0 };
+let TD_INFO = { date: '', holiday: false }, TD_M = null;
 function parseToday(text) {
   const rows = csvRows(text).map(r => r.map(c => c.trim()));
   const hi = rows.findIndex(r => /^date$/i.test(r[0]));
@@ -3578,10 +3630,17 @@ function parseToday(text) {
     const hol = /holiday/i.test(r.slice(1).join(' '));
     if (hasNum || (d === today && hol)) pick = { d, r, hol: hol && !hasNum };
   });
-  if (!pick) { TD_INFO = { date: '', holiday: false, idle: 0 }; return []; }
+  if (!pick) { TD_INFO = { date: '', holiday: false }; TD_M = null; return []; }
   const out = [], vals = cols.map(x => ({ x, v: num(pick.r[x.c]) }));
   vals.forEach(({ x, v }) => { if (v) out.push({ strategy: x.n, cat: x.cat || '—', pnl: v }); });
-  TD_INFO = { date: pick.d, holiday: pick.hol, idle: vals.filter(o => !o.v).length, idleNames: vals.filter(o => !o.v).map(o => o.x.n) };
+  TD_INFO = { date: pick.d, holiday: pick.hol };
+  /* month-to-date & week-to-date per column (current month tab only) */
+  const dt0 = new Date(pick.d + 'T00:00:00Z'), wkStart = new Date(dt0 - ((dt0.getUTCDay() + 6) % 7) * 864e5).toISOString().slice(0, 10);
+  TD_M = { title: (rows[0] && rows[0][0]) || '', wkStart, cols: cols.map(x => ({ n: x.n, cat: x.cat, d: 0, w: 0, m: 0 })) };
+  rows.slice(hi + 1).forEach(r => {
+    const dd = toISO(r[0]); if (!dd || dd > pick.d) return;
+    cols.forEach((x, i) => { const v = num(r[x.c]); if (!v) return; const o = TD_M.cols[i]; o.m += v; if (dd >= wkStart) o.w += v; if (dd === pick.d) o.d += v; });
+  });
   return out.sort((a, b) => b.pnl - a.pnl);
 }
 
@@ -3607,7 +3666,7 @@ function demoData() {
     names.forEach(n => { if (rnd() < 0.35) bt.push({ date: iso, strategy: n, side: rnd() < 0.5 ? 'CE' : 'PE', q: 65, ep: 215, xp: 0, pnl: r2(rnd() < 0.55 ? 650 + rnd() * 3900 : -(520 + rnd() * 1950)), tv: 28000 }); });
   }
   const td = [{ strategy: 'Nifty CE', cat: 'Option Buying', pnl: 3058 }, { strategy: 'Nifty Selling', cat: 'Non-Directional Selling', pnl: 1995 }, { strategy: 'Sensex CE', cat: 'Option Buying', pnl: -690 }];
-  TD_INFO = { date: today, holiday: false, idle: 3, idleNames: ['Bank Nifty CE', 'Sensex PE', 'Bank Nifty Selling'] };
+  TD_INFO = { date: today, holiday: false }; TD_M = { title: 'Demo', wkStart: today, cols: td.map(t => ({ n: t.strategy, cat: t.cat, d: t.pnl, w: t.pnl * 2, m: t.pnl * 5 })) };
   return { td, bt };
 }
 
@@ -3640,15 +3699,30 @@ async function loadData() {
 }
 
 /* ── TODAY ── */
+/* ════════════════════════════════════════════════
+   TODAY BOARD LAYOUT — edit names/groups here.
+   aka: other column names used in the sheet for the same strategy
+════════════════════════════════════════════════ */
+const TD_GROUPS = [
+  { side: 'buy',  name: 'Basic Option Plan', items: [['Nifty CE'], ['Nifty PE'], ['Sensex CE'], ['Sensex PE'], ['Bank Nifty CE'], ['Bank Nifty PE']] },
+  { side: 'buy',  name: 'Extra Option Buying', items: [['Sensex CE & PE', 'Thanos'], ['Nifty PE 2.0', 'Loki'], ['Nifty Bull Rider', '', ['Nifty Combo']]] },
+  { side: 'sell', name: 'Non-Directional Selling', items: [['Nifty Selling'], ['Bank Nifty Selling']] },
+  { side: 'sell', name: 'Directional Selling', items: [['Sensex Selling', '', ['Sensex Hedge']], ['Nifty Hedging 60K'], ['Nifty Hedging 1.2L', '', ['Nifty Hedge 1.2L']], ['Nifty Trend Based']] },
+  { side: 'buy', name: 'Weekly Strategy', items: [['Weekly Nifty', '', ['Nifty Weekly']], ['Weekly Sensex', '', ['Sensex Weekly']]] }
+];
+const SIDE_LBL = { buy: '📈 Option Buying', sell: '📉 Option Selling', other: '🗓️ Weekly Strategy' };
+const nk = s => String(s).toLowerCase().replace(/[^a-z0-9.]/g, '');
 function renderToday(ok) {
   const today = istToday(), d = TD_INFO.date, isToday = d === today;
   const dl = iso => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
   I('td-date').textContent = d ? dl(d) + (isToday ? ' · Today' : ' · Last updated session') : dl(today);
   I('td-livetxt').textContent = isToday ? 'LIVE · TODAY' : d ? 'LAST SESSION · ' + fmtDay(d).toUpperCase() : 'LIVE';
-  I('td-ttl').textContent = isToday || !d ? "Today's Triggers" : 'Triggers on ' + fmtDay(d);
   const rows = TODAY, net = rows.reduce((a, r) => a + r.pnl, 0), w = rows.filter(r => r.pnl > 0).length, l = rows.length - w;
-  I('td-count').textContent = rows.length; I('td-win').textContent = w; I('td-loss').textContent = l;
-  I('td-open').textContent = d ? TD_INFO.idle : '—';
+  const cols = TD_M ? TD_M.cols : [], sum = k => cols.reduce((a, c) => a + c[k], 0);
+  const setV = (id, v) => { I(id).textContent = TD_M ? fr(v) : '—'; I(id).style.color = TD_M ? (v > 0 ? '#4ade80' : v < 0 ? '#fca5a5' : '#fff') : ''; };
+  setV('td-wk', sum('w')); setV('td-mo', sum('m'));
+  if (d) I('td-molbl').textContent = 'This Month · ' + MNAME[+d.slice(5, 7) - 1];
+  I('td-count').textContent = rows.length; I('td-wl').textContent = rows.length ? '(' + w + '↑ ' + l + '↓)' : '';
   I('td-pts').textContent = rows.length ? fr(net) : '₹0';
   I('td-hero').className = 'td-hero' + (rows.length ? (net >= 0 ? ' up' : ' down') : '');
   I('td-wlbar').style.width = rows.length ? (w / rows.length * 100) + '%' : '0';
@@ -3657,16 +3731,39 @@ function renderToday(ok) {
     : rows.length ? rows.length + ' strateg' + (rows.length > 1 ? 'ies' : 'y') + ' traded · ' + w + ' in profit · ' + l + ' in loss'
     : 'No strategy triggered yet · Updated after market hours';
   I('shareBtn').disabled = !rows.length;
-  const idle = TD_INFO.idleNames || [];
-  I('td-idle-wrap').style.display = idle.length && rows.length ? 'block' : 'none';
-  I('td-idle').innerHTML = idle.map(n => '<span>' + esc(n) + '</span>').join('');
   I('td-empty').style.display = 'none';
-  if (!rows.length) { I('td-table-wrap').style.display = 'none'; return; }
+  if (!TD_M) { I('td-table-wrap').style.display = 'none'; return; }
   I('td-table-wrap').style.display = 'block';
-  const catPill = c => { const s = /non/i.test(c) ? 'rgba(124,58,237,0.1);color:var(--purple)' : /sell/i.test(c) ? 'rgba(217,119,6,0.12);color:var(--amber)' : 'rgba(2,132,199,0.1);color:var(--accent)'; return '<span class="pill" style="background:' + s + '">' + esc(c) + '</span>'; };
-  I('td-body').innerHTML = rows.map((r, i) => '<div class="td-card' + (r.pnl > 0 ? '' : ' l') + '" style="animation-delay:' + (i * 0.06) + 's"><div class="td-card-top"><span class="td-card-nm">' + (r.pnl > 0 ? '🟢 ' : '🔴 ') + esc(r.strategy) + '</span></div>' +
-    catPill(r.cat) + '<div class="td-card-val" style="color:' + clr(r.pnl) + '">' + fr(r.pnl) + '</div></div>').join('') +
-    '<div class="td-total"><span>Total · ' + rows.length + ' strateg' + (rows.length > 1 ? 'ies' : 'y') + '</span><b style="color:' + clr(net) + '">' + fr(net) + '</b></div>';
+  /* map sheet columns → groups */
+  const used = new Set(), find = (nm, aka) => { const keys = [nm, ...(aka || [])].map(nk); const i = cols.findIndex((c, j) => !used.has(j) && keys.includes(nk(c.n))); if (i >= 0) used.add(i); return i >= 0 ? cols[i] : null; };
+  const groups = TD_GROUPS.map(g => ({ ...g, rows: g.items.map(([nm, nick, aka]) => ({ nm, nick, c: find(nm, aka) })) }));
+  const extra = cols.filter((c, j) => !used.has(j));
+  if (extra.length) groups.push({ side: 'other', name: 'Other Strategies', rows: extra.map(c => ({ nm: c.n, c })) });
+  const cell = (v, has) => !has ? '<td class="soon">—</td>' : !v ? '<td class="z">0</td>' : '<td style="color:' + clr(v) + '">' + fr(v) + '</td>';
+  const tot = rs => ['d', 'w', 'm'].map(k => rs.reduce((a, r) => a + (r.c ? r.c[k] : 0), 0));
+  const tri = (d, w, m, col) => { const b = v => '<b' + (col ? ' style="color:' + clr(v) + '"' : '') + '>' + fr(v) + '</b>'; return '<span class="td-sh3"><i>Today' + b(d) + '</i><i>Week' + b(w) + '</i><i>Month' + b(m) + '</i></span>'; };
+  const GICON = { 'Basic Option Plan': '🎯', 'Extra Option Buying': '⚡', 'Non-Directional Selling': '⚖️', 'Directional Selling': '🧭', 'Weekly Strategy': '🗓️' };
+  const sideHTML = side => {
+    const gs = groups.filter(g => g.side === side); if (!gs.length) return '';
+    const all = gs.flatMap(g => g.rows), [sd, sw, sm] = tot(all), hasAny = all.some(r => r.c);
+    const head = side === 'other' ? '' : '<div class="td-side-h ' + side + '"><span>' + SIDE_LBL[side] + ' · All</span>' + (hasAny ? tri(sd, sw, sm) : '') + '</div>';
+    return head + gs.map(g => { const [gd, gw, gm] = tot(g.rows), live = g.rows.some(r => r.c);
+      return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
+        '<table class="td-t"><thead><tr><th>Strategy</th><th>Today</th><th>Week</th><th>Month</th></tr></thead><tbody>' +
+        g.rows.map(r => '<tr class="' + (r.c && r.c.d ? 'hot' + (r.c.d < 0 ? ' l' : '') : '') + '"><td class="nm">' + esc(r.nm) + (r.nick ? '<small>' + esc(r.nick) + '</small>' : '') + '</td>' + cell(r.c && r.c.d, !!r.c) + cell(r.c && r.c.w, !!r.c) + cell(r.c && r.c.m, !!r.c) + '</tr>').join('') +
+        '</tbody></table></div>'; }).join('');
+  };
+  I('td-side-buy').innerHTML = sideHTML('buy');
+  /* highlights card fills the Selling column */
+  const live = cols.filter(c => c.m || c.w || c.d);
+  const top = live.slice().sort((a, b) => b.m - a.m).filter(c => c.m > 0).slice(0, 5), mx = Math.max(1, ...top.map(c => c.m));
+  const star = live.slice().sort((a, b) => b.w - a.w)[0];
+  const hl = top.length ? '<div class="td-gcard hl"><div class="td-gcard-h"><span>🏆 Top Performers<small>All strategies · this month · per lot</small></span></div>' +
+    (star && star.w > 0 ? '<div class="td-star">⭐ Star of the week<b>' + esc(star.n) + '</b><em>' + fr(star.w) + '</em></div>' : '') +
+    '<div class="td-top">' + top.map((c, i) => '<div class="td-top-r"><span class="td-top-n">' + ['🥇', '🥈', '🥉', '4', '5'][i] + '</span><div class="td-top-b"><div class="td-top-l"><span>' + esc(c.n) + '</span><b>' + fr(c.m) + '</b></div><div class="td-top-bar"><i style="width:' + (c.m / mx * 100).toFixed(0) + '%"></i></div></div></div>').join('') + '</div></div>' : '';
+  I('td-side-sell').innerHTML = sideHTML('sell') + hl;
+  I('td-side-other').innerHTML = sideHTML('other');
+  I('td-ttl').textContent = 'Strategy-wise P&L · Week from ' + fmtDay(TD_M.wkStart);
 }
 
 /* ── SHARE CARD (PNG) ── */
