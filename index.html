@@ -591,26 +591,30 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 </div>
 
 <style>
-.td-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;padding:30px 32px;border-radius:20px;margin-bottom:22px;color:#fff;background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 55%,#0369a1 100%);box-shadow:0 18px 40px -18px rgba(2,132,199,0.55)}
-.td-hero::after{content:'';position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.28),transparent 70%);pointer-events:none}
-.td-hero.up{background:linear-gradient(135deg,#052e2b 0%,#065f46 55%,#059669 100%);box-shadow:0 18px 40px -18px rgba(5,150,105,0.6)}
-.td-hero.down{background:linear-gradient(135deg,#2a0a0a 0%,#7f1d1d 55%,#b91c1c 100%);box-shadow:0 18px 40px -18px rgba(220,38,38,0.55)}
-.td-live{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:5px 12px;border-radius:999px;font-family:var(--mono);font-size:0.78em;font-weight:700;letter-spacing:1.5px}
+.td-hero{background:var(--surface);border:2px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:22px;box-shadow:0 14px 30px -18px rgba(15,23,42,0.35)}
+.td-hero-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:16px 24px;background:#0f172a;color:#fff}
+.td-live{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.22);padding:5px 12px;border-radius:999px;font-family:var(--mono);font-size:0.8em;font-weight:700;letter-spacing:1.5px;color:#e2e8f0}
 .td-dot{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,0.7);animation:tdpulse 1.6s infinite}
 @keyframes tdpulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,0.7)}70%{box-shadow:0 0 0 10px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
-.td-hero-lbl{margin-top:16px;font-size:0.95em;opacity:0.8;font-weight:600;text-transform:uppercase;letter-spacing:1px}
-.td-hero-val{font-family:var(--mono);font-weight:800;font-size:3.6em;line-height:1.05;letter-spacing:-1.5px;margin:4px 0 6px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,0.25)}
-.td-hero-sub{font-size:1.08em;opacity:0.9}
-.td-wl{margin-top:16px;height:10px;border-radius:999px;background:rgba(239,68,68,0.85);overflow:hidden;max-width:420px}
-.td-wl-bar{height:100%;width:0;background:#4ade80;border-radius:999px;transition:width .8s ease}
-.td-hero-r{display:grid;grid-template-columns:1fr;gap:12px;position:relative;z-index:1}
-.td-stat{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.16);border-radius:14px;padding:16px 18px;backdrop-filter:blur(4px)}
-.td-stat b{display:block;font-family:var(--mono);font-size:2.2em;line-height:1.1}
-.td-stat span{font-size:0.9em;opacity:0.85;font-weight:600}
-.td-stat.g b{color:#4ade80}.td-stat.r b{color:#fca5a5}.td-stat.m b{color:#c4b5fd}
-.td-stat{display:flex;justify-content:space-between;align-items:center;gap:10px}
-.td-stat b{font-size:1.65em!important;order:2}
-.td-stat span em{font-style:normal;opacity:0.75;font-size:0.9em}
+.td-hero-body{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;align-items:center;padding:22px 24px 24px}
+.td-hero-lbl{font-size:0.9em;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:1px}
+.td-hero-val{display:inline-block;font-family:var(--mono);font-weight:800;font-size:3.2em;line-height:1.1;letter-spacing:-1px;margin:8px 0 10px;padding:6px 18px;border-radius:14px;color:#fff;background:#64748b}
+.td-hero.up .td-hero-val{background:#059669;box-shadow:0 10px 22px -12px rgba(5,150,105,0.9)}
+.td-hero.down .td-hero-val{background:#dc2626;box-shadow:0 10px 22px -12px rgba(220,38,38,0.9)}
+.td-hero-sub{font-size:1.1em;color:var(--muted2);font-weight:600}
+.td-wl{margin-top:14px;height:10px;border-radius:999px;background:#fca5a5;overflow:hidden;max-width:420px}
+.td-wl-bar{height:100%;width:0;background:#059669;border-radius:999px;transition:width .8s ease}
+.td-hero-r{display:flex;flex-direction:column;gap:12px}
+.td-stat{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;border-radius:12px;background:var(--surface2);border:1.5px solid var(--border);border-left:7px solid #94a3b8}
+.td-stat span{font-size:1.12em;font-weight:800;color:var(--text)}
+.td-stat span em{font-style:normal;color:var(--muted);font-size:0.85em;font-weight:600}
+.td-stat b{font-family:var(--mono);font-size:1.4em;font-weight:800;padding:4px 12px;border-radius:8px;color:#fff;background:#64748b;white-space:nowrap;order:2}
+.td-stat.pos{background:rgba(5,150,105,0.1);border-color:rgba(5,150,105,0.45);border-left-color:#059669}
+.td-stat.pos b{background:#059669}
+.td-stat.neg{background:rgba(220,38,38,0.08);border-color:rgba(220,38,38,0.4);border-left-color:#dc2626}
+.td-stat.neg b{background:#dc2626}
+.td-stat.cnt{background:rgba(2,132,199,0.06);border-color:rgba(2,132,199,0.3);border-left-color:var(--accent)}
+.td-stat.cnt b{background:var(--accent)}
 .td-board{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
 .td-side{display:flex;flex-direction:column;gap:16px}
 .td-side-h{border-radius:14px}
@@ -711,7 +715,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .td-cta a:hover{background:#16a34a}
 #page-performance .section-title{font-size:2.2em}
 #page-performance .section-sub{font-size:1.05em}
-@media(max-width:900px){.td-hero{grid-template-columns:1fr;padding:24px 20px}.td-hero-val{font-size:2.7em}.td-stat b{font-size:1.7em}#page-performance .section-title{font-size:1.7em}.td-cta{flex-direction:column;align-items:stretch;text-align:center}}
+@media(max-width:900px){.td-hero-body{grid-template-columns:1fr;padding:18px}.td-hero-val{font-size:2.4em}.td-hero-top{padding:14px 18px}#page-performance .section-title{font-size:1.7em}.td-cta{flex-direction:column;align-items:stretch;text-align:center}}
 .td-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
 .share-btn{padding:6px 14px;background:#25d366;border:none;border-radius:7px;font-family:var(--font);font-size:0.78em;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px}
 .share-btn:hover{background:#16a34a}
@@ -829,8 +833,9 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 
   <!-- HERO -->
   <div class="td-hero" id="td-hero">
+    <div class="td-hero-top"><span class="td-snap-brand">Algo<b>Tamil</b></span><div class="td-live"><span class="td-dot"></span><span id="td-livetxt">LIVE · TODAY</span></div></div>
+    <div class="td-hero-body">
     <div class="td-hero-l">
-      <div class="td-live"><span class="td-dot"></span><span id="td-livetxt">LIVE · TODAY</span></div>
       <div class="td-hero-lbl">Net P&amp;L per lot</div>
       <div class="td-hero-val" id="td-pts">—</div>
       <div class="td-hero-sub" id="td-herosub">Loading today's results…</div>
@@ -840,6 +845,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
       <div class="td-stat"><b id="td-wk">—</b><span>This Week</span></div>
       <div class="td-stat"><b id="td-mo">—</b><span id="td-molbl">This Month</span></div>
       <div class="td-stat"><b id="td-count">—</b><span>Traded Today <em id="td-wl"></em></span></div>
+    </div>
     </div>
   </div>
 
@@ -3760,10 +3766,10 @@ function renderToday(ok) {
   I('td-livetxt').textContent = isToday ? 'LIVE · TODAY' : d ? 'LAST SESSION · ' + fmtDay(d).toUpperCase() : 'LIVE';
   const rows = TODAY, net = rows.reduce((a, r) => a + r.pnl, 0), w = rows.filter(r => r.pnl > 0).length, l = rows.length - w;
   const cols = TD_M ? TD_M.cols : [], sum = k => cols.reduce((a, c) => a + c[k], 0);
-  const setV = (id, v) => { I(id).textContent = TD_M ? fr(v) : '—'; I(id).style.color = TD_M ? (v > 0 ? '#4ade80' : v < 0 ? '#fca5a5' : '#fff') : ''; };
+  const setV = (id, v) => { I(id).textContent = TD_M ? fr(v) : '—'; I(id).parentNode.className = 'td-stat' + (TD_M && v ? (v > 0 ? ' pos' : ' neg') : ''); };
   setV('td-wk', sum('w')); setV('td-mo', sum('m'));
   if (d) I('td-molbl').textContent = 'This Month · ' + MNAME[+d.slice(5, 7) - 1];
-  I('td-count').textContent = rows.length; I('td-wl').textContent = rows.length ? '(' + w + '↑ ' + l + '↓)' : '';
+  I('td-count').textContent = rows.length; I('td-count').parentNode.className = 'td-stat cnt'; I('td-wl').textContent = rows.length ? '(' + w + '↑ ' + l + '↓)' : '';
   I('td-pts').textContent = rows.length ? fr(net) : '₹0';
   I('td-hero').className = 'td-hero' + (rows.length ? (net >= 0 ? ' up' : ' down') : '');
   I('td-wlbar').style.width = rows.length ? (w / rows.length * 100) + '%' : '0';
