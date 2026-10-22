@@ -694,6 +694,16 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .td-snap-none small{display:block;margin-top:4px;font-weight:500;font-size:0.82em;color:var(--muted)}
 .td-snap-f{padding:10px 22px;background:var(--surface2);font-size:0.78em;color:var(--muted);text-align:center;font-family:var(--mono)}
 @media(max-width:700px){.td-snap-net{text-align:left}.td-snap-ttl{display:block;margin-top:2px}.td-snap-cols{grid-template-columns:1fr}.td-snap-col.buy{border-right:none;border-bottom:2px solid var(--border2)}.td-snap-net b{font-size:1.7em}.td-snap-h{padding:16px 18px}}
+.shm{position:fixed;inset:0;z-index:999;background:rgba(15,23,42,0.6);display:flex;align-items:center;justify-content:center;padding:16px}
+.shm-box{background:var(--surface);border-radius:18px;max-width:560px;width:100%;max-height:92vh;overflow:auto;box-shadow:0 30px 60px -20px rgba(0,0,0,0.5)}
+.shm-h{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;font-weight:800;font-size:1.1em;border-bottom:1px solid var(--border)}
+.shm-h button{border:none;background:var(--surface2);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:1em}
+.shm-prev{padding:14px;background:var(--surface2)}
+.shm-prev img{width:100%;border-radius:10px;display:block;box-shadow:0 6px 16px -8px rgba(0,0,0,0.3)}
+.shm-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:16px 18px 6px}
+.shm-btns button{padding:13px;border:none;border-radius:11px;font-family:var(--font);font-weight:800;font-size:1em;cursor:pointer;color:#fff}
+.shm-btns .wa{background:#25d366}.shm-btns .tg{background:#229ed9}.shm-btns .dl{background:#0f172a}.shm-btns .cp{background:#7c3aed}.shm-btns .nt{grid-column:1/-1;background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.shm-note{padding:6px 18px 16px;font-size:0.78em;color:var(--muted);margin:0}
 .td-sec{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 2px 12px;font-weight:800;font-size:1.15em;color:var(--text)}
 .td-sec small{font-weight:500;font-size:0.72em;color:var(--muted);font-family:var(--mono)}
 .td-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:22px}
@@ -825,13 +835,14 @@ tr:hover td{background:rgba(0,0,0,0.025)}
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
         Refresh
       </button>
-      <button class="share-btn" id="shareBtn" onclick="shareToday()" disabled>📤 Share</button>
+      <button class="share-btn" id="shareBtn" onclick="shareToday()" disabled>📤 Share Image</button>
     </div>
   </div>
 
   <div id="errorBox" style="display:none"></div>
 
   <!-- HERO -->
+  <div id="td-capture">
   <div class="td-hero" id="td-hero">
     <div class="td-hero-top"><span class="td-snap-brand">Algo<b>Tamil</b></span><div class="td-live"><span class="td-dot"></span><span id="td-livetxt">LIVE · TODAY</span></div></div>
     <div class="td-hero-body">
@@ -860,6 +871,21 @@ tr:hover td{background:rgba(0,0,0,0.025)}
       <div class="td-snap-col sell"><div class="td-snap-ch"><span>📉 Option Selling</span><b id="td-snap-st">—</b></div><div id="td-snap-sell"></div></div>
     </div>
     <div class="td-snap-f">algotamil.com · ₹ per lot · Live account · Not SEBI registered · Past performance ≠ future results</div>
+  </div>
+  </div><!-- /td-capture -->
+  <div class="shm" id="shm" style="display:none" onclick="if(event.target===this)shmClose()">
+    <div class="shm-box">
+      <div class="shm-h"><span>Share Today's P&amp;L</span><button onclick="shmClose()" aria-label="Close">✕</button></div>
+      <div class="shm-prev"><img id="shm-img" alt="P&amp;L image preview"></div>
+      <div class="shm-btns">
+        <button class="wa" onclick="shmApp('wa')">💬 WhatsApp</button>
+        <button class="tg" onclick="shmApp('tg')">✈️ Telegram</button>
+        <button class="dl" onclick="shmDownload()">⬇️ Download PNG</button>
+        <button class="cp" id="shm-copy" onclick="shmCopy()">📋 Copy Image</button>
+        <button class="nt" onclick="shmNative()">📤 More apps…</button>
+      </div>
+      <p class="shm-note">On mobile, WhatsApp/Telegram open with the image attached. On desktop the image downloads and the app opens — attach it from Downloads, or use Copy Image and paste.</p>
+    </div>
   </div>
 
   <div id="td-empty" class="empty-card" style="display:none"></div>
@@ -3824,45 +3850,46 @@ function renderToday(ok) {
 }
 
 /* ── SHARE CARD (PNG) ── */
-async function shareToday() {
-  if (!TODAY.length) return;
-  const rows = TODAY.slice(0, 10), W = 1080, H = 420 + rows.length * 70;
-  const c = document.createElement('canvas'); c.width = W; c.height = H;
-  const x = c.getContext('2d');
-  x.fillStyle = '#0f172a'; x.fillRect(0, 0, W, H);
-  x.fillStyle = '#0284c7'; x.fillRect(0, 0, W, 10);
-  x.textBaseline = 'middle';
-  x.fillStyle = '#fff'; x.font = '800 52px Outfit, sans-serif'; x.fillText('Algo', 60, 90);
-  const aw = x.measureText('Algo').width; x.fillStyle = '#38bdf8'; x.fillText('Tamil', 60 + aw, 90);
-  x.fillStyle = '#94a3b8'; x.font = '500 30px Outfit, sans-serif';
-  x.fillText('Strategy P&L · ' + fmtDay(TD_INFO.date || istToday()), 60, 150);
-  let y = 230;
-  x.font = '600 24px Outfit, sans-serif'; x.fillStyle = '#64748b';
-  x.fillText('STRATEGY', 60, y); x.textAlign = 'right'; x.fillText('P&L / LOT', W - 60, y); x.textAlign = 'left';
-  y += 20; x.fillStyle = '#1e293b'; x.fillRect(60, y, W - 120, 2);
-  rows.forEach(r => {
-    y += 70;
-    x.fillStyle = '#e2e8f0'; x.font = '600 32px Outfit, sans-serif'; x.fillText(r.strategy.slice(0, 32), 60, y - 8);
-    x.fillStyle = '#64748b'; x.font = '400 22px Outfit, sans-serif'; x.fillText(String(r.cat || '').slice(0, 50), 60, y + 22);
-    x.textAlign = 'right'; x.font = '700 36px "IBM Plex Mono", monospace';
-    x.fillStyle = r.pnl > 0 ? '#34d399' : '#f87171';
-    x.fillText(fr(r.pnl), W - 60, y); x.textAlign = 'left';
-  });
-  const net = TODAY.reduce((a, r) => a + r.pnl, 0);
-  y += 70; x.fillStyle = '#1e293b'; x.fillRect(60, y - 30, W - 120, 2);
-  x.fillStyle = '#fff'; x.font = '800 36px Outfit, sans-serif'; x.fillText('Net P&L', 60, y + 10);
-  x.textAlign = 'right'; x.fillStyle = net >= 0 ? '#34d399' : '#f87171'; x.font = '800 44px "IBM Plex Mono", monospace'; x.fillText(fr(net), W - 60, y + 10); x.textAlign = 'left';
-  x.fillStyle = '#64748b'; x.font = '400 20px Outfit, sans-serif';
-  x.fillText('algotamil.com · Not SEBI registered · Educational only · Past performance ≠ future results', 60, H - 40);
-
-  const blob = await new Promise(res => c.toBlob(res, 'image/png'));
-  const file = new File([blob], 'algotamil-' + istToday() + '.png', { type: 'image/png' });
-  try {
-    if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: 'Algo Tamil · Today' }); return; }
-  } catch (e) { if (e && e.name === 'AbortError') return; }
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name;
-  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+/* capture Hero + Today's Trades as one PNG → share / download */
+let SHARE_BLOB = null;
+function loadH2C() {
+  return window.html2canvas ? Promise.resolve() : new Promise((ok, no) => { const s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s.onload = ok; s.onerror = () => no(new Error('Image library failed to load')); document.head.appendChild(s); });
 }
+async function shareToday() {
+  const btn = I('shareBtn'), old = btn.textContent;
+  btn.disabled = true; btn.textContent = '⏳ Preparing…';
+  try {
+    await loadH2C();
+    const el = I('td-capture');
+    const canvas = await html2canvas(el, { scale: Math.min(2, window.devicePixelRatio || 2) * 1.25, backgroundColor: '#eef2f7', useCORS: true, logging: false,
+      onclone: d => { const c = d.getElementById('td-capture'); c.style.padding = '18px'; c.style.width = '1200px'; d.querySelectorAll('.td-dot').forEach(x => x.style.animation = 'none'); } });
+    SHARE_BLOB = await new Promise(res => canvas.toBlob(res, 'image/png'));
+    I('shm-img').src = URL.createObjectURL(SHARE_BLOB);
+    I('shm').style.display = 'flex';
+  } catch (e) { alertBox('Could not create image: ' + e.message); }
+  btn.disabled = false; btn.textContent = old;
+}
+function alertBox(m) { const b = I('errorBox'); b.style.display = 'block'; b.innerHTML = '<div class="error-card"><strong>⚠ Share</strong>' + esc(m) + '</div>'; }
+const shareName = () => 'AlgoTamil-PnL-' + (TD_INFO.date || istToday()) + '.png';
+const shareText = () => 'Algo Tamil · Live Strategy P&L · ' + fmtDay(TD_INFO.date || istToday()) + '\n' + location.origin + location.pathname;
+async function shmNative() {
+  const f = new File([SHARE_BLOB], shareName(), { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], title: 'Algo Tamil P&L', text: shareText() }); } catch (e) {} }
+  else { shmDownload(); alertBox('Direct sharing is not supported in this browser — image downloaded. Attach it in WhatsApp / Telegram.'); }
+}
+function shmDownload() { const a = document.createElement('a'); a.href = URL.createObjectURL(SHARE_BLOB); a.download = shareName(); document.body.appendChild(a); a.click(); a.remove(); }
+async function shmApp(app) {
+  const f = new File([SHARE_BLOB], shareName(), { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], text: shareText() }); return; } catch (e) { if (e.name === 'AbortError') return; } }
+  shmDownload();
+  const t = encodeURIComponent(shareText());
+  window.open(app === 'wa' ? 'https://wa.me/?text=' + t : 'https://t.me/share/url?url=' + encodeURIComponent(location.origin + location.pathname) + '&text=' + t, '_blank', 'noopener');
+}
+async function shmCopy() {
+  try { await navigator.clipboard.write([new ClipboardItem({ 'image/png': SHARE_BLOB })]); I('shm-copy').textContent = '✅ Copied'; setTimeout(() => I('shm-copy').textContent = '📋 Copy Image', 1800); }
+  catch (e) { I('shm-copy').textContent = 'Not supported'; }
+}
+function shmClose() { I('shm').style.display = 'none'; }
 
 /* ── BACKTEST ── */
 /* ════════════════════════════════════════════════
