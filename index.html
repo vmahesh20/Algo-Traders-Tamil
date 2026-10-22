@@ -668,6 +668,28 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .td-t .z{color:#94a3b8;font-weight:500;font-size:1em}
 .td-t .soon{color:var(--muted);font-family:var(--font);font-weight:500;font-size:0.85em}
 @media(max-width:900px){.td-board{grid-template-columns:1fr}.td-t td{font-size:1.02em;padding:12px 6px}.td-t td.nm{font-size:0.98em}.td-t th{padding:8px}.td-t th:first-child,.td-t td:first-child{padding-left:14px}.td-t td:last-child,.td-t th:last-child{padding-right:14px}}
+.td-snap{background:var(--surface);border:2px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:24px;box-shadow:0 14px 30px -18px rgba(15,23,42,0.35)}
+.td-snap-h{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 24px;background:#0f172a;color:#fff;flex-wrap:wrap}
+.td-snap-brand{font-weight:900;font-size:1.5em;letter-spacing:-0.5px;margin-right:12px}
+.td-snap-brand b{color:#38bdf8}
+.td-snap-ttl{font-size:1.1em;font-weight:600;color:#cbd5e1}
+.td-snap-net{text-align:right}
+.td-snap-net small{display:block;font-size:0.75em;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.td-snap-net b{font-family:var(--mono);font-size:2.1em;line-height:1.1}
+.td-snap-cols{display:grid;grid-template-columns:1fr 1fr}
+.td-snap-col{padding:16px 22px 18px}
+.td-snap-col.buy{border-right:2px solid var(--border2)}
+.td-snap-ch{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-bottom:10px;margin-bottom:6px;border-bottom:3px solid var(--accent);font-weight:800;font-size:1.25em;color:var(--text)}
+.td-snap-col.sell .td-snap-ch{border-bottom-color:var(--purple)}
+.td-snap-ch b{font-family:var(--mono);font-size:1.05em}
+.td-snap-r{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px;padding:14px 16px;border-radius:12px;font-size:1.2em;font-weight:800;color:var(--text);background:rgba(5,150,105,0.1);border:1.5px solid rgba(5,150,105,0.45);border-left:7px solid #059669}
+.td-snap-r.l{background:rgba(220,38,38,0.08);border-color:rgba(220,38,38,0.4);border-left-color:#dc2626}
+.td-snap-r b{font-family:var(--mono);font-size:1.2em;white-space:nowrap;padding:4px 10px;border-radius:8px;color:#fff!important;background:#059669}
+.td-snap-r.l b{background:#dc2626}
+.td-snap-none{margin-top:10px;padding:16px;border-radius:12px;background:var(--surface2);border:1.5px dashed var(--border);color:var(--muted2);font-weight:700;font-size:1.08em}
+.td-snap-none small{display:block;margin-top:4px;font-weight:500;font-size:0.82em;color:var(--muted)}
+.td-snap-f{padding:10px 22px;background:var(--surface2);font-size:0.78em;color:var(--muted);text-align:center;font-family:var(--mono)}
+@media(max-width:700px){.td-snap-net{text-align:left}.td-snap-ttl{display:block;margin-top:2px}.td-snap-cols{grid-template-columns:1fr}.td-snap-col.buy{border-right:none;border-bottom:2px solid var(--border2)}.td-snap-net b{font-size:1.7em}.td-snap-h{padding:16px 18px}}
 .td-sec{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 2px 12px;font-weight:800;font-size:1.15em;color:var(--text)}
 .td-sec small{font-weight:500;font-size:0.72em;color:var(--muted);font-family:var(--mono)}
 .td-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:22px}
@@ -819,6 +841,19 @@ tr:hover td{background:rgba(0,0,0,0.025)}
       <div class="td-stat"><b id="td-mo">—</b><span id="td-molbl">This Month</span></div>
       <div class="td-stat"><b id="td-count">—</b><span>Traded Today <em id="td-wl"></em></span></div>
     </div>
+  </div>
+
+  <!-- TODAY'S TRADES — screenshot card -->
+  <div class="td-snap" id="td-snap" style="display:none">
+    <div class="td-snap-h">
+      <div><span class="td-snap-brand">Algo<b>Tamil</b></span><span class="td-snap-ttl" id="td-snap-ttl">Today's Trades</span></div>
+      <div class="td-snap-net"><small>Net P&amp;L / lot</small><b id="td-snap-net">—</b></div>
+    </div>
+    <div class="td-snap-cols">
+      <div class="td-snap-col buy"><div class="td-snap-ch"><span>📈 Option Buying</span><b id="td-snap-bt">—</b></div><div id="td-snap-buy"></div></div>
+      <div class="td-snap-col sell"><div class="td-snap-ch"><span>📉 Option Selling</span><b id="td-snap-st">—</b></div><div id="td-snap-sell"></div></div>
+    </div>
+    <div class="td-snap-f">algotamil.com · ₹ per lot · Live account · Not SEBI registered · Past performance ≠ future results</div>
   </div>
 
   <div id="td-empty" class="empty-card" style="display:none"></div>
@@ -3737,6 +3772,16 @@ function renderToday(ok) {
     : rows.length ? rows.length + ' strateg' + (rows.length > 1 ? 'ies' : 'y') + ' traded · ' + w + ' in profit · ' + l + ' in loss'
     : 'No strategy triggered yet · Updated after market hours';
   I('shareBtn').disabled = !rows.length;
+  /* screenshot card */
+  const isSell = r => /sell/i.test(r.cat || '');
+  const snapCol = (list, kind) => list.length ? list.map(r => '<div class="td-snap-r' + (r.pnl > 0 ? '' : ' l') + '"><span>' + esc(r.strategy) + '</span><b>' + fr(r.pnl) + '</b></div>').join('') : '<div class="td-snap-none">⏸️ No ' + kind + ' strategy triggered today<small>Entry conditions not met — rules followed, no forced trades</small></div>';
+  const bl = rows.filter(r => !isSell(r)), sl = rows.filter(isSell), bt = bl.reduce((a, r) => a + r.pnl, 0), st = sl.reduce((a, r) => a + r.pnl, 0);
+  I('td-snap').style.display = rows.length ? 'block' : 'none';
+  I('td-snap-ttl').textContent = "Today's Trades · " + (d ? fmtDay(d) : '');
+  I('td-snap-net').textContent = fr(net); I('td-snap-net').style.color = net >= 0 ? '#4ade80' : '#f87171';
+  I('td-snap-buy').innerHTML = snapCol(bl, 'Option Buying'); I('td-snap-sell').innerHTML = snapCol(sl, 'Option Selling');
+  I('td-snap-bt').textContent = bl.length ? fr(bt) : '—'; I('td-snap-bt').style.color = bl.length ? clr(bt) : 'var(--muted)';
+  I('td-snap-st').textContent = sl.length ? fr(st) : '—'; I('td-snap-st').style.color = sl.length ? clr(st) : 'var(--muted)';
   I('td-empty').style.display = 'none';
   if (!TD_M) { I('td-table-wrap').style.display = 'none'; return; }
   I('td-table-wrap').style.display = 'block';
