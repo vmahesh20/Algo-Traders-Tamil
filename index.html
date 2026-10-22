@@ -555,6 +555,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
     <li class="mob-close-li" style="list-style:none"><button class="mob-close" onclick="closeNav()" aria-label="Close menu">✕</button></li>
     <li><a href="#" id="nav-performance" class="active" onclick="showPage('performance');closeNav();return false">📊 Today</a></li>
     <li><a href="#" id="nav-backtest" onclick="showPage('backtest');closeNav();return false">📈 Backtest</a></li>
+    <li><a href="#" id="nav-strategies" onclick="showPage('strategies');closeNav();return false">🧩 Strategy Hub</a></li>
     <li><a href="#" id="nav-plans" onclick="showPage('plans');closeNav();return false">💳 Plans</a></li>
     <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');closeNav();return false">⭐ Reviews</a></li>
     <li><a href="#" id="nav-faq" onclick="showPage('faq');closeNav();return false">❓ FAQ</a></li>
@@ -704,6 +705,45 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .shm-btns button{padding:13px;border:none;border-radius:11px;font-family:var(--font);font-weight:800;font-size:1em;cursor:pointer;color:#fff}
 .shm-btns .wa{background:#25d366}.shm-btns .tg{background:#229ed9}.shm-btns .dl{background:#0f172a}.shm-btns .cp{background:#7c3aed}.shm-btns .nt{grid-column:1/-1;background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 .shm-note{padding:6px 18px 16px;font-size:0.78em;color:var(--muted);margin:0}
+
+/* ═══ STRATEGY HUB ═══ */
+.sr-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:26px}
+.sr-kpi{background:var(--surface);border:1.5px solid var(--border);border-left:7px solid var(--accent);border-radius:14px;padding:16px 18px}
+.sr-kpi.sell{border-left-color:var(--purple)}
+.sr-kpi small{display:block;font-weight:700;color:var(--muted2);font-size:0.88em}
+.sr-kpi b{display:block;font-family:var(--mono);font-size:1.9em;margin:4px 0;color:var(--text)}
+.sr-kpi span{font-size:0.88em;color:var(--muted)}
+.sr-sec{margin-bottom:26px}
+.sr-sec-h{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 20px;border-radius:14px;color:#fff;font-weight:800;font-size:1.25em;margin-bottom:14px;background:linear-gradient(90deg,#0369a1,#0284c7)}
+.sr-sec-h.sell{background:linear-gradient(90deg,#6d28d9,#7c3aed)}
+.sr-sum{font-family:var(--mono);font-size:0.72em;background:rgba(255,255,255,0.18);padding:5px 12px;border-radius:9px}
+.sr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.sr-card{background:var(--surface);border:1.5px solid var(--border);border-top:5px solid var(--accent);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 6px 16px -12px rgba(15,23,42,0.3)}
+.sr-card.sell{border-top-color:var(--purple)}
+.sr-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.sr-nm{font-weight:800;font-size:1.25em;color:var(--text)}
+.sr-nick{font-size:0.85em;color:var(--muted);font-weight:600}
+.sr-cap{text-align:right}
+.sr-cap small{display:block;font-size:0.7em;color:var(--muted);text-transform:uppercase;letter-spacing:0.6px;font-weight:700}
+.sr-cap b{display:inline-block;margin-top:3px;font-family:var(--mono);font-size:1.15em;color:#fff;background:#059669;padding:4px 10px;border-radius:8px;white-space:nowrap}
+.sr-card.sell .sr-cap b{background:#7c3aed}
+.sr-tags{display:flex;flex-wrap:wrap;gap:6px}
+.sr-tag{font-size:0.78em;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--surface2);color:var(--muted2);border:1px solid var(--border)}
+.sr-tag.buy{background:rgba(2,132,199,0.1);color:var(--accent);border-color:rgba(2,132,199,0.3)}
+.sr-tag.sell{background:rgba(124,58,237,0.1);color:var(--purple);border-color:rgba(124,58,237,0.3)}
+.sr-tag.hg{background:rgba(5,150,105,0.1);color:var(--green);border-color:rgba(5,150,105,0.3)}
+.sr-tag.nh{background:rgba(217,119,6,0.1);color:var(--amber);border-color:rgba(217,119,6,0.3)}
+.sr-meta{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sr-meta div{background:var(--surface2);border-radius:10px;padding:9px 10px;text-align:center}
+.sr-meta small{display:block;font-size:0.7em;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.4px}
+.sr-meta b{font-family:var(--mono);font-size:1.05em;color:var(--text)}
+.sr-btn{margin-top:auto;text-align:center;text-decoration:none;font-weight:800;padding:11px;border-radius:10px;background:#0f172a;color:#fff;transition:.15s}
+.sr-btn:hover{background:var(--accent)}
+.sr-card.sell .sr-btn:hover{background:var(--purple)}
+.sr-note{background:rgba(217,119,6,0.07);border:1px solid rgba(217,119,6,0.3);border-radius:14px;padding:16px 20px;color:var(--muted2);line-height:1.7}
+.sr-note strong{color:var(--amber);font-size:1.05em}
+.sr-note ul{margin:6px 0 0;padding-left:20px}
+@media(max-width:900px){.sr-kpis{grid-template-columns:1fr}.sr-grid{grid-template-columns:1fr}}
 .td-sec{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 2px 12px;font-weight:800;font-size:1.15em;color:var(--text)}
 .td-sec small{font-weight:500;font-size:0.72em;color:var(--muted);font-family:var(--mono)}
 .td-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:22px}
@@ -4529,7 +4569,8 @@ const PAGE_HASHES = {
   'faq': '#faq',
   'sebi-disc': '#sebi',
   'contact': '#contact',
-  'backtest': '#backtest'
+  'backtest': '#backtest',
+  'strategies': '#strategies'
 };
 const HASH_PAGES = {
   '#performance': 'performance',
@@ -4538,7 +4579,8 @@ const HASH_PAGES = {
   '#faq': 'faq',
   '#sebi': 'sebi-disc',
   '#contact': 'contact',
-  '#backtest': 'backtest'
+  '#backtest': 'backtest',
+  '#strategies': 'strategies'
 };
 
 function showPage(id) {
@@ -4695,6 +4737,81 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 </div><!-- /page-performance -->
+
+
+<!-- ═══ PAGE: STRATEGY HUB ═══ -->
+<div class="page-section" id="page-strategies">
+<div class="perf-wrap">
+  <div class="section-label">Capital &amp; Deployment Guide</div>
+  <div class="section-title">Strategy Hub</div>
+  <p class="section-sub">Minimum capital, premium range, segment and Quantman credits needed to run each strategy — per lot.</p>
+
+  <div class="sr-kpis">
+    <div class="sr-kpi buy"><small>🎯 Basic Option Plan · 6 strategies</small><b>₹1,10,000</b><span>7 Quantman credits</span></div>
+    <div class="sr-kpi buy"><small>⚡ Extra Option Buying · 3 strategies</small><b>₹60,000</b><span>4 Quantman credits</span></div>
+    <div class="sr-kpi sell"><small>📉 Option Selling · 6 strategies</small><b>₹70K – ₹2.8L</b><span>per strategy · 8 credits for all</span></div>
+  </div>
+
+  <div class="sr-sec"><div class="sr-sec-h buy"><span>🎯 Basic Option Plan</span><span class="sr-sum">Total ₹1,10,000 · 7 credits</span></div><div class="sr-grid"><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Nifty CE</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹15,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Nifty</span><span class="sr-tag">CE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>220</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/1163?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Nifty PE</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹15,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Nifty</span><span class="sr-tag">PE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>220</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/1164?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Sensex CE</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹15,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Sensex</span><span class="sr-tag">CE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>700</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Sensex</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/1161?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Sensex PE</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹15,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Sensex</span><span class="sr-tag">PE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>700</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Sensex</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/1162?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Bank Nifty CE</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹25,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Bank Nifty</span><span class="sr-tag">CE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>700</b></div><div><small>Quantman credit</small><b>2</b></div><div><small>Segment</small><b>Bank Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/732?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Bank Nifty PE</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹25,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Bank Nifty</span><span class="sr-tag">PE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>700</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Bank Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/331?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div></div></div>
+  <div class="sr-sec"><div class="sr-sec-h buy"><span>⚡ Extra Option Buying</span><span class="sr-sum">Total ₹60,000 · 4 credits</span></div><div class="sr-grid"><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Sensex CE & PE</div><div class="sr-nick">Thanos</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹15,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Sensex</span><span class="sr-tag">PE for now</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>700</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Sensex</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/733?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Nifty PE 2.0</div><div class="sr-nick">Loki</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹15,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Nifty</span><span class="sr-tag">PE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>220</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/744?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card buy"><div class="sr-top"><div><div class="sr-nm">Nifty Bull Rider</div><div class="sr-nick">High risk · High reward</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹30,000</b></div></div>
+<div class="sr-tags"><span class="sr-tag buy">Option Buying</span><span class="sr-tag">Nifty</span><span class="sr-tag">CE & PE</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>220</b></div><div><small>Quantman credit</small><b>2</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/328?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div></div></div>
+  <div class="sr-sec"><div class="sr-sec-h sell"><span>📉 Option Selling</span><span class="sr-sum">8 credits for all 6</span></div><div class="sr-grid"><div class="sr-card sell"><div class="sr-top"><div><div class="sr-nm">Nifty Selling 2.0</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹2.5L – ₹2.8L</b></div></div>
+<div class="sr-tags"><span class="sr-tag sell">Selling · Non-Directional</span><span class="sr-tag">Nifty</span><span class="sr-tag">CE & PE</span><span class="sr-tag hg">Without Hedge</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>100</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/730?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card sell"><div class="sr-top"><div><div class="sr-nm">Bank Nifty Selling 2.1</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹2.5L – ₹2.8L</b></div></div>
+<div class="sr-tags"><span class="sr-tag sell">Selling · Non-Directional</span><span class="sr-tag">Bank Nifty</span><span class="sr-tag">CE & PE</span><span class="sr-tag hg">Without Hedge</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>ATM</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Bank Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/731?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card sell"><div class="sr-top"><div><div class="sr-nm">Sensex Hedge</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹70K – ₹80K</b></div></div>
+<div class="sr-tags"><span class="sr-tag sell">Selling · Directional</span><span class="sr-tag">Sensex</span><span class="sr-tag">CE or PE</span><span class="sr-tag hg">With Hedge</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>400</b></div><div><small>Quantman credit</small><b>2</b></div><div><small>Segment</small><b>Sensex</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/745?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card sell"><div class="sr-top"><div><div class="sr-nm">Nifty Hedging 60K</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹70K – ₹80K</b></div></div>
+<div class="sr-tags"><span class="sr-tag sell">Selling · Directional</span><span class="sr-tag">Nifty</span><span class="sr-tag">CE or PE</span><span class="sr-tag hg">With Hedge</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>ATM</b></div><div><small>Quantman credit</small><b>2</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/578?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card sell"><div class="sr-top"><div><div class="sr-nm">Nifty Trend Based</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹70K – ₹80K</b></div></div>
+<div class="sr-tags"><span class="sr-tag sell">Selling · Directional</span><span class="sr-tag">Nifty</span><span class="sr-tag">Only PE</span><span class="sr-tag hg">With Hedge</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>ITM 1</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/806?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div><div class="sr-card sell"><div class="sr-top"><div><div class="sr-nm">Nifty Hedging 1.2L</div></div><div class="sr-cap"><small>Min. capital / lot</small><b>₹70K – ₹80K</b></div></div>
+<div class="sr-tags"><span class="sr-tag sell">Selling · Directional</span><span class="sr-tag">Nifty</span><span class="sr-tag">Only CE</span><span class="sr-tag hg">With Hedge</span></div>
+<div class="sr-meta"><div><small>Premium ≈</small><b>150</b></div><div><small>Quantman credit</small><b>1</b></div><div><small>Segment</small><b>Nifty</b></div></div>
+<a class="sr-btn" href="https://aliceblue.quantman.trade/strategies/579?activestrategytype=live" target="_blank" rel="noopener">Open on Quantman ↗</a></div></div></div>
+
+  <div class="sr-note">
+    <strong>📌 Important</strong>
+    <ul>
+      <li>Capital shown is the <b>minimum fund balance required to trigger orders for one lot</b>. Multiply by the number of lots you trade.</li>
+      <li>Nifty Trend Based and Nifty Hedging 1.2L need less capital because they are <b>hedged</b>.</li>
+      <li>Keep an extra buffer for drawdowns, gap openings, slippage and brokerage — future drawdowns can exceed past ones.</li>
+      <li>Premium ≈ is the approximate option premium at entry. Strategy links open on Quantman (Alice Blue).</li>
+    </ul>
+  </div>
+</div>
+</div><!-- /page-strategies -->
 
 <!-- ═══ PAGE: BACKTEST ═══ -->
 <div class="page-section" id="page-backtest">
@@ -5631,6 +5748,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="sebi-footer-links">
           <a href="#" onclick="showPage('performance');return false">Today</a>
           <a href="#" onclick="showPage('backtest');return false">Backtest</a>
+          <a href="#" onclick="showPage('strategies');return false">Strategy Hub</a>
           <a href="#" onclick="showPage('plans');return false">Plans</a>
           <a href="#" onclick="showPage('testimonials');return false">Reviews</a>
           <a href="#" onclick="showPage('faq');return false">FAQ</a>
