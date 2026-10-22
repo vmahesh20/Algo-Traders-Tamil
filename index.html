@@ -591,6 +591,45 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 </div>
 
 <style>
+.td-hero{position:relative;overflow:hidden;display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center;padding:30px 32px;border-radius:20px;margin-bottom:22px;color:#fff;background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 55%,#0369a1 100%);box-shadow:0 18px 40px -18px rgba(2,132,199,0.55)}
+.td-hero::after{content:'';position:absolute;right:-80px;top:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(56,189,248,0.28),transparent 70%);pointer-events:none}
+.td-hero.up{background:linear-gradient(135deg,#052e2b 0%,#065f46 55%,#059669 100%);box-shadow:0 18px 40px -18px rgba(5,150,105,0.6)}
+.td-hero.down{background:linear-gradient(135deg,#2a0a0a 0%,#7f1d1d 55%,#b91c1c 100%);box-shadow:0 18px 40px -18px rgba(220,38,38,0.55)}
+.td-live{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);padding:5px 12px;border-radius:999px;font-family:var(--mono);font-size:0.78em;font-weight:700;letter-spacing:1.5px}
+.td-dot{width:9px;height:9px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 0 rgba(74,222,128,0.7);animation:tdpulse 1.6s infinite}
+@keyframes tdpulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,0.7)}70%{box-shadow:0 0 0 10px rgba(74,222,128,0)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+.td-hero-lbl{margin-top:16px;font-size:0.95em;opacity:0.8;font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.td-hero-val{font-family:var(--mono);font-weight:800;font-size:3.6em;line-height:1.05;letter-spacing:-1.5px;margin:4px 0 6px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,0.25)}
+.td-hero-sub{font-size:1.08em;opacity:0.9}
+.td-wl{margin-top:16px;height:10px;border-radius:999px;background:rgba(239,68,68,0.85);overflow:hidden;max-width:420px}
+.td-wl-bar{height:100%;width:0;background:#4ade80;border-radius:999px;transition:width .8s ease}
+.td-hero-r{display:grid;grid-template-columns:1fr 1fr;gap:12px;position:relative;z-index:1}
+.td-stat{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.16);border-radius:14px;padding:16px 18px;backdrop-filter:blur(4px)}
+.td-stat b{display:block;font-family:var(--mono);font-size:2.2em;line-height:1.1}
+.td-stat span{font-size:0.9em;opacity:0.85;font-weight:600}
+.td-stat.g b{color:#4ade80}.td-stat.r b{color:#fca5a5}.td-stat.m b{color:#c4b5fd}
+.td-sec{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin:6px 2px 12px;font-weight:800;font-size:1.15em;color:var(--text)}
+.td-sec small{font-weight:500;font-size:0.72em;color:var(--muted);font-family:var(--mono)}
+.td-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:22px}
+.td-card{background:var(--surface);border:1px solid var(--border);border-left:6px solid var(--green);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;gap:8px;box-shadow:0 4px 14px -8px rgba(15,23,42,0.18);animation:tdin .45s ease both}
+.td-card.l{border-left-color:var(--red)}
+@keyframes tdin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.td-card-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.td-card-nm{font-weight:800;font-size:1.18em;color:var(--text)}
+.td-card-val{font-family:var(--mono);font-weight:800;font-size:2em;line-height:1.1}
+.td-card .pill{font-size:0.75em;align-self:flex-start}
+.td-total{display:flex;justify-content:space-between;align-items:center;grid-column:1/-1;background:var(--surface2);border:1px dashed var(--border);border-radius:14px;padding:14px 20px;font-weight:800;font-size:1.15em}
+.td-total b{font-family:var(--mono);font-size:1.4em}
+.td-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.td-chips span{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:0.92em;font-weight:600;color:var(--muted2)}
+.td-cta{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:20px 24px;border-radius:16px;background:linear-gradient(90deg,rgba(37,211,102,0.12),rgba(2,132,199,0.08));border:1px solid rgba(37,211,102,0.35);margin-bottom:10px}
+.td-cta strong{display:block;font-size:1.2em;color:var(--text)}
+.td-cta span{font-size:0.95em;color:var(--muted)}
+.td-cta a{background:#25d366;color:#fff;text-decoration:none;font-weight:800;padding:12px 22px;border-radius:12px;font-size:1.02em;box-shadow:0 8px 20px -8px rgba(37,211,102,0.8);white-space:nowrap}
+.td-cta a:hover{background:#16a34a}
+#page-performance .section-title{font-size:2.2em}
+#page-performance .section-sub{font-size:1.05em}
+@media(max-width:900px){.td-hero{grid-template-columns:1fr;padding:24px 20px}.td-hero-val{font-size:2.7em}.td-stat b{font-size:1.7em}#page-performance .section-title{font-size:1.7em}.td-cta{flex-direction:column;align-items:stretch;text-align:center}}
 .td-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
 .share-btn{padding:6px 14px;background:#25d366;border:none;border-radius:7px;font-family:var(--font);font-size:0.78em;font-weight:700;color:#fff;cursor:pointer;display:flex;align-items:center;gap:6px}
 .share-btn:hover{background:#16a34a}
@@ -706,21 +745,36 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 
   <div id="errorBox" style="display:none"></div>
 
-  <div class="kpi-strip">
-    <div class="kpi c"><div class="kpi-lbl">Triggered</div><div class="kpi-val cc" id="td-count">—</div><div class="kpi-sub">Strategies today</div></div>
-    <div class="kpi g"><div class="kpi-lbl">Net P&amp;L</div><div class="kpi-val" id="td-pts">—</div><div class="kpi-sub">All triggered strategies</div></div>
-    <div class="kpi a"><div class="kpi-lbl">In Profit</div><div class="kpi-val cg" id="td-win">—</div><div class="kpi-sub">Strategies</div></div>
-    <div class="kpi r"><div class="kpi-lbl">In Loss</div><div class="kpi-val cr" id="td-loss">—</div><div class="kpi-sub">Strategies</div></div>
-    <div class="kpi p"><div class="kpi-lbl">No Trade</div><div class="kpi-val cp" id="td-open">—</div><div class="kpi-sub">Not triggered</div></div>
+  <!-- HERO -->
+  <div class="td-hero" id="td-hero">
+    <div class="td-hero-l">
+      <div class="td-live"><span class="td-dot"></span><span id="td-livetxt">LIVE · TODAY</span></div>
+      <div class="td-hero-lbl">Net P&amp;L per lot</div>
+      <div class="td-hero-val" id="td-pts">—</div>
+      <div class="td-hero-sub" id="td-herosub">Loading today's results…</div>
+      <div class="td-wl"><div class="td-wl-bar" id="td-wlbar"></div></div>
+    </div>
+    <div class="td-hero-r">
+      <div class="td-stat"><b id="td-count">—</b><span>Triggered</span></div>
+      <div class="td-stat g"><b id="td-win">—</b><span>In Profit</span></div>
+      <div class="td-stat r"><b id="td-loss">—</b><span>In Loss</span></div>
+      <div class="td-stat m"><b id="td-open">—</b><span>No Signal</span></div>
+    </div>
   </div>
 
   <div id="td-empty" class="empty-card" style="display:none"></div>
-  <div class="mtable-wrap" id="td-table-wrap" style="display:none">
-    <div class="mtable-hdr"><span class="mtable-title" id="td-ttl">Today's Triggers</span><span style="font-size:0.75em;color:var(--muted);font-family:var(--mono)">₹ per lot · live account</span></div>
-    <div style="overflow-x:auto">
-      <table><thead><tr><th>Strategy</th><th>Category</th><th>P&amp;L</th><th>Result</th></tr></thead>
-      <tbody id="td-body"></tbody></table>
-    </div>
+  <div id="td-table-wrap" style="display:none">
+    <div class="td-sec"><span id="td-ttl">Today's Triggers</span><small>₹ per lot · live account</small></div>
+    <div class="td-cards" id="td-body"></div>
+  </div>
+  <div id="td-idle-wrap" style="display:none">
+    <div class="td-sec"><span>⏳ Running · No Signal Today</span><small>Rule-based — no trade is also a decision</small></div>
+    <div class="td-chips" id="td-idle"></div>
+  </div>
+
+  <div class="td-cta">
+    <div><strong>Want these trades running in your account?</strong><span>Fully automated · Rule-based · No manual work</span></div>
+    <a href="https://wa.me/919655516011?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Algo%20Tamil%20strategies" target="_blank" rel="noopener">💬 Chat on WhatsApp</a>
   </div>
 
 
@@ -3527,7 +3581,7 @@ function parseToday(text) {
   if (!pick) { TD_INFO = { date: '', holiday: false, idle: 0 }; return []; }
   const out = [], vals = cols.map(x => ({ x, v: num(pick.r[x.c]) }));
   vals.forEach(({ x, v }) => { if (v) out.push({ strategy: x.n, cat: x.cat || '—', pnl: v }); });
-  TD_INFO = { date: pick.d, holiday: pick.hol, idle: vals.filter(o => !o.v).length };
+  TD_INFO = { date: pick.d, holiday: pick.hol, idle: vals.filter(o => !o.v).length, idleNames: vals.filter(o => !o.v).map(o => o.x.n) };
   return out.sort((a, b) => b.pnl - a.pnl);
 }
 
@@ -3553,7 +3607,7 @@ function demoData() {
     names.forEach(n => { if (rnd() < 0.35) bt.push({ date: iso, strategy: n, side: rnd() < 0.5 ? 'CE' : 'PE', q: 65, ep: 215, xp: 0, pnl: r2(rnd() < 0.55 ? 650 + rnd() * 3900 : -(520 + rnd() * 1950)), tv: 28000 }); });
   }
   const td = [{ strategy: 'Nifty CE', cat: 'Option Buying', pnl: 3058 }, { strategy: 'Nifty Selling', cat: 'Non-Directional Selling', pnl: 1995 }, { strategy: 'Sensex CE', cat: 'Option Buying', pnl: -690 }];
-  TD_INFO = { date: today, holiday: false, idle: 10 };
+  TD_INFO = { date: today, holiday: false, idle: 3, idleNames: ['Bank Nifty CE', 'Sensex PE', 'Bank Nifty Selling'] };
   return { td, bt };
 }
 
@@ -3573,7 +3627,7 @@ async function loadData() {
 
   LAST_SYNC = new Date();
   const t = LAST_SYNC.toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit', hour12:true, timeZone:'Asia/Kolkata' });
-  if (okT && okB) { setSyncStatus('ok', DEMO ? 'Demo data' : 'Live Data Fetched'); I('lastSync').textContent = 'Last synced ' + t; }
+  if (okT) { setSyncStatus('ok', DEMO ? 'Demo data' : 'Live Data Fetched'); I('lastSync').textContent = 'Last synced ' + t; }
   else if (okT || okB) { setSyncStatus('ok', 'Partial sync'); I('lastSync').textContent = 'Partial sync ' + t; }
   else { setSyncStatus('err', 'Data unavailable'); I('lastSync').textContent = 'Not synced'; }
 
@@ -3590,29 +3644,29 @@ function renderToday(ok) {
   const today = istToday(), d = TD_INFO.date, isToday = d === today;
   const dl = iso => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
   I('td-date').textContent = d ? dl(d) + (isToday ? ' · Today' : ' · Last updated session') : dl(today);
+  I('td-livetxt').textContent = isToday ? 'LIVE · TODAY' : d ? 'LAST SESSION · ' + fmtDay(d).toUpperCase() : 'LIVE';
   I('td-ttl').textContent = isToday || !d ? "Today's Triggers" : 'Triggers on ' + fmtDay(d);
-  const rows = TODAY, net = rows.reduce((a, r) => a + r.pnl, 0);
-  I('td-count').textContent = rows.length;
-  I('td-pts').textContent = rows.length ? fr(net) : '—';
-  I('td-pts').style.color = rows.length ? clr(net) : '';
-  I('td-win').textContent = rows.filter(r => r.pnl > 0).length;
-  I('td-loss').textContent = rows.filter(r => r.pnl < 0).length;
+  const rows = TODAY, net = rows.reduce((a, r) => a + r.pnl, 0), w = rows.filter(r => r.pnl > 0).length, l = rows.length - w;
+  I('td-count').textContent = rows.length; I('td-win').textContent = w; I('td-loss').textContent = l;
   I('td-open').textContent = d ? TD_INFO.idle : '—';
+  I('td-pts').textContent = rows.length ? fr(net) : '₹0';
+  I('td-hero').className = 'td-hero' + (rows.length ? (net >= 0 ? ' up' : ' down') : '');
+  I('td-wlbar').style.width = rows.length ? (w / rows.length * 100) + '%' : '0';
+  I('td-herosub').textContent = !ok ? 'Data not available — check back after market hours'
+    : TD_INFO.holiday ? 'Market holiday · No strategies run today'
+    : rows.length ? rows.length + ' strateg' + (rows.length > 1 ? 'ies' : 'y') + ' traded · ' + w + ' in profit · ' + l + ' in loss'
+    : 'No strategy triggered yet · Updated after market hours';
   I('shareBtn').disabled = !rows.length;
-  if (!rows.length) {
-    I('td-table-wrap').style.display = 'none';
-    const e = I('td-empty'); e.style.display = 'block';
-    e.innerHTML = !ok ? '<strong>Today\'s data is not available</strong>Please check back after market hours.'
-      : TD_INFO.holiday ? '<strong>Market holiday</strong>No strategies run today.'
-      : '<strong>No strategies triggered yet today</strong>Results are updated after market hours.';
-    return;
-  }
+  const idle = TD_INFO.idleNames || [];
+  I('td-idle-wrap').style.display = idle.length && rows.length ? 'block' : 'none';
+  I('td-idle').innerHTML = idle.map(n => '<span>' + esc(n) + '</span>').join('');
   I('td-empty').style.display = 'none';
+  if (!rows.length) { I('td-table-wrap').style.display = 'none'; return; }
   I('td-table-wrap').style.display = 'block';
-  const catPill = c => { const s = /non/i.test(c) ? 'rgba(124,58,237,0.1);color:var(--purple)' : /sell/i.test(c) ? 'rgba(217,119,6,0.1);color:var(--amber)' : 'rgba(2,132,199,0.1);color:var(--accent)'; return '<span class="pill" style="background:' + s + '">' + esc(c) + '</span>'; };
-  I('td-body').innerHTML = rows.map(r => '<tr><td><strong style="color:var(--text)">' + esc(r.strategy) + '</strong></td><td>' + catPill(r.cat) + '</td><td style="color:' + clr(r.pnl) + ';font-weight:700">' + fr(r.pnl) +
-    '</td><td><span class="pill ' + (r.pnl > 0 ? 'pill-g' : 'pill-r') + '">' + (r.pnl > 0 ? 'Profit' : 'Loss') + '</span></td></tr>').join('') +
-    '<tr><td><strong>Total</strong></td><td></td><td style="color:' + clr(net) + ';font-weight:800">' + fr(net) + '</td><td></td></tr>';
+  const catPill = c => { const s = /non/i.test(c) ? 'rgba(124,58,237,0.1);color:var(--purple)' : /sell/i.test(c) ? 'rgba(217,119,6,0.12);color:var(--amber)' : 'rgba(2,132,199,0.1);color:var(--accent)'; return '<span class="pill" style="background:' + s + '">' + esc(c) + '</span>'; };
+  I('td-body').innerHTML = rows.map((r, i) => '<div class="td-card' + (r.pnl > 0 ? '' : ' l') + '" style="animation-delay:' + (i * 0.06) + 's"><div class="td-card-top"><span class="td-card-nm">' + (r.pnl > 0 ? '🟢 ' : '🔴 ') + esc(r.strategy) + '</span></div>' +
+    catPill(r.cat) + '<div class="td-card-val" style="color:' + clr(r.pnl) + '">' + fr(r.pnl) + '</div></div>').join('') +
+    '<div class="td-total"><span>Total · ' + rows.length + ' strateg' + (rows.length > 1 ? 'ies' : 'y') + '</span><b style="color:' + clr(net) + '">' + fr(net) + '</b></div>';
 }
 
 /* ── SHARE CARD (PNG) ── */
