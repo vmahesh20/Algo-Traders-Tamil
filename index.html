@@ -592,9 +592,14 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .ind-step b{font-size:.98em;color:var(--text)}.ind-step span{font-size:.86em;color:var(--muted2);line-height:1.5}
 .ind-next{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:14px;border:1px dashed var(--border);background:var(--surface2);margin-bottom:16px;font-size:.9em;color:var(--muted2)}
 .ind-next b{color:var(--text);font-size:1.02em}.ind-next a{color:#0369a1;font-weight:700;text-decoration:none}
-.ind-disc{font-size:.8em;color:var(--muted);text-align:center;margin:0}
+.ind-disc{font-size:.84em;color:var(--muted2);line-height:1.6;margin:0;padding:14px 18px;border-radius:12px;background:rgba(220,38,38,.05);border:1px solid rgba(220,38,38,.2);border-left:4px solid #dc2626}.ind-disc b{display:block;color:#dc2626;margin-bottom:4px;font-size:1.02em}.ind-disc strong{color:var(--text)}
 @media(max-width:900px){.ind-grid,.ind-steps{grid-template-columns:1fr}.ind-free{flex-direction:column;align-items:stretch;text-align:left}.ind-free .ab-btn{text-align:center}}
 @media(max-width:420px){.ind-cta{flex-direction:column}.ind-body{padding:16px}}
+.ct-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:40px}
+@media(max-width:900px){.ct-grid{grid-template-columns:1fr}}
+.nav-yt{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;border:1px solid var(--border);background:var(--surface);transition:.2s}
+.nav-yt:hover{border-color:#ff0000;background:rgba(255,0,0,.05)}
+.ind-ytl{margin-top:6px;font-size:.78em;font-weight:700;color:#fff;background:#ff0000;padding:6px 12px;border-radius:7px;text-decoration:none}
 </style>
 </head>
 <body>
@@ -636,6 +641,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   </ul>
   <button class="mob-close-btn" id="mobCloseBtn" onclick="closeNav()" aria-label="Close menu">✕</button>
   <div style="display:flex;align-items:center;gap:10px">
+    <a class="nav-yt" href="https://www.youtube.com/@Algotraderstamil" target="_blank" rel="noopener" title="YouTube" aria-label="YouTube"><svg viewBox="0 0 24 24" width="22" height="22"><path fill="#ff0000" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8z"/><path fill="#fff" d="M9.6 15.6 15.8 12 9.6 8.4z"/></svg></a>
     <a class="nav-cta-btn" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">Get Free Access</a>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu"
       style="background:none;border:1px solid var(--border);border-radius:8px;padding:8px 11px;cursor:pointer;font-size:1.2em;color:var(--muted2);display:none;align-items:center;line-height:1">
@@ -5025,7 +5031,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <div class="ind-grid">
     <div class="ind-card pm">
-      <div class="ind-video" data-vid="pivot"><div class="ind-vph"><span>▶</span><b>Detailed walkthrough video</b><small>Coming soon</small></div></div>
+      <div class="ind-video" data-vid="pivot"><div class="ind-vph"><span>▶</span><b>Detailed walkthrough video</b><small>Coming soon</small><a class="ind-ytl" href="https://www.youtube.com/@Algotraderstamil" target="_blank" rel="noopener">▶ Visit our YouTube</a></div></div>
       <div class="ind-body">
         <div class="ind-top"><div class="ind-ico">🎯</div><div><div class="ind-nm">Pivot Master</div><div class="ind-tag">Know the key levels before the market opens</div></div><span class="ind-badge">TradingView</span></div>
         <ul class="ind-feat"><li><b>All-in-One Levels:</b> CPR, Virgin CPR, PDH/PDL &amp; Pivots — auto-plotted</li><li><b>Rule-Based Signals:</b> Entry, SL &amp; T1/T2/T3 on every signal</li><li><b>Retest Alerts:</b> Re-entry opportunities marked</li><li><b>Stats Dashboard:</b> Historical accuracy &amp; target hits</li></ul>
@@ -5037,7 +5043,7 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     </div>
     <div class="ind-card fvg">
-      <div class="ind-video" data-vid="fvg"><div class="ind-vph"><span>▶</span><b>Detailed walkthrough video</b><small>Coming soon</small></div></div>
+      <div class="ind-video" data-vid="fvg"><div class="ind-vph"><span>▶</span><b>Detailed walkthrough video</b><small>Coming soon</small><a class="ind-ytl" href="https://www.youtube.com/@Algotraderstamil" target="_blank" rel="noopener">▶ Visit our YouTube</a></div></div>
       <div class="ind-body">
         <div class="ind-top"><div class="ind-ico">⚡</div><div><div class="ind-nm">Sniper FVG</div><div class="ind-tag">Spot imbalance zones where price is likely to react</div></div><span class="ind-badge">TradingView</span></div>
         <ul class="ind-feat"><li>Auto-detects bullish &amp; bearish Fair Value Gaps</li><li>Marks filled / unfilled gaps clearly</li><li>Highlights high-probability entry zones</li><li>Alerts on new gaps and re-tests</li></ul>
@@ -5059,9 +5065,9 @@ document.addEventListener('DOMContentLoaded', () => {
     </div>
   </div>
 
-  <div class="ind-next"><b>🚀 More indicators coming soon</b><span>Watch the walkthrough videos here once released. Want early access? <a href="https://wa.me/919655516011?text=Hi+Mahesh%2C+notify+me+about+new+indicators" target="_blank" rel="noopener">Join the waitlist on WhatsApp →</a></span></div>
+  <div class="ind-next"><b>🚀 More indicators coming soon</b><span>Watch walkthroughs on our <a href="https://www.youtube.com/@Algotraderstamil" target="_blank" rel="noopener">YouTube channel ↗</a>. Want early access? <a href="https://wa.me/919655516011?text=Hi+Mahesh%2C+notify+me+about+new+indicators" target="_blank" rel="noopener">Join the waitlist on WhatsApp →</a></span></div>
 
-  <p class="ind-disc">Indicators are charting tools for education and analysis only — not buy/sell recommendations. Always apply your own judgment and risk management.</p>
+  <div class="ind-disc"><b>⚠️ Disclaimer</b>Our indicators are technical analysis tools for <strong>educational purposes only</strong> — not investment advice or buy/sell recommendations. Signals, levels and stats are based on historical data; <strong>past accuracy does not guarantee future results</strong>. F&amp;O trading involves substantial risk of loss. Algo Tamil is not SEBI registered; trade at your own risk with proper position sizing and stop-loss.</div>
 </div>
 </div><!-- /page-plans -->
 
@@ -5268,6 +5274,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
+        <span>Where can I learn how the strategies &amp; indicators work?</span><span class="faq-arr">▼</span>
+      </button>
+      <div class="faq-ans">Watch detailed walkthroughs in Tamil on our <a href="https://www.youtube.com/@Algotraderstamil" target="_blank" rel="noopener">YouTube channel @Algotraderstamil</a>.</div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
         <span>Do I need a paid TradingView plan?</span><span class="faq-arr">▼</span>
       </button>
       <div class="faq-ans">No. The indicators work on the free TradingView plan. A paid plan only helps if you want more alerts or more indicators per chart.</div>
@@ -5466,10 +5479,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <div class="page-eyebrow">Get In Touch</div>
   <div class="page-h1">Contact Us</div>
-  <p class="page-sub">Have questions about our strategies, plans, or need support? Reach out directly — we typically respond within minutes during market hours.</p>
+  <p class="page-sub">Have questions about our strategies, indicators, or need support? Reach out directly — we typically respond within minutes during market hours.</p>
 
   <!-- Contact Cards -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:40px">
+  <div class="ct-grid">
 
     <!-- WhatsApp -->
     <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px;text-align:center;transition:.2s" onmouseover="this.style.boxShadow='0 6px 24px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
@@ -5489,11 +5502,24 @@ document.addEventListener('DOMContentLoaded', () => {
       <div style="width:60px;height:60px;background:rgba(2,132,199,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8em;margin:0 auto 16px">✈️</div>
       <div style="font-weight:800;font-size:1.05em;margin-bottom:6px">Telegram</div>
       <div style="font-family:var(--mono);color:var(--accent);font-size:0.9em;font-weight:700;margin-bottom:6px">@Algotradersadmin</div>
-      <div style="font-size:0.78em;color:var(--muted);margin-bottom:20px;line-height:1.6">DM for support, plan queries<br>or subscription activation</div>
+      <div style="font-size:0.78em;color:var(--muted);margin-bottom:20px;line-height:1.6">DM for support, strategy queries<br>or indicator access</div>
       <a href="https://t.me/Algotradersadmin" target="_blank"
          style="display:inline-flex;align-items:center;gap:8px;background:#229ED9;color:#fff;font-weight:700;padding:11px 24px;border-radius:9px;text-decoration:none;font-size:0.88em;transition:.2s"
          onmouseover="this.style.background='#1a7fbf'" onmouseout="this.style.background='#229ED9'">
         ✈️ Message on Telegram
+      </a>
+    </div>
+
+    <!-- YouTube -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px;text-align:center;transition:.2s" onmouseover="this.style.boxShadow='0 6px 24px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+      <div style="width:60px;height:60px;background:rgba(255,0,0,0.08);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8em;margin:0 auto 16px">▶️</div>
+      <div style="font-weight:800;font-size:1.05em;margin-bottom:6px">YouTube</div>
+      <div style="font-family:var(--mono);color:#dc2626;font-size:0.9em;font-weight:700;margin-bottom:6px">@Algotraderstamil</div>
+      <div style="font-size:0.78em;color:var(--muted);margin-bottom:20px;line-height:1.6">Strategy &amp; indicator walkthroughs<br>in Tamil</div>
+      <a href="https://www.youtube.com/@Algotraderstamil" target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:8px;background:#ff0000;color:#fff;font-weight:700;padding:11px 24px;border-radius:9px;text-decoration:none;font-size:0.88em;transition:.2s"
+         onmouseover="this.style.background='#cc0000'" onmouseout="this.style.background='#ff0000'">
+        ▶ Subscribe on YouTube
       </a>
     </div>
 
@@ -5709,6 +5735,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="#" onclick="showPage('contact');return false">Contact Us</a>
           <a href="https://wa.me/919655516011?text=Hi+Mahesh+I+have+a+question+about+Algo+Tamil" target="_blank">WhatsApp</a>
           <a href="https://t.me/Algotradersadmin" target="_blank">Telegram</a>
+          <a href="https://www.youtube.com/@Algotraderstamil" target="_blank" rel="noopener">YouTube</a>
         </div>
       </div>
       <div class="sebi-footer-reg">
