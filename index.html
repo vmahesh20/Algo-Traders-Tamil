@@ -555,6 +555,46 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   .sebi-topbar>div:last-child{width:100%;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   .sebi-risk{font-size:1em!important;padding:2px 8px!important}
 }
+
+/* ═══ INDICATORS PAGE ═══ */
+.ind-free{display:flex;align-items:center;gap:18px;padding:18px 22px;margin:4px 0 26px;border-radius:16px;background:linear-gradient(120deg,#0f172a 0%,#1e3a5f 55%,#0369a1 100%);color:#fff;border:1px solid rgba(56,189,248,.35)}
+.ind-free-l{flex:1;display:flex;flex-direction:column;gap:5px}
+.ind-free-l strong{font-size:1.08em}.ind-free-l span:last-child{font-size:.88em;color:#cbd5e1;line-height:1.5}
+.ind-free .ab-pill{align-self:flex-start}
+.ind-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:30px}
+.ind-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 10px 30px -22px rgba(15,23,42,.5)}
+.ind-card.pm{border-top:4px solid #0369a1}.ind-card.fvg{border-top:4px solid #7c3aed}
+.ind-video{position:relative;aspect-ratio:16/9;background:linear-gradient(135deg,#0f172a,#1e293b)}
+.ind-video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ind-vph{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#e2e8f0}
+.ind-vph span{width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:1.4em;border:1px solid rgba(255,255,255,.25)}
+.ind-vph b{font-size:.95em}.ind-vph small{font-size:.75em;color:#94a3b8;font-family:var(--mono);letter-spacing:1px;text-transform:uppercase}
+.ind-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:14px;flex:1}
+.ind-top{display:flex;align-items:center;gap:12px}
+.ind-ico{width:44px;height:44px;border-radius:12px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:1.35em;flex-shrink:0}
+.ind-nm{font-size:1.3em;font-weight:800;color:var(--text);letter-spacing:-.3px}
+.ind-tag{font-size:.86em;color:var(--muted2)}
+.ind-badge{margin-left:auto;font-size:.68em;font-weight:700;font-family:var(--mono);padding:4px 8px;border-radius:6px;background:var(--surface2);color:var(--muted2);border:1px solid var(--border);white-space:nowrap}
+.ind-feat{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ind-feat li{font-size:.92em;color:var(--text);padding-left:24px;position:relative;line-height:1.45}
+.ind-feat li::before{content:'✓';position:absolute;left:0;top:0;width:17px;height:17px;border-radius:50%;background:rgba(22,163,74,.12);color:var(--green);font-size:.72em;font-weight:800;display:flex;align-items:center;justify-content:center}
+.ind-best{font-size:.85em;color:var(--muted2);padding:10px 12px;background:var(--surface2);border-radius:10px}
+.ind-best b{color:var(--text)}
+.ind-cta{display:flex;gap:10px;margin-top:auto}
+.ind-btn{flex:1;text-align:center;padding:12px 10px;border-radius:10px;font-weight:700;font-size:.9em;text-decoration:none;transition:.2s}
+.ind-btn.pri{background:#0369a1;color:#fff}.ind-btn.pri:hover{background:#075985}
+.ind-btn.sec{background:var(--surface2);color:var(--text);border:1px solid var(--border)}.ind-btn.sec:hover{border-color:#25d366;color:#16a34a}
+.ind-steps-wrap{margin-bottom:22px}
+.ind-h2{font-size:1.25em;font-weight:800;color:var(--text);margin-bottom:14px}
+.ind-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.ind-step{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:6px}
+.ind-step i{font-style:normal;width:30px;height:30px;border-radius:50%;background:#0369a1;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.9em}
+.ind-step b{font-size:.98em;color:var(--text)}.ind-step span{font-size:.86em;color:var(--muted2);line-height:1.5}
+.ind-next{display:flex;flex-direction:column;gap:4px;padding:16px 18px;border-radius:14px;border:1px dashed var(--border);background:var(--surface2);margin-bottom:16px;font-size:.9em;color:var(--muted2)}
+.ind-next b{color:var(--text);font-size:1.02em}.ind-next a{color:#0369a1;font-weight:700;text-decoration:none}
+.ind-disc{font-size:.8em;color:var(--muted);text-align:center;margin:0}
+@media(max-width:900px){.ind-grid,.ind-steps{grid-template-columns:1fr}.ind-free{flex-direction:column;align-items:stretch;text-align:left}.ind-free .ab-btn{text-align:center}}
+@media(max-width:420px){.ind-cta{flex-direction:column}.ind-body{padding:16px}}
 </style>
 </head>
 <body>
@@ -582,21 +622,21 @@ tr:hover td{background:rgba(0,0,0,0.025)}
     <li><a href="#" id="nav-performance" class="active" onclick="showPage('performance');closeNav();return false">📊 Today</a></li>
     <li><a href="#" id="nav-backtest" onclick="showPage('backtest');closeNav();return false">📈 Backtest</a></li>
     <li><a href="#" id="nav-strategies" onclick="showPage('strategies');closeNav();return false">🧩 Strategy Hub</a></li>
-    <li><a href="#" id="nav-plans" onclick="showPage('plans');closeNav();return false">💳 Plans</a></li>
+    <li><a href="#" id="nav-plans" onclick="showPage('plans');closeNav();return false">📊 Indicators</a></li>
     <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');closeNav();return false">⭐ Reviews</a></li>
     <li><a href="#" id="nav-faq" onclick="showPage('faq');closeNav();return false">❓ FAQ</a></li>
     <li><a href="#" id="nav-sebi-disc" onclick="showPage('sebi-disc');closeNav();return false">📋 SEBI</a></li>
     <li><a href="#" id="nav-contact" onclick="showPage('contact');closeNav();return false">📞 Contact</a></li>
     <li style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);list-style:none" class="mob-only">
-      <a href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Strategies');closeNav();return false"
+      <a href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener" onclick="closeNav()"
         style="background:var(--accent);color:#fff;border-radius:9px;text-align:center;justify-content:center;font-weight:700">
-        Subscribe Now
+        Get Free Access
       </a>
     </li>
   </ul>
   <button class="mob-close-btn" id="mobCloseBtn" onclick="closeNav()" aria-label="Close menu">✕</button>
   <div style="display:flex;align-items:center;gap:10px">
-    <a class="nav-cta-btn" href="#" onclick="openModal('Advanced Trader','₹6,999/year','All 3 Buying + All 4 Selling Strategies');return false">Subscribe Now</a>
+    <a class="nav-cta-btn" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">Get Free Access</a>
     <button class="hamburger" id="hamburger" onclick="toggleNav()" aria-label="Menu"
       style="background:none;border:1px solid var(--border);border-radius:8px;padding:8px 11px;cursor:pointer;font-size:1.2em;color:var(--muted2);display:none;align-items:center;line-height:1">
       ☰
@@ -4620,7 +4660,7 @@ document.addEventListener('click', e => {
 // Hash → page mapping
 const PAGE_HASHES = {
   'performance': '#performance',
-  'plans': '#plans',
+  'plans': '#indicators',
   'testimonials': '#reviews',
   'faq': '#faq',
   'sebi-disc': '#sebi',
@@ -4631,6 +4671,7 @@ const PAGE_HASHES = {
 const HASH_PAGES = {
   '#performance': 'performance',
   '#plans': 'plans',
+  '#indicators': 'plans',
   '#reviews': 'testimonials',
   '#faq': 'faq',
   '#sebi': 'sebi-disc',
@@ -4973,164 +5014,54 @@ document.addEventListener('DOMContentLoaded', () => {
 ══════════════════════════════════════════════════ -->
 <div class="page-section" id="page-plans">
 <div class="section-wrap">
-  <div class="page-eyebrow">Pricing</div>
-  <div class="page-h1">Simple, Transparent Plans</div>
-  <p class="page-sub">No hidden charges. Instant Telegram access after payment confirmation. Cancel anytime.</p>
-  <div class="ab-free ">
-    <div class="ab-gift">🎁</div>
-    <div class="ab-txt"><span class="ab-pill">FREE ACCESS</span><strong>Get all strategies FREE with a new Alice Blue account</strong><span class="ab-desc">Open your account using our referral link and get access to every Algo Tamil strategy at no cost.</span>
-      <div class="ab-brokers"><b>✅ Alice Blue</b><i>Dhan · Zerodha · Upstox — coming soon</i></div></div>
+  <div class="page-eyebrow">TradingView Indicators</div>
+  <div class="page-h1">Algo Tamil Indicators</div>
+  <p class="page-sub">Built by us, used in our own trading. Clean charts, clear levels, real-time alerts — on Nifty, Bank Nifty &amp; Sensex.</p>
+
+  <div class="ind-free">
+    <div class="ind-free-l"><span class="ab-pill">LAUNCH OFFER</span><strong>All strategies are FREE · Indicators FREE for 1 month</strong><span>Open a new Alice Blue account with our referral link and get every Algo Tamil strategy plus 1-month access to all indicators.</span></div>
     <a class="ab-btn" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">Open Free Account ↗</a>
   </div>
 
-  <!-- stats strip -->
-  <div class="plans-stats-row">
-    <div class="pstat"><div class="pstat-val cc">3</div><div class="pstat-lbl">Indices Covered</div></div>
-    <div class="pstat"><div class="pstat-val" style="color:var(--green)">100%</div><div class="pstat-lbl">Rule-Based</div></div>
-    <div class="pstat"><div class="pstat-val ca">2023</div><div class="pstat-lbl">Serving Since</div></div>
-    <div class="pstat"><div class="pstat-val cp">200+</div><div class="pstat-lbl">Active Subscribers</div></div>
-  </div>
-
-  <div class="plans-grid">
-    <!-- BUYING PLANS label -->
-    <div style="grid-column:1/3;display:flex;align-items:center;gap:10px;padding-bottom:4px;border-bottom:2px solid rgba(2,132,199,0.2);margin-bottom:4px" class="plan-label-buy">
-      <span style="font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-family:var(--mono)">📈 Option Buying Plans</span>
-    </div>
-    <div style="grid-column:3/5;display:flex;align-items:center;gap:10px;padding-bottom:4px;border-bottom:2px solid rgba(124,58,237,0.2);margin-bottom:4px" class="plan-label-sell">
-      <span style="font-size:0.72em;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--purple);font-family:var(--mono)">🛡️ Option Selling Plans</span>
-    </div>
-
-    <!-- TRADER PLAN -->
-    <div class="plan-card">
-      <div class="plan-head">
-        <div class="plan-tier pt-blue">Option Buying</div>
-        <div class="plan-name">Trader Plan</div>
-        <div class="plan-desc">2 Index Strategy Access + WhatsApp Support</div>
-        <div class="plan-price-row"><span class="plan-curr">₹</span><span class="plan-amt" style="color:var(--accent)">4,999</span><span class="plan-per">/year</span></div>
-        <div class="plan-save">≈ ₹417 / month · ₹14 / day</div>
-      </div>
-      <div class="plan-cap">💼 Recommended Capital: ₹35,000</div>
-      <div class="plan-body">
-        <div class="plan-feat-lbl">Strategies Included</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>📈 Nifty CE Strategy</li>
-          <li><span class="feat-check">✓</span>📉 Nifty PE Strategy</li>
-          <li><span class="feat-check">✓</span>📈 Bank Nifty CE Strategy</li>
-          <li><span class="feat-check">✓</span>📉 Bank Nifty PE Strategy</li>
-        </ul>
-        <button class="plan-btn pb-outline" onclick="openModal('Trader Plan','₹4,999/year','Nifty CE/PE · Bank Nifty CE/PE Strategies')">Get Access →</button>
-        <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Trader+Plan" target="_blank">💬 Enquire on WhatsApp</a>
+  <div class="ind-grid">
+    <div class="ind-card pm">
+      <div class="ind-video" data-vid="pivot"><div class="ind-vph"><span>▶</span><b>Detailed walkthrough video</b><small>Coming soon</small></div></div>
+      <div class="ind-body">
+        <div class="ind-top"><div class="ind-ico">🎯</div><div><div class="ind-nm">Pivot Master</div><div class="ind-tag">Know the key levels before the market opens</div></div><span class="ind-badge">TradingView</span></div>
+        <ul class="ind-feat"><li>Auto-plotted pivot, support &amp; resistance levels</li><li>Daily, weekly &amp; monthly levels on one chart</li><li>Clean, non-repainting levels</li><li>Alerts when price reaches a key level</li></ul>
+        <div class="ind-best"><b>Best for:</b> Intraday index traders · 5m–15m charts</div>
+        <div class="ind-cta">
+          <a class="ind-btn pri" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">🎁 Get 1 Month Free</a>
+          <a class="ind-btn sec" href="https://wa.me/919655516011?text=Hi+Mahesh%2C+I+want+access+to+Pivot+Master+indicator" target="_blank" rel="noopener">💬 Request Access</a>
+        </div>
       </div>
     </div>
-
-    <!-- ADVANCED TRADER (featured) -->
-    <div class="plan-card featured">
-      <div class="plan-pop-tag">⭐ MOST CHOSEN</div>
-      <div class="plan-head">
-        <div class="plan-tier pt-combo">Option Buying</div>
-        <div class="plan-name">Advanced Trader</div>
-        <div class="plan-desc">3 Index Strategy + WhatsApp Support</div>
-        <div class="plan-price-row"><span class="plan-curr">₹</span><span class="plan-amt" style="color:var(--accent)">6,999</span><span class="plan-per">/year</span></div>
-        <div class="plan-save">≈ ₹583 / month · Best Value</div>
+    <div class="ind-card fvg">
+      <div class="ind-video" data-vid="fvg"><div class="ind-vph"><span>▶</span><b>Detailed walkthrough video</b><small>Coming soon</small></div></div>
+      <div class="ind-body">
+        <div class="ind-top"><div class="ind-ico">⚡</div><div><div class="ind-nm">Sniper FVG</div><div class="ind-tag">Spot imbalance zones where price is likely to react</div></div><span class="ind-badge">TradingView</span></div>
+        <ul class="ind-feat"><li>Auto-detects bullish &amp; bearish Fair Value Gaps</li><li>Marks filled / unfilled gaps clearly</li><li>Highlights high-probability entry zones</li><li>Alerts on new gaps and re-tests</li></ul>
+        <div class="ind-best"><b>Best for:</b> Price-action &amp; scalping traders · 1m–15m charts</div>
+        <div class="ind-cta">
+          <a class="ind-btn pri" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">🎁 Get 1 Month Free</a>
+          <a class="ind-btn sec" href="https://wa.me/919655516011?text=Hi+Mahesh%2C+I+want+access+to+Sniper+FVG+indicator" target="_blank" rel="noopener">💬 Request Access</a>
+        </div>
       </div>
-      <div class="plan-cap" style="border-left-color:var(--green)">💼 Recommended Capital: ₹55,000</div>
-      <div class="plan-body">
-        <div class="plan-feat-lbl">Strategies Included</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>📈 Nifty CE &amp; PE Strategy</li>
-          <li><span class="feat-check">✓</span>📈 Bank Nifty CE &amp; PE Strategy</li>
-          <li><span class="feat-check">✓</span>📈 Sensex CE &amp; PE Strategy <span style="background:rgba(5,150,105,0.12);color:var(--green);font-size:0.68em;padding:1px 6px;border-radius:3px;font-weight:700;font-family:var(--mono)">+NEW</span></li>
-        </ul>
-        <button class="plan-btn pb-accent" onclick="openModal('Advanced Trader','₹6,999/year','Nifty · Bank Nifty · Sensex Buying Strategies')">Get Access →</button>
-        <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Advanced+Trader" target="_blank">💬 Enquire on WhatsApp</a>
-      </div>
-    </div>
-
-    <!-- PREMIUM SELLER -->
-    <div class="plan-card">
-      <div class="plan-head">
-        <div class="plan-tier pt-sell">Option Selling</div>
-        <div class="plan-name">Premium Seller</div>
-        <div class="plan-desc">4 Selling Strategy + WhatsApp Support</div>
-        <div class="plan-price-row"><span class="plan-curr">₹</span><span class="plan-amt" style="color:var(--purple)">11,999</span><span class="plan-per">/year</span></div>
-        <div class="plan-save">≈ ₹1,000 / month · High capital strategy</div>
-      </div>
-      <div class="plan-cap" style="border-left-color:var(--purple)">💼 Recommended Capital: ₹10,00,000</div>
-      <div class="plan-body">
-        <div class="plan-feat-lbl">Strategies Included</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>🔄 Nifty Trend Strategy</li>
-          <li><span class="feat-check">✓</span>💰 Nifty Selling Strategy</li>
-          <li><span class="feat-check">✓</span>💰 Bank Nifty Selling Strategy</li>
-          <li><span class="feat-check">✓</span>💰 Sensex Selling Strategy</li>
-        </ul>
-        <button class="plan-btn pb-purple" onclick="openModal('Premium Seller','₹11,999/year','All 4 Selling Strategies')">Get Access →</button>
-        <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Premium+Seller" target="_blank">💬 Enquire on WhatsApp</a>
-      </div>
-    </div>
-
-    <!-- PRO SELLER -->
-    <div class="plan-card">
-      <div class="plan-head">
-        <div class="plan-tier pt-sell">Directional Selling</div>
-        <div class="plan-name">Pro Seller</div>
-        <div class="plan-desc">3 Directional Selling + WhatsApp Support</div>
-        <div class="plan-price-row"><span class="plan-curr">₹</span><span class="plan-amt" style="color:var(--purple)">11,999</span><span class="plan-per">/year</span></div>
-        <div class="plan-save">≈ ₹1,000 / month · Directional with Adjustments</div>
-      </div>
-      <div class="plan-cap" style="border-left-color:var(--purple)">💼 Recommended Capital: ₹8,00,000</div>
-      <div class="plan-body">
-        <div class="plan-feat-lbl">Strategies Included</div>
-        <ul class="plan-feats">
-          <li><span class="feat-check">✓</span>💰 Nifty Selling</li>
-          <li><span class="feat-check">✓</span>💰 Bank Nifty Selling</li>
-          <li><span class="feat-check">✓</span>💰 Sensex Selling</li>
-          <li style="font-size:0.78em;color:var(--muted);padding:4px 0;border:none">All strategies are Directional Selling with Adjustments</li>
-        </ul>
-        <button class="plan-btn pb-purple" onclick="openModal('Pro Seller','₹11,999/year','3 Directional Selling Strategies')">Get Access →</button>
-        <a class="plan-wa" href="https://wa.me/919655516011?text=Hi+I+want+to+subscribe+to+Pro+Seller" target="_blank">💬 Enquire on WhatsApp</a>
-      </div>
-    </div>
-
-  </div><!-- /plans-grid -->
-
-
-  <!-- compare table -->
-  <div class="compare-wrap">
-    <div class="compare-title">Full Feature Comparison</div>
-    <div class="compare-sub">See exactly what's included in each plan</div>
-    <div class="ctable-wrap">
-      <table class="ctable">
-        <thead><tr>
-          <th style="text-align:left">Feature</th>
-          <th class="acc">Trader Plan</th>
-          <th class="grn">Advanced Trader</th>
-          <th class="pur">Premium Seller</th>
-          <th class="pur">Pro Seller</th>
-        </tr></thead>
-        <tbody>
-          <tr><td class="ct-sect" colspan="4">Access</td></tr>
-          <tr><td>Nifty CE &amp; PE Rider</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td></tr>
-          <tr><td>Bank Nifty CE &amp; PE Rider</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td></tr>
-          <tr><td>Sensex CE &amp; PE</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td></tr>
-          <tr><td>Nifty Selling</td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
-          <tr><td>Bank Nifty Selling</td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
-          <tr><td>Sensex Selling</td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
-          <tr><td>Nifty Trend</td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td></tr>
-          <tr><td class="ct-sect" colspan="4">Support &amp; Reports</td></tr>
-          <tr><td>Telegram Channel Access</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
-          <tr><td>Daily P&amp;L Update</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
-          <tr><td>Priority WhatsApp Support</td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
-          <tr><td>Monthly Performance Review</td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td><td><span class="chk">✓</span></td></tr>
-          <tr><td>Strategy Webinar Access</td><td><span class="dsh">–</span></td><td><span class="chk">✓</span></td><td><span class="dsh">–</span></td><td><span class="dsh">–</span></td></tr>
-          <tr><td class="ct-sect" colspan="4">Pricing</td></tr>
-          <tr><td>Annual</td><td>₹4,999</td><td>₹6,999</td><td>₹11,999</td><td>₹11,999</td></tr>
-          <tr><td>Per Month</td><td>≈₹417</td><td>≈₹583</td><td>≈₹1,000</td><td>≈₹1,000</td></tr>
-        </tbody>
-      </table>
     </div>
   </div>
 
+  <div class="ind-steps-wrap">
+    <div class="ind-h2">How to get free access</div>
+    <div class="ind-steps">
+      <div class="ind-step"><i>1</i><b>Open Alice Blue account</b><span>Use our referral link — takes ~10 minutes, fully online.</span></div>
+      <div class="ind-step"><i>2</i><b>Send details on WhatsApp</b><span>Share your Alice Blue Client ID and TradingView username.</span></div>
+      <div class="ind-step"><i>3</i><b>Get access</b><span>Indicators are added to your TradingView account within 24 hours.</span></div>
+    </div>
+  </div>
+
+  <div class="ind-next"><b>🚀 More indicators coming soon</b><span>Watch the walkthrough videos here once released. Want early access? <a href="https://wa.me/919655516011?text=Hi+Mahesh%2C+notify+me+about+new+indicators" target="_blank" rel="noopener">Join the waitlist on WhatsApp →</a></span></div>
+
+  <p class="ind-disc">Indicators are charting tools for education and analysis only — not buy/sell recommendations. Always apply your own judgment and risk management.</p>
 </div>
 </div><!-- /page-plans -->
 
@@ -5164,7 +5095,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   <div style="text-align:center;margin-top:8px">
-    <button class="plan-btn pb-accent" style="max-width:320px;margin:0 auto" onclick="showPage('plans');return false">View Plans &amp; Subscribe →</button>
+    <button class="plan-btn pb-accent" style="max-width:320px;margin:0 auto" onclick="showPage('strategies');return false">Explore Free Strategies →</button>
   </div>
 
   <!-- ── SUBMIT A REVIEW ── -->
@@ -5202,13 +5133,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px">
         <div>
-          <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Plan Subscribed</label>
+          <label style="font-size:0.78em;font-weight:600;color:var(--muted2);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px">Using</label>
           <select id="rv-plan" class="rv-input" style="cursor:pointer">
-            <option value="">Select plan</option>
-            <option>Trader Plan</option>
-            <option>Advanced Trader</option>
-            <option>Premium Seller</option>
-            <option>Pro Seller</option>
+            <option value="">Select</option>
+            <option>Option Buying Strategies</option>
+            <option>Option Selling Strategies</option>
+            <option>Pivot Master</option>
+            <option>Sniper FVG</option>
           </select>
         </div>
         <div>
@@ -5317,91 +5248,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
   </div>
 
-  <!-- PLANS & SUBSCRIPTION -->
-  <div class="faq-section-label">Plans &amp; Subscription</div>
+  <!-- ACCESS -->
+  <div class="faq-section-label">Access &amp; Indicators</div>
   <div class="faq-list">
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>What plans are available?</span><span class="faq-arr">▼</span>
+        <span>Are the strategies really free?</span><span class="faq-arr">▼</span>
       </button>
-      <div class="faq-ans">
-        <ul class="faq-list-inner">
-          <li><strong>Trader Plan</strong> — ₹4,999/year · 2 Index Buying strategies</li>
-          <li><strong>Advanced Trader</strong> — ₹6,999/year · 3 Index Buying strategies</li>
-          <li><strong>Premium Seller</strong> — ₹11,999/year · 4 Selling strategies including Nifty Trend</li>
-          <li><strong>Pro Seller</strong> — ₹11,999/year · 3 Directional Selling strategies with adjustments</li>
-        </ul>
-      </div>
+      <div class="faq-ans">Yes. All Algo Tamil strategies are <strong>free</strong> when you open a new Alice Blue account using our <a href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">referral link</a>. Dhan, Zerodha &amp; Upstox support is coming soon.</div>
     </div>
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>How do I subscribe?</span><span class="faq-arr">▼</span>
+        <span>How do I get the indicators?</span><span class="faq-arr">▼</span>
       </button>
-      <div class="faq-ans">
-        Click <strong>"Get Access"</strong> on any plan → fill your details → pay via UPI (QR / GPay / UPI ID) → WhatsApp Mahesh your payment screenshot → access granted within <strong>30 minutes</strong>.
-      </div>
+      <div class="faq-ans"><strong>Pivot Master</strong> and <strong>Sniper FVG</strong> are free for 1 month with a new Alice Blue account via our referral link. Send your Client ID and TradingView username on WhatsApp — access is added within 24 hours.</div>
     </div>
 
     <div class="faq-item">
       <button class="faq-q" onclick="toggleFaq(this)">
-        <span>What payment methods are accepted?</span><span class="faq-arr">▼</span>
+        <span>Do I need a paid TradingView plan?</span><span class="faq-arr">▼</span>
       </button>
-      <div class="faq-ans">
-        UPI (GPay, PhonePe, Paytm, BHIM), NEFT/IMPS bank transfer. Payment confirmation via WhatsApp.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>Is there a refund policy?</span><span class="faq-arr">▼</span>
-      </button>
-      <div class="faq-ans">
-        Refunds are available within <strong>7 days</strong> if you have not accessed any strategies or dashboard. Contact Mahesh on WhatsApp: <a href="https://wa.me/919655516011" style="color:var(--accent)">9655516011</a>.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>Can I upgrade my plan?</span><span class="faq-arr">▼</span>
-      </button>
-      <div class="faq-ans">
-        Yes. Pay the price difference anytime and contact on WhatsApp — upgrade happens the same day.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>Can I subscribe mid-year?</span><span class="faq-arr">▼</span>
-      </button>
-      <div class="faq-ans">
-        Yes. Your 1-year subscription runs from the date of payment, not from the 1st of the month.
-      </div>
-    </div>
-
-  </div>
-
-  <!-- DASHBOARD & ACCESS -->
-  <div class="faq-section-label">Dashboard &amp; Access</div>
-  <div class="faq-list">
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>How often is the data updated?</span><span class="faq-arr">▼</span>
-      </button>
-      <div class="faq-ans">
-        Dashboard data is updated daily after market close — typically by <strong>4:30 PM IST</strong> on trading days.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        <span>Can I view the dashboard on mobile?</span><span class="faq-arr">▼</span>
-      </button>
-      <div class="faq-ans">
-        Yes. The dashboard is fully mobile-responsive and works on all devices and browsers.
-      </div>
+      <div class="faq-ans">No. The indicators work on the free TradingView plan. A paid plan only helps if you want more alerts or more indicators per chart.</div>
     </div>
 
   </div>
@@ -5416,10 +5285,10 @@ document.addEventListener('DOMContentLoaded', () => {
       </button>
       <div class="faq-ans">
         <ul class="faq-list-inner">
-          <li><strong>Trader Plan:</strong> ₹35,000</li>
-          <li><strong>Advanced Trader:</strong> ₹55,000</li>
-          <li><strong>Premium Seller:</strong> ₹10,00,000 (2 non-directional selling + 1 directional)</li>
-          <li><strong>Pro Seller:</strong> ₹8,00,000 (2 directional selling + 1 hedged directional)</li>
+          <li><strong>Option Buying:</strong> ₹15,000 (Nifty / Sensex) · ₹25,000 (Bank Nifty) per strategy, per lot</li>
+          <li><strong>All 6 Basic Option strategies:</strong> ≈ ₹1,10,000</li>
+          <li><strong>Option Selling:</strong> ₹70,000 – ₹2,80,000 per strategy</li>
+          <li>See the <a href="#" onclick="showPage('strategies');return false">Strategy Hub</a> for exact capital per strategy.</li>
         </ul>
       </div>
     </div>
@@ -5499,7 +5368,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <span>Is this suitable for beginners?</span><span class="faq-arr">▼</span>
       </button>
       <div class="faq-ans">
-        Buying plans are suitable for traders with basic options knowledge. Selling plans require understanding of option selling mechanics and sufficient capital. <strong>Not recommended for complete beginners.</strong>
+        Buying strategies suit traders with basic options knowledge. Selling strategies require understanding of option selling mechanics and sufficient capital. <strong>Not recommended for complete beginners.</strong>
       </div>
     </div>
 
@@ -5833,7 +5702,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="#" onclick="showPage('performance');return false">Today</a>
           <a href="#" onclick="showPage('backtest');return false">Backtest</a>
           <a href="#" onclick="showPage('strategies');return false">Strategy Hub</a>
-          <a href="#" onclick="showPage('plans');return false">Plans</a>
+          <a href="#" onclick="showPage('plans');return false">Indicators</a>
           <a href="#" onclick="showPage('testimonials');return false">Reviews</a>
           <a href="#" onclick="showPage('faq');return false">FAQ</a>
           <a href="#" onclick="showPage('sebi-disc');return false">SEBI Disclosures</a>
@@ -5861,5 +5730,13 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 </footer>
 
+<script>
+/* Paste YouTube video IDs here once videos are ready, e.g. pivot:'dQw4w9WgXcQ' */
+const IND_VIDEOS = { pivot: '', fvg: '' };
+document.querySelectorAll('.ind-video[data-vid]').forEach(function(el){
+  var id = IND_VIDEOS[el.dataset.vid];
+  if (id) el.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '" title="Indicator walkthrough" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+});
+</script>
 </body>
 </html>
