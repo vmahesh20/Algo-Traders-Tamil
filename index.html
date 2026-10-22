@@ -634,6 +634,13 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .td-gcard-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px;font-weight:800;font-size:1.3em;color:var(--text);border-bottom:1px solid var(--border2)}
 .td-gcard-h small{display:block;font-size:0.68em;font-weight:600;color:var(--muted);letter-spacing:0.5px}
 .td-gcard .td-sh3 i{background:var(--surface2);color:var(--muted2);opacity:1}
+.td-sh3.hl i{padding:7px 14px;border-radius:11px;border:1.5px solid transparent;font-size:0.66em}
+.td-sh3.hl b{font-size:1.75em}
+.td-sh3.hl i.pos{background:#059669;border-color:#047857;color:#d1fae5;box-shadow:0 6px 14px -8px rgba(5,150,105,0.9)}
+.td-sh3.hl i.neg{background:#dc2626;border-color:#b91c1c;color:#fee2e2;box-shadow:0 6px 14px -8px rgba(220,38,38,0.9)}
+.td-sh3.hl i.pos b,.td-sh3.hl i.neg b{color:#fff}
+.td-sh3.hl i.nil{background:var(--surface2);border-color:var(--border);color:var(--muted)}
+.td-sh3.hl i.nil b{color:var(--muted)}
 .td-gcard .td-soon{background:var(--surface2);color:var(--muted)}
 .td-side-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 20px;color:#fff;font-weight:800;font-size:1.3em}
 .td-side-h.buy{background:linear-gradient(90deg,#0369a1,#0284c7)}
@@ -645,7 +652,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .td-soon{font-size:0.75em;background:rgba(255,255,255,0.18);padding:5px 12px;border-radius:9px}
 .td-t{table-layout:fixed}
 .td-t th:first-child,.td-t td:first-child{width:40%}
-@media(max-width:600px){.td-side-h,.td-gcard-h{flex-direction:column;align-items:flex-start}.td-sh3 b{font-size:1.45em}.td-sh3 i{padding:5px 7px}.td-sh3{width:100%}.td-sh3 i{flex:1}}
+@media(max-width:600px){.td-side-h,.td-gcard-h{flex-direction:column;align-items:stretch}.td-sh3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%}.td-sh3 b{font-size:1.3em}.td-sh3 i,.td-sh3.hl i{padding:6px 8px;min-width:0}.td-sh3.hl b{font-size:1.3em}.td-sh3{width:100%}.td-sh3 i{flex:1}}
 .td-grp{border-top:1px solid var(--border2)}
 .td-grp-h{display:flex;justify-content:space-between;align-items:center;padding:10px 20px;background:var(--surface2);font-weight:800;font-size:0.82em;letter-spacing:0.8px;text-transform:uppercase;color:var(--muted2)}
 .td-t{width:100%;border-collapse:collapse}
@@ -3706,8 +3713,7 @@ async function loadData() {
 const TD_GROUPS = [
   { side: 'buy',  name: 'Basic Option Plan', items: [['Nifty CE'], ['Nifty PE'], ['Sensex CE'], ['Sensex PE'], ['Bank Nifty CE'], ['Bank Nifty PE']] },
   { side: 'buy',  name: 'Extra Option Buying', items: [['Sensex CE & PE', 'Thanos'], ['Nifty PE 2.0', 'Loki'], ['Nifty Bull Rider', '', ['Nifty Combo']]] },
-  { side: 'sell', name: 'Non-Directional Selling', items: [['Nifty Selling'], ['Bank Nifty Selling']] },
-  { side: 'sell', name: 'Directional Selling', items: [['Sensex Selling', '', ['Sensex Hedge']], ['Nifty Hedging 60K'], ['Nifty Hedging 1.2L', '', ['Nifty Hedge 1.2L']], ['Nifty Trend Based']] },
+  { side: 'sell', name: 'Option Selling', items: [['Nifty Selling', 'Non-Directional'], ['Bank Nifty Selling', 'Non-Directional'], ['Sensex Selling', 'Directional · Hedged', ['Sensex Hedge']], ['Nifty Hedging 60K', 'Directional · Hedged'], ['Nifty Hedging 1.2L', 'Directional · Hedged', ['Nifty Hedge 1.2L']], ['Nifty Trend Based', 'Directional · Hedged']] },
   { side: 'buy', name: 'Weekly Strategy', items: [['Weekly Nifty', '', ['Nifty Weekly']], ['Weekly Sensex', '', ['Sensex Weekly']]] }
 ];
 const SIDE_LBL = { buy: '📈 Option Buying', sell: '📉 Option Selling', other: '🗓️ Weekly Strategy' };
@@ -3741,14 +3747,14 @@ function renderToday(ok) {
   if (extra.length) groups.push({ side: 'other', name: 'Other Strategies', rows: extra.map(c => ({ nm: c.n, c })) });
   const cell = (v, has) => !has ? '<td class="soon">—</td>' : !v ? '<td class="z">0</td>' : '<td style="color:' + clr(v) + '">' + fr(v) + '</td>';
   const tot = rs => ['d', 'w', 'm'].map(k => rs.reduce((a, r) => a + (r.c ? r.c[k] : 0), 0));
-  const tri = (d, w, m, col) => { const b = v => '<b' + (col ? ' style="color:' + clr(v) + '"' : '') + '>' + fr(v) + '</b>'; return '<span class="td-sh3"><i>Today' + b(d) + '</i><i>Week' + b(w) + '</i><i>Month' + b(m) + '</i></span>'; };
-  const GICON = { 'Basic Option Plan': '🎯', 'Extra Option Buying': '⚡', 'Non-Directional Selling': '⚖️', 'Directional Selling': '🧭', 'Weekly Strategy': '🗓️' };
+  const tri = (d, w, m, col) => { const it = (l, v) => '<i' + (col ? ' class="' + (v > 0 ? 'pos' : v < 0 ? 'neg' : 'nil') + '"' : '') + '>' + l + '<b>' + fr(v) + '</b></i>'; return '<span class="td-sh3' + (col ? ' hl' : '') + '">' + it('Today', d) + it('Week', w) + it('Month', m) + '</span>'; };
+  const GICON = { 'Basic Option Plan': '🎯', 'Extra Option Buying': '⚡', 'Option Selling': '📉', 'Non-Directional Selling': '⚖️', 'Directional Selling': '🧭', 'Weekly Strategy': '🗓️' };
   const sideHTML = side => {
     const gs = groups.filter(g => g.side === side); if (!gs.length) return '';
     const all = gs.flatMap(g => g.rows), [sd, sw, sm] = tot(all), hasAny = all.some(r => r.c);
-    const head = side === 'other' ? '' : '<div class="td-side-h ' + side + '"><span>' + SIDE_LBL[side] + ' · All</span>' + (hasAny ? tri(sd, sw, sm) : '') + '</div>';
+    const single = gs.length < 2, head = side === 'other' ? '' : '<div class="td-side-h ' + side + '"><span>' + SIDE_LBL[side] + (single ? '' : ' · All') + '</span>' + (hasAny ? tri(sd, sw, sm) : '') + '</div>';
     return head + gs.map(g => { const [gd, gw, gm] = tot(g.rows), live = g.rows.some(r => r.c);
-      return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
+      return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(single && side === 'sell' ? 'Directional & Non-Directional' : g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (single && side !== 'other' ? '' : live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
         '<table class="td-t"><thead><tr><th>Strategy</th><th>Today</th><th>Week</th><th>Month</th></tr></thead><tbody>' +
         g.rows.map(r => '<tr class="' + (r.c && r.c.d ? 'hot' + (r.c.d < 0 ? ' l' : '') : '') + '"><td class="nm">' + esc(r.nm) + (r.nick ? '<small>' + esc(r.nick) + '</small>' : '') + '</td>' + cell(r.c && r.c.d, !!r.c) + cell(r.c && r.c.w, !!r.c) + cell(r.c && r.c.m, !!r.c) + '</tr>').join('') +
         '</tbody></table></div>'; }).join('');
