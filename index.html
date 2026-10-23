@@ -600,6 +600,9 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .nav-yt{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;border:1px solid var(--border);background:var(--surface);transition:.2s}
 .nav-yt:hover{border-color:#ff0000;background:rgba(255,0,0,.05)}
 .ind-ytl{margin-top:6px;font-size:.78em;font-weight:700;color:#fff;background:#ff0000;padding:6px 12px;border-radius:7px;text-decoration:none}
+.td-bigdate{font-size:1.9em;font-weight:900;letter-spacing:-0.5px;color:#fff;display:flex;align-items:baseline;gap:10px;line-height:1.1}
+.td-bigdate small{font-size:0.5em;font-weight:700;color:#7dd3fc;text-transform:uppercase;letter-spacing:1.5px}
+@media(max-width:600px){.td-bigdate{order:2;width:100%;font-size:1.5em;justify-content:flex-start}.td-hero-top .td-live{order:3}}
 </style>
 </head>
 <body>
@@ -979,7 +982,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
   <!-- HERO -->
   <div id="td-capture">
   <div class="td-hero" id="td-hero">
-    <div class="td-hero-top"><span class="td-snap-brand">Algo<b>Tamil</b></span><div class="td-live"><span class="td-dot"></span><span id="td-livetxt">LIVE · TODAY</span></div></div>
+    <div class="td-hero-top"><span class="td-snap-brand">Algo<b>Tamil</b></span><div class="td-bigdate" id="td-bigdate"></div><div class="td-live"><span class="td-dot"></span><span id="td-livetxt">LIVE · TODAY</span></div></div>
     <div class="td-hero-body">
     <div class="td-hero-l">
       <div class="td-hero-lbl">Net P&amp;L per lot</div>
@@ -3931,7 +3934,8 @@ function renderToday(ok) {
   const today = istToday(), d = TD_INFO.date, isToday = d === today;
   const dl = iso => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
   I('td-date').textContent = d ? dl(d) + (isToday ? ' · Today' : ' · Last updated session') : dl(today);
-  I('td-livetxt').textContent = isToday ? 'LIVE · TODAY' : d ? 'LAST SESSION · ' + fmtDay(d).toUpperCase() : 'LIVE';
+  { const bd = new Date((d || today) + 'T00:00:00Z'); I('td-bigdate').innerHTML = '📅 ' + bd.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' }) + '<small>' + bd.toLocaleDateString('en-IN', { weekday: 'long', timeZone: 'UTC' }) + '</small>'; }
+  I('td-livetxt').textContent = isToday ? 'LIVE · TODAY' : d ? 'LAST SESSION' : 'LIVE';
   const rows = TODAY, net = rows.reduce((a, r) => a + r.pnl, 0), w = rows.filter(r => r.pnl > 0).length, l = rows.length - w;
   const cols = TD_M ? TD_M.cols : [], sum = k => cols.reduce((a, c) => a + c[k], 0);
   const setV = (id, v) => { I(id).textContent = TD_M ? fr(v) : '—'; I(id).parentNode.className = 'td-stat' + (TD_M && v ? (v > 0 ? ' pos' : ' neg') : ''); };
