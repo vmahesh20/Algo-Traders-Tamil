@@ -603,6 +603,64 @@ tr:hover td{background:rgba(0,0,0,0.025)}
 .td-bigdate{font-size:1.9em;font-weight:900;letter-spacing:-0.5px;color:#fff;display:flex;align-items:baseline;gap:10px;line-height:1.1}
 .td-bigdate small{font-size:0.5em;font-weight:700;color:#7dd3fc;text-transform:uppercase;letter-spacing:1.5px}
 @media(max-width:600px){.td-bigdate{order:2;width:100%;font-size:1.5em;justify-content:flex-start}.td-hero-top .td-live{order:3}}
+
+/* ═══ INTRADAY BOOSTER ═══ */
+.bo-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+.bo-ctrl{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.bo-upd{font-family:var(--mono);font-size:.78em;color:var(--muted)}
+.bo-ref{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface);font-weight:700;cursor:pointer;font-family:inherit;color:var(--text)}
+.bo-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:18px}
+.bo-ttl{font-size:.75em;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted2);margin-bottom:12px;font-family:var(--mono)}
+.bo-top{display:grid;grid-template-columns:1fr 1.4fr;gap:18px;margin-bottom:18px}.bo-top .bo-card{margin-bottom:0}
+.bo-gbar{height:16px;border-radius:99px;background:#fca5a5;overflow:hidden}
+.bo-gbar i{display:block;height:100%;width:50%;background:linear-gradient(90deg,#059669,#10b981);transition:width .6s}
+.bo-glbl{display:flex;justify-content:space-between;margin-top:8px;font-size:.88em;font-weight:600}
+.bo-glbl .g{color:var(--green)}.bo-glbl .r{color:var(--red)}
+.bo-mood{margin-top:14px;font-size:1.5em;font-weight:900;letter-spacing:-.4px}
+.bo-adv{font-size:.85em;color:var(--muted2);margin-top:4px}
+.bo-bu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.bo-bu{border-radius:12px;padding:12px;border:1px solid var(--border);cursor:pointer;transition:.15s}
+.bo-bu:hover{transform:translateY(-2px)}
+.bo-bu b{display:block;font-size:1.8em;font-weight:900;line-height:1.1}
+.bo-bu span{font-size:.78em;font-weight:700}
+.bo-bu small{display:block;font-size:.72em;color:var(--muted);margin-top:2px}
+.bo-bu.LB,.bo-tag.LB{background:rgba(5,150,105,.09);color:#047857;border-color:rgba(5,150,105,.25)}
+.bo-bu.SC,.bo-tag.SC{background:rgba(14,165,233,.09);color:#0369a1;border-color:rgba(14,165,233,.25)}
+.bo-bu.SB,.bo-tag.SB{background:rgba(220,38,38,.08);color:#b91c1c;border-color:rgba(220,38,38,.25)}
+.bo-bu.LU,.bo-tag.LU{background:rgba(234,88,12,.09);color:#c2410c;border-color:rgba(234,88,12,.25)}
+.bo-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.bo-tabs button{padding:8px 14px;border-radius:99px;border:1px solid var(--border);background:var(--surface);font-weight:700;font-size:.85em;cursor:pointer;font-family:inherit;color:var(--muted2)}
+.bo-tabs button.on{background:#0f172a;color:#fff;border-color:#0f172a}
+.bo-lists{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.bo-in{border-top:4px solid #059669}.bo-out{border-top:4px solid #dc2626}
+.bo-lh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.bo-lh span{font-weight:800;font-size:1.05em;color:var(--text)}.bo-lh small{font-size:.75em;color:var(--muted)}
+.bo-row{display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:9px 4px;border-bottom:1px solid var(--border);text-decoration:none;color:var(--text)}
+.bo-row:last-child{border-bottom:0}
+.bo-row:hover{background:var(--surface2)}
+.bo-sym{font-weight:800;font-size:.95em}.bo-sym small{display:block;font-weight:500;font-size:.75em;color:var(--muted)}
+.bo-tag{font-size:.68em;font-weight:800;padding:3px 7px;border-radius:6px;border:1px solid;white-space:nowrap}
+.bo-num{text-align:right;font-family:var(--mono);font-weight:700;font-size:.9em;min-width:78px}
+.bo-num small{display:block;font-size:.78em;font-weight:500;color:var(--muted)}
+.bo-empty{padding:18px;text-align:center;color:var(--muted);font-size:.9em}
+.bo-sr{display:grid;grid-template-columns:150px 1fr 64px;gap:10px;align-items:center;padding:5px 0;font-size:.88em}
+.bo-sr .n{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bo-sr .t{position:relative;height:18px;background:var(--surface2);border-radius:6px}
+.bo-sr .t i{position:absolute;top:0;bottom:0;border-radius:6px}
+.bo-sr .t:before{content:'';position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--border)}
+.bo-sr .v{text-align:right;font-family:var(--mono);font-weight:700}
+.bo-hs{margin-bottom:14px}
+.bo-hs-h{display:flex;justify-content:space-between;font-size:.85em;font-weight:800;margin-bottom:6px;color:var(--text)}
+.bo-hs-h small{font-weight:600;color:var(--muted)}
+.bo-hg{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:5px}
+.bo-hc{border-radius:7px;padding:6px 7px;color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.25);text-decoration:none;font-size:.78em;line-height:1.25}
+.bo-hc b{display:block;font-size:.95em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bo-legend{font-size:.84em;color:var(--muted2);line-height:1.7;margin:4px 0 14px}
+.bo-legend span{font-weight:800}.bo-legend .lb{color:#047857}.bo-legend .sc{color:#0369a1}.bo-legend .sb{color:#b91c1c}.bo-legend .lu{color:#c2410c}
+@media(max-width:900px){.bo-head{flex-direction:column;align-items:flex-start}.bo-top,.bo-lists{grid-template-columns:1fr}.bo-bu-grid{grid-template-columns:1fr 1fr}.bo-sr{grid-template-columns:100px 1fr 58px}}
+.nav-links-row a{white-space:nowrap}
+@media(min-width:901px) and (max-width:1280px){.nav-links-row{gap:0}.nav-links-row a{padding:7px 9px;font-size:0.8em}}
+@media(min-width:901px) and (max-width:1100px){.nav-links-row a{padding:7px 6px;font-size:0.76em}.nav-cta-btn{padding:8px 12px!important;font-size:0.8em!important}}
 </style>
 </head>
 <body>
@@ -629,6 +687,7 @@ tr:hover td{background:rgba(0,0,0,0.025)}
     <li class="mob-close-li" style="list-style:none"><button class="mob-close" onclick="closeNav()" aria-label="Close menu">✕</button></li>
     <li><a href="#" id="nav-performance" class="active" onclick="showPage('performance');closeNav();return false">📊 Today</a></li>
     <li><a href="#" id="nav-backtest" onclick="showPage('backtest');closeNav();return false">📈 Backtest</a></li>
+    <li><a href="#" id="nav-booster" onclick="showPage('booster');closeNav();return false">🚀 Booster</a></li>
     <li><a href="#" id="nav-strategies" onclick="showPage('strategies');closeNav();return false">🧩 Strategy Hub</a></li>
     <li><a href="#" id="nav-plans" onclick="showPage('plans');closeNav();return false">📊 Indicators</a></li>
     <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');closeNav();return false">⭐ Reviews</a></li>
@@ -4676,7 +4735,8 @@ const PAGE_HASHES = {
   'sebi-disc': '#sebi',
   'contact': '#contact',
   'backtest': '#backtest',
-  'strategies': '#strategies'
+  'strategies': '#strategies',
+  'booster': '#booster'
 };
 const HASH_PAGES = {
   '#performance': 'performance',
@@ -4687,7 +4747,8 @@ const HASH_PAGES = {
   '#sebi': 'sebi-disc',
   '#contact': 'contact',
   '#backtest': 'backtest',
-  '#strategies': 'strategies'
+  '#strategies': 'strategies',
+  '#booster': 'booster'
 };
 
 function showPage(id) {
@@ -4698,6 +4759,7 @@ function showPage(id) {
   const nav = document.getElementById('nav-' + id);
   if (nav) nav.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  if (id === 'booster' && typeof loadBooster === 'function') loadBooster();
   if (id === 'backtest' && typeof renderBacktest === 'function' && BT.length) setTimeout(renderBacktest, 50);
   // Update URL hash without triggering scroll
   const hash = PAGE_HASHES[id] || '#performance';
@@ -5022,6 +5084,55 @@ document.addEventListener('DOMContentLoaded', () => {
 <!-- ══════════════════════════════════════════════════
      PAGE: PLANS
 ══════════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════════════════
+     PAGE: INTRADAY BOOSTER
+══════════════════════════════════════════════════ -->
+<div class="page-section" id="page-booster">
+<div class="section-wrap">
+  <div class="td-head bo-head">
+    <div>
+      <div class="page-eyebrow">Live · F&amp;O Futures</div>
+      <div class="page-h1">Intraday Booster</div>
+      <p class="page-sub">Where is the money flowing today? Live futures price, OI &amp; volume of all F&amp;O stocks — gainers, losers, build-ups and sector strength on one screen.</p>
+    </div>
+    <div class="bo-ctrl"><span class="bo-upd" id="bo-upd">Loading…</span><button class="bo-ref" onclick="loadBooster(true)">⟳ Refresh</button></div>
+  </div>
+
+  <div class="bo-top">
+    <div class="bo-card bo-sent">
+      <div class="bo-ttl">Market Sentiment</div>
+      <div class="bo-gauge"><div class="bo-gbar"><i id="bo-gbull"></i></div><div class="bo-glbl"><span class="g">Bullish <b id="bo-nbull">–</b></span><span class="r"><b id="bo-nbear">–</b> Bearish</span></div></div>
+      <div class="bo-mood" id="bo-mood">–</div>
+      <div class="bo-adv" id="bo-adv"></div>
+    </div>
+    <div class="bo-card">
+      <div class="bo-ttl">Build-up Summary</div>
+      <div class="bo-bu-grid" id="bo-bu"></div>
+    </div>
+  </div>
+
+  <div class="bo-tabs" id="bo-tabs">
+    <button class="on" data-f="all">All</button><button data-f="LB">Long Build-up</button><button data-f="SC">Short Covering</button><button data-f="SB">Short Build-up</button><button data-f="LU">Long Unwinding</button>
+  </div>
+  <div class="bo-lists">
+    <div class="bo-card bo-in"><div class="bo-lh"><span>🟢 Inflow · Top Gainers</span><small>Futures % chg · OI % chg</small></div><div id="bo-gain"></div></div>
+    <div class="bo-card bo-out"><div class="bo-lh"><span>🔴 Outflow · Top Losers</span><small>Futures % chg · OI % chg</small></div><div id="bo-lose"></div></div>
+  </div>
+
+  <div class="bo-card">
+    <div class="bo-lh"><span>📊 Sector Performance</span><small>Average futures % change</small></div>
+    <div id="bo-sec"></div>
+  </div>
+  <div class="bo-card">
+    <div class="bo-lh"><span>🗺️ Sector Heatmap</span><small>Tap a stock to open chart</small></div>
+    <div id="bo-heat"></div>
+  </div>
+
+  <div class="bo-legend"><b>How to read:</b> <span class="lb">Long Build-up</span> price ↑ OI ↑ · <span class="sc">Short Covering</span> price ↑ OI ↓ · <span class="sb">Short Build-up</span> price ↓ OI ↑ · <span class="lu">Long Unwinding</span> price ↓ OI ↓. Best used 9:15–10:15 AM and 2:30–3:30 PM.</div>
+  <div class="ind-disc"><b>⚠️ Disclaimer</b>Market data is for <strong>educational and informational purposes only</strong> — not a buy/sell recommendation. Data may be delayed by a few minutes. Algo Tamil is not SEBI registered; do your own analysis before trading.</div>
+</div>
+</div>
+
 <div class="page-section" id="page-plans">
 <div class="section-wrap">
   <div class="page-eyebrow">TradingView Indicators</div>
@@ -5732,6 +5843,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="#" onclick="showPage('performance');return false">Today</a>
           <a href="#" onclick="showPage('backtest');return false">Backtest</a>
           <a href="#" onclick="showPage('strategies');return false">Strategy Hub</a>
+          <a href="#" onclick="showPage('booster');return false">Intraday Booster</a>
           <a href="#" onclick="showPage('plans');return false">Indicators</a>
           <a href="#" onclick="showPage('testimonials');return false">Reviews</a>
           <a href="#" onclick="showPage('faq');return false">FAQ</a>
@@ -5768,6 +5880,69 @@ document.querySelectorAll('.ind-video[data-vid]').forEach(function(el){
   var id = IND_VIDEOS[el.dataset.vid];
   if (id) el.innerHTML = '<iframe src="https://www.youtube.com/embed/' + id + '" title="Indicator walkthrough" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 });
+</script>
+<script>
+/* ═══ INTRADAY BOOSTER — reads "Booster" tab of the Google Sheet (filled by booster_feed.py) ═══ */
+const BOOSTER_URL = 'https://docs.google.com/spreadsheets/d/16Z2Rk_jjuMX8oBDS8y0vPxI5PQzmStQdsYBQGZHDwzc/gviz/tq?tqx=out:csv&sheet=Booster';
+const BU_NAME = { LB: 'Long Build-up', SC: 'Short Covering', SB: 'Short Build-up', LU: 'Long Unwinding' };
+let BO = [], BO_F = 'all', BO_T = null, BO_AT = 0;
+const boPct = v => (v > 0 ? '+' : '') + v.toFixed(2) + '%';
+const boTv = s => 'https://www.tradingview.com/chart/?symbol=NSE:' + encodeURIComponent(s);
+function boDemo() {
+  const sec = { Banking: ['HDFCBANK','ICICIBANK','SBIN','AXISBANK','KOTAKBANK'], IT: ['TCS','INFY','WIPRO','HCLTECH','TECHM'], Auto: ['MARUTI','M&M','TATAMOTORS','BAJAJ-AUTO','EICHERMOT'], Pharma: ['SUNPHARMA','CIPLA','DRREDDY','LUPIN'], Metal: ['TATASTEEL','JSWSTEEL','HINDALCO','VEDL'], Energy: ['RELIANCE','ONGC','NTPC','POWERGRID','BPCL'], FMCG: ['ITC','HINDUNILVR','NESTLEIND','BRITANNIA'] };
+  const out = []; let s = 7;
+  const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  Object.entries(sec).forEach(([k, a]) => a.forEach(sym => { const c = (rnd() - 0.45) * 5, o = (rnd() - 0.4) * 12; out.push({ s: sym, sec: k, ltp: Math.round(500 + rnd() * 3000), chg: c, oi: Math.round(rnd() * 5e7), oic: o, vol: Math.round(rnd() * 9e6), bu: c >= 0 ? (o >= 0 ? 'LB' : 'SC') : (o >= 0 ? 'SB' : 'LU') }); }));
+  return { rows: out, upd: 'Demo data' };
+}
+async function loadBooster(force) {
+  if (!force && Date.now() - BO_AT < 60000 && BO.length) return;
+  BO_AT = Date.now();
+  let res;
+  try {
+    if (DEMO) res = boDemo();
+    else {
+      const rows = csvRows(await fetchCSV(BOOSTER_URL + '&t=' + Date.now()));
+      const hd = rows.shift().map(x => x.trim().toLowerCase()), ix = n => hd.indexOf(n), num = v => parseFloat(String(v).replace(/[,%]/g, '')) || 0;
+      const out = rows.filter(r => r[ix('symbol')]).map(r => ({ s: r[ix('symbol')].trim(), sec: (r[ix('sector')] || 'Others').trim() || 'Others', ltp: num(r[ix('ltp')]), chg: num(r[ix('chgpct')]), oi: num(r[ix('oi')]), oic: num(r[ix('oichgpct')]), vol: num(r[ix('volume')]), bu: (r[ix('buildup')] || '').trim() }));
+      res = { rows: out, upd: rows.length ? (rows[0][ix('updated')] || '') : '' };
+    }
+  } catch (e) { I('bo-upd').textContent = 'Data unavailable — market closed or feed offline'; return; }
+  BO = res.rows; I('bo-upd').textContent = res.upd ? 'Updated ' + res.upd : '';
+  renderBooster();
+  clearTimeout(BO_T);
+  BO_T = setTimeout(() => { if (I('page-booster').classList.contains('active')) loadBooster(true); }, 120000);
+}
+function boRow(r) {
+  return '<a class="bo-row" href="' + boTv(r.s) + '" target="_blank" rel="noopener"><div class="bo-sym">' + esc(r.s) + '<small>' + esc(r.sec) + ' · ₹' + r.ltp.toLocaleString('en-IN') + '</small></div>' +
+    (BU_NAME[r.bu] ? '<span class="bo-tag ' + r.bu + '">' + BU_NAME[r.bu] + '</span>' : '<span></span>') +
+    '<div class="bo-num" style="color:' + clr(r.chg) + '">' + boPct(r.chg) + '<small>OI ' + boPct(r.oic) + '</small></div></a>';
+}
+function renderBooster() {
+  const R = BO;
+  if (!R.length) { ['bo-gain', 'bo-lose', 'bo-sec', 'bo-heat'].forEach(id => I(id).innerHTML = '<div class="bo-empty">No data yet — updates during market hours (9:15 AM – 3:30 PM)</div>'); return; }
+  const cnt = k => R.filter(r => r.bu === k).length;
+  const bull = cnt('LB') + cnt('SC'), bear = cnt('SB') + cnt('LU'), tot = bull + bear || 1, bp = bull / tot * 100;
+  const up = R.filter(r => r.chg > 0).length, dn = R.filter(r => r.chg < 0).length;
+  I('bo-gbull').style.width = bp.toFixed(1) + '%';
+  I('bo-nbull').textContent = bull + ' (' + bp.toFixed(0) + '%)'; I('bo-nbear').textContent = bear + ' (' + (100 - bp).toFixed(0) + '%)';
+  const mood = bp >= 65 ? ['Strongly Bullish', 'var(--green)'] : bp >= 55 ? ['Bullish', 'var(--green)'] : bp > 45 ? ['Neutral / Sideways', 'var(--muted2)'] : bp > 35 ? ['Bearish', 'var(--red)'] : ['Strongly Bearish', 'var(--red)'];
+  I('bo-mood').textContent = mood[0]; I('bo-mood').style.color = mood[1];
+  I('bo-adv').textContent = up + ' advancing · ' + dn + ' declining · ' + R.length + ' F&O stocks';
+  I('bo-bu').innerHTML = ['LB', 'SC', 'SB', 'LU'].map(k => '<div class="bo-bu ' + k + '" onclick="boFilter(\'' + k + '\')"><b>' + cnt(k) + '</b><span>' + BU_NAME[k] + '</span><small>' + ({ LB: 'Price ↑ OI ↑', SC: 'Price ↑ OI ↓', SB: 'Price ↓ OI ↑', LU: 'Price ↓ OI ↓' })[k] + '</small></div>').join('');
+  const F = BO_F === 'all' ? R : R.filter(r => r.bu === BO_F);
+  const g = F.filter(r => r.chg > 0).sort((a, b) => b.chg - a.chg).slice(0, 10), l = F.filter(r => r.chg < 0).sort((a, b) => a.chg - b.chg).slice(0, 10);
+  I('bo-gain').innerHTML = g.map(boRow).join('') || '<div class="bo-empty">No stocks</div>';
+  I('bo-lose').innerHTML = l.map(boRow).join('') || '<div class="bo-empty">No stocks</div>';
+  const S = {}; R.forEach(r => (S[r.sec] = S[r.sec] || []).push(r));
+  const sec = Object.entries(S).map(([k, a]) => ({ k, a, avg: a.reduce((x, r) => x + r.chg, 0) / a.length, up: a.filter(r => r.chg > 0).length })).sort((a, b) => b.avg - a.avg);
+  const mx = Math.max(1, ...sec.map(s => Math.abs(s.avg)));
+  I('bo-sec').innerHTML = sec.map(s => { const w = Math.abs(s.avg) / mx * 50; return '<div class="bo-sr"><span class="n">' + esc(s.k) + '</span><div class="t"><i style="' + (s.avg >= 0 ? 'left:50%' : 'right:50%') + ';width:' + w.toFixed(1) + '%;background:' + (s.avg >= 0 ? '#10b981' : '#ef4444') + '"></i></div><span class="v" style="color:' + clr(s.avg) + '">' + boPct(s.avg) + '</span></div>'; }).join('');
+  const hc = c => { const a = Math.min(1, Math.abs(c) / 3); return c >= 0 ? 'rgba(5,150,105,' + (0.55 + a * 0.45).toFixed(2) + ')' : 'rgba(220,38,38,' + (0.55 + a * 0.45).toFixed(2) + ')'; };
+  I('bo-heat').innerHTML = sec.map(s => '<div class="bo-hs"><div class="bo-hs-h">' + esc(s.k) + '<small>' + s.up + ' ↑ · ' + (s.a.length - s.up) + ' ↓</small></div><div class="bo-hg">' + s.a.sort((a, b) => b.chg - a.chg).map(r => '<a class="bo-hc" style="background:' + hc(r.chg) + '" href="' + boTv(r.s) + '" target="_blank" rel="noopener"><b>' + esc(r.s) + '</b>' + boPct(r.chg) + '</a>').join('') + '</div></div>').join('');
+}
+function boFilter(f) { BO_F = f; document.querySelectorAll('#bo-tabs button').forEach(b => b.classList.toggle('on', b.dataset.f === f)); renderBooster(); }
+document.querySelectorAll('#bo-tabs button').forEach(b => b.onclick = () => boFilter(b.dataset.f));
 </script>
 </body>
 </html>
