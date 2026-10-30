@@ -811,6 +811,13 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 @media(max-width:900px){.sr-wrap{grid-template-columns:1fr}.sr-mid{order:-1}}
 .op-grid>*{min-width:0}.pv-in input,.pv-in select{width:100%;min-width:0;box-sizing:border-box}
 .pv-cpr>div{min-width:0}@media(max-width:480px){.pv-cpr{gap:6px}.pv-cpr>div{padding:10px 4px}.pv-cpr b{font-size:1em}}
+
+.gl-tape{background:var(--surface);border-bottom:1px solid var(--border);min-height:46px;overflow:hidden}
+.gl-tape .tradingview-widget-container{height:46px}
+.gl-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:18px}
+.gl-w{height:640px}
+@media(max-width:900px){.gl-grid{grid-template-columns:1fr}.gl-w{height:560px}}
+.gl-q .gl-w{height:1180px}.gl-o{align-self:start;position:sticky;top:80px}@media(max-width:900px){.gl-o{position:static}.gl-q .gl-w{height:1180px}}
 </style>
 </head>
 <body>
@@ -862,6 +869,7 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
   </div>
 </nav>
 
+<div class="gl-tape"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols": [{"proName": "CAPITALCOM:US30", "title": "Dow Fut"}, {"proName": "CAPITALCOM:US500", "title": "S&P 500 Fut"}, {"proName": "CAPITALCOM:US100", "title": "Nasdaq Fut"}, {"proName": "CAPITALCOM:J225", "title": "Nikkei"}, {"proName": "CAPITALCOM:HK50", "title": "Hang Seng"}, {"proName": "CAPITALCOM:DE40", "title": "DAX"}, {"proName": "CAPITALCOM:UK100", "title": "FTSE 100"}, {"proName": "TVC:USOIL", "title": "Crude Oil"}, {"proName": "TVC:GOLD", "title": "Gold"}, {"proName": "FX_IDC:USDINR", "title": "USD/INR"}, {"proName": "CAPITALCOM:DXY", "title": "Dollar Index"}, {"proName": "CAPITALCOM:VIX", "title": "US VIX"}], "showSymbolLogo": true, "isTransparent": true, "displayMode": "adaptive", "colorTheme": "light", "locale": "en"}</script></div></div>
 <a class="ab-ribbon" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">🎁 <b>Free strategy access</b> — open a new Alice Blue account with our referral link <span>Open now ↗</span></a>
 
 <!-- ═══ PAGE: PERFORMANCE (today points + 1-yr backtest) ═══ -->
@@ -5261,6 +5269,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <button data-t="str"><i>📈</i>ATM Straddle</button>
     <button data-t="decay"><i>⏳</i>Premium Decay</button>
     <button data-t="piv"><i>🧮</i>CPR &amp; Pivots</button>
+    <button data-t="glob"><i>🌍</i>Global Markets</button>
   </div>
 
   <div class="tl-pane on" id="tl-booster">
@@ -5344,6 +5353,14 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="pv-promo">🎯 Want these levels auto-plotted on your chart with signals? <a href="#" onclick="showPage('plans');return false">See Pivot Master indicator →</a></div>
       </div>
     </div>
+  </div>
+
+  <div class="tl-pane" id="tl-glob">
+    <div class="gl-grid">
+      <div class="bo-card gl-q"><div class="bo-lh"><span>🌏 Global Indices &amp; Futures</span><small>live · auto-updating</small></div><div id="gl-quotes" class="gl-w"></div></div>
+      <div class="bo-card gl-o"><div class="bo-lh"><span>📈 Charts</span><small>tap a symbol</small></div><div id="gl-over" class="gl-w"></div></div>
+    </div>
+    <p class="op-note" style="margin-top:4px">Global data powered by TradingView. Futures shown are index CFDs that trade nearly 24×5 — use them as pre-market cues for Nifty. Some exchange feeds may be delayed.</p>
   </div>
 
   <div class="tl-pane" id="tl-opt">
@@ -6206,6 +6223,7 @@ const TL = {
   oich: ['Option Tools · Live', 'OI Change by Strike', 'Fresh Call vs Put positions added today at every strike — see exactly where writers are building up.'],
   sr: ['Option Tools · Live', 'Support & Resistance', 'Key levels from option writers: highest Put OI = support, highest Call OI = resistance — with distance from spot.'],
   fut: ['Futures · Live', 'Futures OI Buildup', 'Index futures price vs Open Interest through the day — is the move backed by fresh positions or just covering?'],
+  glob: ['Global · Live', 'Global Markets', 'World indices, index futures, crude, gold, dollar and US VIX — the global cues that drive Nifty’s opening.'],
   piv: ['Calculator', 'CPR & Pivot Levels', 'Daily, Weekly & Monthly CPR with Classic, Camarilla and Fibonacci pivots. Auto-filled for Nifty & BankNifty, or enter any stock.'],
   scr: ['Screener · F&O Stocks', 'Stock Screener', 'Filter all F&O stocks live by price action, OI, VWAP, gap, open-high-low and build-up — one-tap quick scans or your own filters.'],
   decay: ['Option Tools · Live', 'Premium Decay', 'How much Call and Put premiums have changed since the open for strikes around ATM.']
@@ -6326,11 +6344,12 @@ function renderOpt() {
 function showTool(t) {
   TL_CUR = t;
   document.querySelectorAll('#tl-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  I('tl-booster').classList.toggle('on', t === 'booster'); I('tl-scr').classList.toggle('on', t === 'scr'); I('tl-piv').classList.toggle('on', t === 'piv'); I('tl-opt').classList.toggle('on', !['booster', 'scr', 'piv'].includes(t));
+  I('tl-booster').classList.toggle('on', t === 'booster'); I('tl-scr').classList.toggle('on', t === 'scr'); I('tl-piv').classList.toggle('on', t === 'piv'); I('tl-glob').classList.toggle('on', t === 'glob'); I('tl-opt').classList.toggle('on', !['booster', 'scr', 'piv', 'glob'].includes(t));
+  if (t === 'glob') glLoad();
   if (t === 'piv') { pvAuto(); if (!OPT) loadOpt(true).then(pvAuto); }
   if (t === 'scr') { loadBooster(); scRender(); }
   const c = TL[t]; I('tl-eye').textContent = c[0]; I('tl-h1').textContent = c[1]; I('tl-sub').textContent = c[2];
-  if (!['booster', 'scr', 'piv'].includes(t)) loadOpt();
+  if (!['booster', 'scr', 'piv', 'glob'].includes(t)) loadOpt();
 }
 document.querySelectorAll('#tl-tabs button').forEach(b => b.onclick = () => showTool(b.dataset.t));
 document.querySelectorAll('#op-und button').forEach(b => b.onclick = () => { OPT_U = b.dataset.u; document.querySelectorAll('#op-und button').forEach(x => x.classList.toggle('on', x === b)); renderOpt(); });
@@ -6427,6 +6446,16 @@ function pvCalc() {
 document.querySelectorAll('#pv-tf button').forEach(b => b.onclick = () => { PV_F = b.dataset.f; document.querySelectorAll('#pv-tf button').forEach(x => x.classList.toggle('on', x === b)); pvAuto(); });
 I('pv-sym').onchange = pvAuto;
 ['pv-h', 'pv-l', 'pv-c', 'pv-p'].forEach(id => I(id).addEventListener('input', pvCalc));
+</script>
+<script>
+/* ═══ GLOBAL MARKETS (TradingView widgets, loaded on first open) ═══ */
+let GL_DONE = false;
+function glW(id, src, cfg) { const box = I(id); box.innerHTML = '<div class="tradingview-widget-container" style="height:100%"><div class="tradingview-widget-container__widget" style="height:100%"></div></div>'; const s = document.createElement('script'); s.src = src; s.async = true; s.text = JSON.stringify(cfg); box.firstChild.appendChild(s); }
+function glLoad() {
+  if (GL_DONE) return; GL_DONE = true;
+  glW('gl-quotes', 'https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js', {"width": "100%", "height": "100%", "symbolsGroups": [{"name": "Futures (Pre-market cues)", "symbols": [{"name": "CAPITALCOM:US30", "displayName": "Dow Jones Fut"}, {"name": "CAPITALCOM:US500", "displayName": "S&P 500 Fut"}, {"name": "CAPITALCOM:US100", "displayName": "Nasdaq 100 Fut"}, {"name": "CAPITALCOM:J225", "displayName": "Nikkei 225 Fut"}, {"name": "CAPITALCOM:HK50", "displayName": "Hang Seng Fut"}, {"name": "CAPITALCOM:CN50", "displayName": "China A50 Fut"}]}, {"name": "Asia", "symbols": [{"name": "FOREXCOM:JP225", "displayName": "Nikkei 225"}, {"name": "OANDA:HK33HKD", "displayName": "Hang Seng"}, {"name": "SSE:000001", "displayName": "Shanghai Composite"}, {"name": "CAPITALCOM:AU200", "displayName": "ASX 200"}, {"name": "OANDA:SG30SGD", "displayName": "Singapore 30"}]}, {"name": "Europe", "symbols": [{"name": "CAPITALCOM:UK100", "displayName": "FTSE 100"}, {"name": "CAPITALCOM:DE40", "displayName": "DAX"}, {"name": "CAPITALCOM:FR40", "displayName": "CAC 40"}, {"name": "CAPITALCOM:EU50", "displayName": "Euro Stoxx 50"}]}, {"name": "US", "symbols": [{"name": "FOREXCOM:DJI", "displayName": "Dow Jones"}, {"name": "FOREXCOM:SPXUSD", "displayName": "S&P 500"}, {"name": "FOREXCOM:NSXUSD", "displayName": "Nasdaq 100"}, {"name": "CAPITALCOM:VIX", "displayName": "US VIX"}]}, {"name": "Commodities & Currency", "symbols": [{"name": "TVC:USOIL", "displayName": "WTI Crude"}, {"name": "TVC:UKOIL", "displayName": "Brent Crude"}, {"name": "TVC:GOLD", "displayName": "Gold"}, {"name": "TVC:SILVER", "displayName": "Silver"}, {"name": "FX_IDC:USDINR", "displayName": "USD / INR"}, {"name": "CAPITALCOM:DXY", "displayName": "Dollar Index"}, {"name": "OANDA:USB10YUSD", "displayName": "US 10Y T-Note"}]}], "showSymbolLogo": true, "isTransparent": true, "colorTheme": "light", "locale": "en"});
+  glW('gl-over', 'https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js', {"colorTheme": "light", "dateRange": "1D", "showChart": true, "locale": "en", "width": "100%", "height": "100%", "largeChartUrl": "", "isTransparent": true, "showSymbolLogo": true, "showFloatingTooltip": true, "plotLineColorGrowing": "rgba(5,150,105,1)", "plotLineColorFalling": "rgba(220,38,38,1)", "gridLineColor": "rgba(148,163,184,0.15)", "scaleFontColor": "rgba(100,116,139,1)", "belowLineFillColorGrowing": "rgba(5,150,105,0.10)", "belowLineFillColorFalling": "rgba(220,38,38,0.10)", "belowLineFillColorGrowingBottom": "rgba(5,150,105,0)", "belowLineFillColorFallingBottom": "rgba(220,38,38,0)", "symbolActiveColor": "rgba(3,105,161,0.10)", "tabs": [{"title": "Futures", "symbols": [{"s": "CAPITALCOM:US30", "d": "Dow Fut"}, {"s": "CAPITALCOM:US500", "d": "S&P Fut"}, {"s": "CAPITALCOM:US100", "d": "Nasdaq Fut"}, {"s": "CAPITALCOM:J225", "d": "Nikkei Fut"}]}, {"title": "Asia", "symbols": [{"s": "FOREXCOM:JP225", "d": "Nikkei 225"}, {"s": "OANDA:HK33HKD", "d": "Hang Seng"}, {"s": "SSE:000001", "d": "Shanghai"}, {"s": "CAPITALCOM:AU200", "d": "ASX 200"}]}, {"title": "Europe", "symbols": [{"s": "CAPITALCOM:UK100", "d": "FTSE 100"}, {"s": "CAPITALCOM:DE40", "d": "DAX"}, {"s": "CAPITALCOM:FR40", "d": "CAC 40"}]}, {"title": "US", "symbols": [{"s": "FOREXCOM:DJI", "d": "Dow Jones"}, {"s": "FOREXCOM:SPXUSD", "d": "S&P 500"}, {"s": "FOREXCOM:NSXUSD", "d": "Nasdaq 100"}]}, {"title": "Commodities", "symbols": [{"s": "TVC:USOIL", "d": "Crude Oil"}, {"s": "TVC:GOLD", "d": "Gold"}, {"s": "FX_IDC:USDINR", "d": "USD/INR"}, {"s": "CAPITALCOM:DXY", "d": "DXY"}]}]});
+}
 </script>
 </body>
 </html>
