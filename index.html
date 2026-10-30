@@ -707,6 +707,48 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .bo-tile i{position:absolute;left:0;bottom:0;height:3px;border-radius:0 3px 3px 0}
 .bo-tile.up i{background:#10b981}.bo-tile.dn i{background:#ef4444}
 @media(max-width:480px){.bo-tiles{grid-template-columns:1fr 1fr;gap:8px}.bo-tile b{font-size:1.2em}}
+
+/* ═══ TOOLS (tabs + option tools) ═══ */
+.tl-tabs{display:flex;gap:6px;overflow-x:auto;padding:4px;margin:0 0 20px;background:var(--surface);border:1px solid var(--border);border-radius:14px;scrollbar-width:none}
+.tl-tabs::-webkit-scrollbar{display:none}
+.tl-tabs button{flex:0 0 auto;display:flex;align-items:center;gap:7px;padding:10px 16px;border:0;border-radius:10px;background:transparent;font:inherit;font-size:.88em;font-weight:500;color:var(--muted2);cursor:pointer;white-space:nowrap;transition:.15s}
+.tl-tabs button i{font-style:normal}
+.tl-tabs button:hover{background:var(--surface2);color:var(--text)}
+.tl-tabs button.on{background:#0f172a;color:#fff;box-shadow:0 6px 16px -10px rgba(15,23,42,.7)}
+.tl-pane{display:none}.tl-pane.on{display:block}
+.op-bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px}
+.op-und{display:inline-flex;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:3px}
+.op-und button{border:0;background:transparent;padding:8px 16px;border-radius:8px;font:inherit;font-size:.85em;font-weight:600;color:var(--muted2);cursor:pointer}
+.op-und button.on{background:#0369a1;color:#fff}
+.op-strip{display:flex;flex-wrap:wrap;gap:8px;flex:1}
+.op-chip{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:7px 12px;font-size:.8em;color:var(--muted2)}
+.op-chip b{display:block;font-size:1.25em;color:var(--text);font-weight:600;margin-top:1px}
+.op-grid{display:grid;grid-template-columns:300px 1fr;gap:18px}
+.op-hero{display:flex;flex-direction:column;gap:6px}
+.op-big{font-size:2.6em;font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.op-tag{display:inline-block;align-self:flex-start;padding:5px 10px;border-radius:8px;font-size:.82em;font-weight:600}
+.op-tag.g{background:rgba(5,150,105,.1);color:#047857}.op-tag.r{background:rgba(220,38,38,.08);color:#b91c1c}.op-tag.n{background:var(--surface2);color:var(--muted2)}
+.op-note{font-size:.84em;color:var(--muted2);line-height:1.6}
+.op-kv{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--border);font-size:.9em}
+.op-kv span{color:var(--muted2)}.op-kv b{font-weight:600}
+.op-ch{position:relative;height:300px}
+.op-tbl{width:100%;border-collapse:collapse;font-size:.86em}
+.op-tbl th{font-size:.72em;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600;padding:8px 6px;border-bottom:1px solid var(--border);text-align:right}
+.op-tbl td{padding:8px 6px;border-bottom:1px dashed var(--border);text-align:right}
+.op-tbl th.k,.op-tbl td.k{text-align:center;font-weight:600;background:var(--surface2)}
+.op-tbl tr.atm td{background:rgba(3,105,161,.07)}.op-tbl tr.atm td.k{background:#0369a1;color:#fff}
+.op-wrap{overflow-x:auto}
+@media(max-width:900px){.op-grid{grid-template-columns:1fr}.op-ch{height:240px}.op-big{font-size:2.2em}}
+
+.bo-logo{position:relative;overflow:hidden}
+.bo-logo img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#fff;border-radius:50%;padding:3px}
+.bo-hg{grid-template-columns:repeat(auto-fill,minmax(112px,1fr))!important;gap:4px!important}
+.bo-hc{aspect-ratio:1/1;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px!important;border-radius:6px!important;text-align:center;text-shadow:none!important;transition:transform .15s,filter .15s}
+.bo-hc:hover{transform:scale(1.03);filter:brightness(1.05);z-index:1}
+.bo-hc .bo-logo{width:38px;height:38px;font-size:.7em;box-shadow:0 2px 6px rgba(0,0,0,.18)}
+.bo-hc b{font-size:.82em!important;font-weight:600;letter-spacing:.02em;max-width:100%}
+.bo-hc span{font-size:.9em;font-weight:500;opacity:.95}
+@media(max-width:480px){.bo-hg{grid-template-columns:repeat(3,1fr)!important}.bo-hc .bo-logo{width:30px;height:30px}.bo-hc b{font-size:.72em!important}}
 </style>
 </head>
 <body>
@@ -733,7 +775,7 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
     <li class="mob-close-li" style="list-style:none"><button class="mob-close" onclick="closeNav()" aria-label="Close menu">✕</button></li>
     <li><a href="#" id="nav-performance" class="active" onclick="showPage('performance');closeNav();return false">📊 Today</a></li>
     <li><a href="#" id="nav-backtest" onclick="showPage('backtest');closeNav();return false">📈 Backtest</a></li>
-    <li><a href="#" id="nav-booster" onclick="showPage('booster');closeNav();return false">🚀 Booster</a></li>
+    <li><a href="#" id="nav-booster" onclick="showPage('booster');closeNav();return false">🛠️ Tools</a></li>
     <li><a href="#" id="nav-strategies" onclick="showPage('strategies');closeNav();return false">🧩 Strategy Hub</a></li>
     <li><a href="#" id="nav-plans" onclick="showPage('plans');closeNav();return false">📊 Indicators</a></li>
     <li><a href="#" id="nav-testimonials" onclick="showPage('testimonials');closeNav();return false">⭐ Reviews</a></li>
@@ -4782,7 +4824,7 @@ const PAGE_HASHES = {
   'contact': '#contact',
   'backtest': '#backtest',
   'strategies': '#strategies',
-  'booster': '#booster'
+  'booster': '#tools'
 };
 const HASH_PAGES = {
   '#performance': 'performance',
@@ -4794,7 +4836,8 @@ const HASH_PAGES = {
   '#contact': 'contact',
   '#backtest': 'backtest',
   '#strategies': 'strategies',
-  '#booster': 'booster'
+  '#booster': 'booster',
+  '#tools': 'booster'
 };
 
 function showPage(id) {
@@ -5137,12 +5180,23 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="section-wrap">
   <div class="td-head bo-head">
     <div>
-      <div class="page-eyebrow">Live · F&amp;O Futures</div>
-      <div class="page-h1">Intraday Booster</div>
-      <p class="page-sub">Where is the money flowing today? Live futures price, OI &amp; volume of all F&amp;O stocks — gainers, losers, build-ups and sector strength on one screen.</p>
+      <div class="page-eyebrow" id="tl-eye">Trading Tools · Live</div>
+      <div class="page-h1" id="tl-h1">Intraday Booster</div>
+      <p class="page-sub" id="tl-sub">Where is the money flowing today? Live futures price, OI &amp; volume of all F&amp;O stocks — gainers, losers, build-ups and sector strength on one screen.</p>
     </div>
-    <div class="bo-ctrl"><span class="bo-upd" id="bo-upd">Loading…</span><button class="bo-ref" onclick="loadBooster(true)">⟳ Refresh</button></div>
+    <div class="bo-ctrl"><span class="bo-upd" id="bo-upd">Loading…</span><button class="bo-ref" onclick="loadBooster(true);loadOpt(true)">⟳ Refresh</button></div>
   </div>
+
+  <div class="tl-tabs" id="tl-tabs">
+    <button data-t="booster" class="on"><i>🚀</i>Intraday Booster</button>
+    <button data-t="pcr"><i>⚖️</i>Put-Call Ratio</button>
+    <button data-t="mp"><i>🎯</i>Max Pain</button>
+    <button data-t="pece"><i>📊</i>PE-CE Difference</button>
+    <button data-t="str"><i>📈</i>ATM Straddle</button>
+    <button data-t="decay"><i>⏳</i>Premium Decay</button>
+  </div>
+
+  <div class="tl-pane on" id="tl-booster">
 
   <div class="bo-top">
     <div class="bo-card bo-sent">
@@ -5175,6 +5229,15 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div class="bo-legend"><b>How to read:</b> <span class="lb">Long Build-up</span> price ↑ OI ↑ · <span class="sc">Short Covering</span> price ↑ OI ↓ · <span class="sb">Short Build-up</span> price ↓ OI ↑ · <span class="lu">Long Unwinding</span> price ↓ OI ↓. Best used 9:15–10:15 AM and 2:30–3:30 PM.</div>
+  </div><!-- /tl-booster -->
+
+  <div class="tl-pane" id="tl-opt">
+    <div class="op-bar">
+      <div class="op-und" id="op-und"><button data-u="NIFTY" class="on">NIFTY</button><button data-u="BANKNIFTY">BANKNIFTY</button></div>
+      <div class="op-strip" id="op-strip"></div>
+    </div>
+    <div id="op-body"><div class="bo-empty">Loading option data…</div></div>
+  </div>
   <div class="ind-disc"><b>⚠️ Disclaimer</b>Market data is for <strong>educational and informational purposes only</strong> — not a buy/sell recommendation. Data may be delayed by a few minutes. Algo Tamil is not SEBI registered; do your own analysis before trading.</div>
 </div>
 </div>
@@ -5889,7 +5952,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <a href="#" onclick="showPage('performance');return false">Today</a>
           <a href="#" onclick="showPage('backtest');return false">Backtest</a>
           <a href="#" onclick="showPage('strategies');return false">Strategy Hub</a>
-          <a href="#" onclick="showPage('booster');return false">Intraday Booster</a>
+          <a href="#" onclick="showPage('booster');return false">Trading Tools</a>
           <a href="#" onclick="showPage('plans');return false">Indicators</a>
           <a href="#" onclick="showPage('testimonials');return false">Reviews</a>
           <a href="#" onclick="showPage('faq');return false">FAQ</a>
@@ -5964,14 +6027,14 @@ async function loadBooster(force) {
     I('bo-upd').innerHTML = res.upd ? (live ? '🟢 Live · Updated ' : '🕘 Last session · ') + esc(res.upd) : ''; }
   renderBooster();
   clearTimeout(BO_T);
-  BO_T = setTimeout(() => { if (I('page-booster').classList.contains('active')) loadBooster(true); }, 120000);
+  BO_T = setTimeout(() => { if (I('page-booster').classList.contains('active')) { loadBooster(true); loadOpt(true); } }, 120000);
 }
 const SEC_ICO = { 'Banking': '🏦', 'Finance': '💰', 'IT': '💻', 'Auto': '🚗', 'Pharma & Health': '💊', 'Metal': '⛏️', 'Energy & Power': '⚡', 'FMCG': '🛒', 'Consumer': '🛍️', 'Infra & Capital Goods': '🏗️', 'Cement & Realty': '🏢', 'Telecom': '📡', 'Chemicals': '🧪' };
 const LOGO_C = ['#0f766e', '#1d4ed8', '#7c3aed', '#be123c', '#b45309', '#0369a1', '#4d7c0f', '#c2410c', '#4338ca', '#0e7490', '#a21caf', '#15803d'];
 function boLogo(s) {
   let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   const t = s.replace(/[^A-Z0-9]/g, '');
-  return '<span class="bo-logo" style="background:' + LOGO_C[h % LOGO_C.length] + '">' + esc(t.slice(0, 2)) + '</span>';
+  return '<span class="bo-logo" style="background:' + LOGO_C[h % LOGO_C.length] + '">' + esc(t.slice(0, 2)) + '<img src="https://images.dhan.co/symbol/' + encodeURIComponent(s) + '.png" alt="" loading="lazy" onerror="this.remove()"></span>';
 }
 function boRow(r) {
   return '<a class="bo-row" href="' + boTv(r.s) + '" target="_blank" rel="noopener">' + boLogo(r.s) +
@@ -6010,11 +6073,112 @@ function renderBooster() {
     I('bo-sec-src').textContent = 'Average of F&O stock futures by sector';
     I('bo-sec').innerHTML = '<div class="bo-tiles">' + sec.map(s => tile(s.k, s.avg, s.up + ' ↑ · ' + (s.a.length - s.up) + ' ↓')).join('') + '</div>';
   }
-  const hc = c => { const a = Math.min(1, Math.abs(c) / 3); return c >= 0 ? 'rgba(5,150,105,' + (0.55 + a * 0.45).toFixed(2) + ')' : 'rgba(220,38,38,' + (0.55 + a * 0.45).toFixed(2) + ')'; };
-  I('bo-heat').innerHTML = sec.map(s => '<div class="bo-hs"><div class="bo-hs-h">' + esc(s.k) + '<small>' + s.up + ' ↑ · ' + (s.a.length - s.up) + ' ↓</small></div><div class="bo-hg">' + s.a.sort((a, b) => b.chg - a.chg).map(r => '<a class="bo-hc" style="background:' + hc(r.chg) + '" href="' + boTv(r.s) + '" target="_blank" rel="noopener"><b>' + esc(r.s) + '</b>' + boPct(r.chg) + '</a>').join('') + '</div></div>').join('');
+  const hc = c => Math.abs(c) < 0.1 ? '#a3aab5' : c > 0 ? (c >= 2 ? '#0b8a4a' : c >= 1 ? '#16a34a' : '#3fbf7a') : (c <= -2 ? '#a11d2b' : c <= -1 ? '#dc2626' : '#f07575');
+  I('bo-heat').innerHTML = sec.map(s => '<div class="bo-hs"><div class="bo-hs-h">' + esc(s.k) + '<small>' + s.up + ' ↑ · ' + (s.a.length - s.up) + ' ↓</small></div><div class="bo-hg">' + s.a.sort((a, b) => b.chg - a.chg).map(r => '<a class="bo-hc" style="background:' + hc(r.chg) + '" href="' + boTv(r.s) + '" target="_blank" rel="noopener" title="' + esc(r.s) + ' · ₹' + r.ltp.toLocaleString('en-IN') + '">' + boLogo(r.s) + '<b>' + esc(r.s) + '</b><span>' + boPct(r.chg) + '</span></a>').join('') + '</div></div>').join('');
 }
 function boFilter(f) { BO_F = f; document.querySelectorAll('#bo-tabs button').forEach(b => b.classList.toggle('on', b.dataset.f === f)); renderBooster(); }
 document.querySelectorAll('#bo-tabs button').forEach(b => b.onclick = () => boFilter(b.dataset.f));
+</script>
+<script>
+/* ═══ OPTION TOOLS — reads BoosterOpt!A1 (JSON written by booster_feed.py) ═══ */
+const OPT_URL = 'https://docs.google.com/spreadsheets/d/16Z2Rk_jjuMX8oBDS8y0vPxI5PQzmStQdsYBQGZHDwzc/gviz/tq?tqx=out:csv&sheet=BoosterOpt&range=A1&headers=0';
+const TL = {
+  booster: ['Trading Tools · Live', 'Intraday Booster', 'Where is the money flowing today? Live futures price, OI & volume of all F&O stocks — gainers, losers, build-ups and sector strength on one screen.'],
+  pcr: ['Option Tools · Live', 'Put-Call Ratio', 'Total Put OI ÷ Call OI across ATM ± 20 strikes of the nearest expiry — with the PCR trend through the day.'],
+  mp: ['Option Tools · Live', 'Max Pain', 'The strike where option buyers lose the most (and writers gain the most) at expiry — price often gravitates towards it.'],
+  pece: ['Option Tools · Live', 'PE-CE Difference', 'Put OI minus Call OI at every strike. Big positive = strong put writing (support), big negative = strong call writing (resistance).'],
+  str: ['Option Tools · Live', 'ATM Straddle', 'ATM Call + Put premium through the day. Falling straddle = sideways / decay; rising straddle = trending / volatility expansion.'],
+  decay: ['Option Tools · Live', 'Premium Decay', 'How much Call and Put premiums have changed since the open for strikes around ATM.']
+};
+let OPT = null, OPT_AT = 0, OPT_U = 'NIFTY', TL_CUR = 'booster';
+const fmtL = v => (v / 1e5).toLocaleString('en-IN', { maximumFractionDigits: 1 }) + 'L';
+const fN = (v, d = 2) => Number(v || 0).toLocaleString('en-IN', { maximumFractionDigits: d });
+function opDemo() {
+  const mk = (spot, step) => { const atm = Math.round(spot / step) * step, ch = [], ser = []; let s = 11;
+    const r = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+    for (let i = -20; i <= 20; i++) { const k = atm + i * step, ce = Math.round((2e6 + r() * 6e6) * Math.exp(-Math.max(0, -i) / 6) * (i > 0 ? 1.4 : 0.7)), pe = Math.round((2e6 + r() * 6e6) * Math.exp(-Math.max(0, i) / 6) * (i < 0 ? 1.4 : 0.7));
+      const cl = Math.max(1, (spot - k) + step * 2.2 * Math.exp(-Math.abs(i) / 4)), pl = Math.max(1, (k - spot) + step * 2.2 * Math.exp(-Math.abs(i) / 4));
+      ch.push([k, ce, Math.round(ce * (0.8 + r() * 0.3)), +Math.max(0.5, cl).toFixed(2), +(Math.max(0.5, cl) * (1.05 + r() * 0.2)).toFixed(2), pe, Math.round(pe * (0.8 + r() * 0.3)), +Math.max(0.5, pl).toFixed(2), +(Math.max(0.5, pl) * (1.05 + r() * 0.2)).toFixed(2), 0]); }
+    const t0 = 9 * 60 + 15; for (let m = 0; m < 70; m++) { const t = t0 + m * 3; ser.push({ t: String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'), spot: spot + Math.sin(m / 9) * step * 1.5, pcr: 0.85 + m * 0.004 + Math.sin(m / 5) * 0.03, str: step * 4.6 - m * step * 0.012 + Math.sin(m / 4) * step * 0.1, ce: step * 2.3 - m * step * 0.006, pe: step * 2.3 - m * step * 0.007 }); }
+    const ceoi = ch.reduce((a, c) => a + c[1], 0), peoi = ch.reduce((a, c) => a + c[5], 0);
+    ch.forEach(c => c[9] = Math.round(ch.reduce((a, x) => a + x[1] * Math.max(0, c[0] - x[0]) + x[5] * Math.max(0, x[0] - c[0]), 0) / 1e5));
+    const mp = ch.reduce((a, c) => c[9] < a[9] ? c : a)[0];
+    return { exp: '2026-11-03', spot, atm, pcr: +(peoi / ceoi).toFixed(2), mp, str: ser[ser.length - 1].str, ceoi, peoi, chain: ch, series: ser }; };
+  return { updated: 'Demo data', data: { NIFTY: mk(22980, 50), BANKNIFTY: mk(54790, 100) } };
+}
+async function loadOpt(force) {
+  if (TL_CUR === 'booster' && !force) return;
+  if (!force && OPT && Date.now() - OPT_AT < 60000) return renderOpt();
+  OPT_AT = Date.now();
+  try {
+    if (DEMO) OPT = opDemo();
+    else { const rows = csvRows(await fetchCSV(OPT_URL + '&t=' + Date.now())); OPT = JSON.parse(rows.map(r => r.join(',')).join('\n')); }
+  } catch (e) { if (!OPT) { I('op-body').innerHTML = '<div class="bo-empty">Option data not available yet — updates during market hours.</div>'; I('op-strip').innerHTML = ''; } return; }
+  renderOpt();
+}
+function opChart(id, cfg) { if (CHARTS[id]) CHARTS[id].destroy(); const el = I(id); if (el) CHARTS[id] = new Chart(el, cfg); }
+const OPC = { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { labels: { boxWidth: 10, font: { family: 'Inter', size: 11 } } } }, scales: { x: { grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 }, maxRotation: 0, autoSkipPadding: 12 } }, y: { grid: { color: 'rgba(148,163,184,.15)' }, ticks: { font: { family: 'Inter', size: 10 } } } } };
+const opt2 = extra => JSON.parse(JSON.stringify(Object.assign({}, OPC, extra || {})));
+function renderOpt() {
+  if (!OPT || !OPT.data) return;
+  const D = OPT.data[OPT_U]; if (!D) { I('op-body').innerHTML = '<div class="bo-empty">No data for ' + OPT_U + '</div>'; return; }
+  const ex = new Date(D.exp + 'T00:00:00Z').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', timeZone: 'UTC' });
+  I('op-strip').innerHTML = [['Spot', fN(D.spot)], ['ATM', fN(D.atm, 0)], ['Expiry', ex], ['PCR', D.pcr.toFixed(2)], ['Max Pain', fN(D.mp, 0)], ['Straddle', fN(D.str)]].map(c => '<div class="op-chip">' + c[0] + '<b>' + c[1] + '</b></div>').join('') + '<div class="op-chip">Updated<b style="font-size:1em">' + esc(OPT.updated || '') + '</b></div>';
+  const S = D.series || [], C = D.chain || [], lab = S.map(s => s.t), K = C.map(c => fN(c[0], 0));
+  const B = I('op-body'), T = TL_CUR;
+  if (T === 'pcr') {
+    const v = D.pcr, tg = v >= 1.2 ? ['Bullish bias · strong put writing', 'g'] : v >= 0.9 ? ['Neutral to mildly bullish', 'n'] : v >= 0.7 ? ['Neutral to mildly bearish', 'n'] : ['Bearish bias · strong call writing', 'r'];
+    B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">PCR · ' + OPT_U + '</div><div class="op-big" style="color:' + (v >= 1 ? 'var(--green)' : 'var(--red)') + '">' + v.toFixed(2) + '</div><span class="op-tag ' + tg[1] + '">' + tg[0] + '</span>' +
+      '<div class="op-kv"><span>Total Put OI</span><b>' + fmtL(D.peoi) + '</b></div><div class="op-kv"><span>Total Call OI</span><b>' + fmtL(D.ceoi) + '</b></div>' + (S.length ? '<div class="op-kv"><span>PCR at open</span><b>' + S[0].pcr.toFixed(2) + '</b></div>' : '') +
+      '<p class="op-note">PCR above 1 = more puts written (support below). Below 0.7 = heavy call writing (resistance above). Watch the trend, not one value.</p></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>PCR trend vs Spot</span><small>every 3 min</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>';
+    const o = opt2({ scales: { x: OPC.scales.x, y: OPC.scales.y, y2: { position: 'right', grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } } } });
+    opChart('opc1', { type: 'line', data: { labels: lab, datasets: [{ label: 'PCR', data: S.map(s => s.pcr), borderColor: '#0369a1', backgroundColor: 'rgba(3,105,161,.08)', fill: true, borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'Spot', data: S.map(s => s.spot), borderColor: '#94a3b8', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, yAxisID: 'y2', tension: .3 }] }, options: o });
+  } else if (T === 'mp') {
+    const d = D.spot - D.mp, mx = Math.max(...C.map(c => c[9])), mn = Math.min(...C.map(c => c[9]));
+    B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">Max Pain · ' + OPT_U + ' · ' + ex + '</div><div class="op-big">' + fN(D.mp, 0) + '</div><span class="op-tag ' + (Math.abs(d) < D.spot * 0.003 ? 'n' : d > 0 ? 'r' : 'g') + '">Spot is ' + fN(Math.abs(d), 0) + ' pts ' + (d >= 0 ? 'above' : 'below') + ' Max Pain</span>' +
+      '<div class="op-kv"><span>Spot</span><b>' + fN(D.spot) + '</b></div><div class="op-kv"><span>ATM</span><b>' + fN(D.atm, 0) + '</b></div>' +
+      '<p class="op-note">Max Pain works best near expiry. Far from expiry, use it as a reference zone — not a target.</p></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>Total pain by strike</span><small>lowest bar = Max Pain</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>';
+    opChart('opc1', { type: 'bar', data: { labels: K, datasets: [{ label: 'Pain (₹ lakh × lot qty)', data: C.map(c => c[9]), backgroundColor: C.map(c => c[0] === D.mp ? '#0369a1' : c[9] - mn < (mx - mn) * 0.15 ? 'rgba(3,105,161,.45)' : 'rgba(148,163,184,.35)'), borderRadius: 4 }] }, options: opt2({ plugins: { legend: { display: false } } }) });
+  } else if (T === 'pece') {
+    const tot = D.peoi - D.ceoi, chgT = C.reduce((a, c) => a + (c[5] - c[6]) - (c[1] - c[2]), 0);
+    const rows = C.map(c => { const dif = c[5] - c[1]; return '<tr class="' + (c[0] === D.atm ? 'atm' : '') + '"><td>' + fmtL(c[1]) + '</td><td style="color:' + clr(c[1] - c[2]) + '">' + (c[1] - c[2] >= 0 ? '+' : '') + fmtL(c[1] - c[2]) + '</td><td class="k">' + fN(c[0], 0) + '</td><td>' + fmtL(c[5]) + '</td><td style="color:' + clr(c[5] - c[6]) + '">' + (c[5] - c[6] >= 0 ? '+' : '') + fmtL(c[5] - c[6]) + '</td><td style="color:' + clr(dif) + ';font-weight:600">' + (dif >= 0 ? '+' : '') + fmtL(dif) + '</td></tr>'; }).join('');
+    B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">Total PE − CE OI</div><div class="op-big" style="color:' + clr(tot) + '">' + (tot >= 0 ? '+' : '') + fmtL(tot) + '</div><span class="op-tag ' + (tot >= 0 ? 'g' : 'r') + '">' + (tot >= 0 ? 'Put writers stronger · support' : 'Call writers stronger · resistance') + '</span>' +
+      '<div class="op-kv"><span>Change today (PE − CE)</span><b style="color:' + clr(chgT) + '">' + (chgT >= 0 ? '+' : '') + fmtL(chgT) + '</b></div><div class="op-kv"><span>Highest Put OI (support)</span><b>' + fN(C.reduce((a, c) => c[5] > a[5] ? c : a)[0], 0) + '</b></div><div class="op-kv"><span>Highest Call OI (resistance)</span><b>' + fN(C.reduce((a, c) => c[1] > a[1] ? c : a)[0], 0) + '</b></div></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>PE − CE OI by strike</span><small>green = put heavy · red = call heavy</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>Strike-wise OI</span><small>L = lakh contracts qty</small></div><div class="op-wrap"><table class="op-tbl"><thead><tr><th>Call OI</th><th>CE Chg</th><th class="k">Strike</th><th>Put OI</th><th>PE Chg</th><th>PE − CE</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+    opChart('opc1', { type: 'bar', data: { labels: K, datasets: [{ label: 'PE − CE', data: C.map(c => c[5] - c[1]), backgroundColor: C.map(c => c[5] - c[1] >= 0 ? 'rgba(16,185,129,.8)' : 'rgba(239,68,68,.8)'), borderRadius: 3 }] }, options: opt2({ plugins: { legend: { display: false } } }) });
+  } else if (T === 'str') {
+    const v = S.map(s => s.str), o0 = v[0] || D.str, ch = D.str - o0, hi = v.length ? Math.max(...v) : D.str, lo = v.length ? Math.min(...v) : D.str;
+    B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">ATM ' + fN(D.atm, 0) + ' Straddle</div><div class="op-big">₹' + fN(D.str) + '</div><span class="op-tag ' + (ch <= 0 ? 'g' : 'r') + '">' + (ch >= 0 ? '+' : '') + fN(ch) + ' (' + (o0 ? (ch / o0 * 100).toFixed(1) : 0) + '%) since open · ' + (ch <= 0 ? 'Decaying' : 'Expanding') + '</span>' +
+      '<div class="op-kv"><span>Day High</span><b>₹' + fN(hi) + '</b></div><div class="op-kv"><span>Day Low</span><b>₹' + fN(lo) + '</b></div><div class="op-kv"><span>Expected move (±)</span><b>' + fN(D.str, 0) + ' pts</b></div>' +
+      '<p class="op-note">Straddle price ≈ the market\'s expected move till expiry. Steady fall = range-bound day; sharp rise = breakout / event.</p></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>Straddle premium vs Spot</span><small>ATM CE + PE</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>';
+    const o = opt2({ scales: { x: OPC.scales.x, y: OPC.scales.y, y2: { position: 'right', grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } } } });
+    opChart('opc1', { type: 'line', data: { labels: lab, datasets: [{ label: 'Straddle', data: v, borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,.08)', fill: true, borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'Spot', data: S.map(s => s.spot), borderColor: '#94a3b8', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, yAxisID: 'y2', tension: .3 }] }, options: o });
+  } else if (T === 'decay') {
+    const i0 = C.findIndex(c => c[0] === D.atm), near = C.slice(Math.max(0, i0 - 5), i0 + 6);
+    const pc = (l, o) => o ? (l - o) / o * 100 : 0;
+    const ceD = near.reduce((a, c) => a + (c[3] - c[4]), 0), peD = near.reduce((a, c) => a + (c[7] - c[8]), 0);
+    const rows = near.map(c => '<tr class="' + (c[0] === D.atm ? 'atm' : '') + '"><td>' + fN(c[4]) + '</td><td>' + fN(c[3]) + '</td><td style="color:' + clr(c[3] - c[4]) + ';font-weight:600">' + pc(c[3], c[4]).toFixed(1) + '%</td><td class="k">' + fN(c[0], 0) + '</td><td>' + fN(c[8]) + '</td><td>' + fN(c[7]) + '</td><td style="color:' + clr(c[7] - c[8]) + ';font-weight:600">' + pc(c[7], c[8]).toFixed(1) + '%</td></tr>').join('');
+    const who = ceD < peD ? ['Calls decaying faster → bearish tilt', 'r'] : ceD > peD ? ['Puts decaying faster → bullish tilt', 'g'] : ['Equal decay → sideways', 'n'];
+    B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">Decay since open · ATM ± 5</div><div class="op-kv"><span>Call premium change</span><b style="color:' + clr(ceD) + '">' + (ceD >= 0 ? '+' : '') + fN(ceD) + '</b></div><div class="op-kv"><span>Put premium change</span><b style="color:' + clr(peD) + '">' + (peD >= 0 ? '+' : '') + fN(peD) + '</b></div><span class="op-tag ' + who[1] + '" style="margin-top:8px">' + who[0] + '</span>' +
+      '<p class="op-note">Compares how Call and Put premiums moved since 9:15 AM. The side losing premium faster is where writers are winning.</p></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>ATM Call vs Put premium</span><small>through the day</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>Strike-wise decay</span><small>Open → Now</small></div><div class="op-wrap"><table class="op-tbl"><thead><tr><th>CE Open</th><th>CE Now</th><th>CE %</th><th class="k">Strike</th><th>PE Open</th><th>PE Now</th><th>PE %</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
+    opChart('opc1', { type: 'line', data: { labels: lab, datasets: [{ label: 'ATM CE', data: S.map(s => s.ce), borderColor: '#059669', borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'ATM PE', data: S.map(s => s.pe), borderColor: '#dc2626', borderWidth: 2, pointRadius: 0, tension: .3 }] }, options: opt2() });
+  }
+}
+function showTool(t) {
+  TL_CUR = t;
+  document.querySelectorAll('#tl-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+  I('tl-booster').classList.toggle('on', t === 'booster'); I('tl-opt').classList.toggle('on', t !== 'booster');
+  const c = TL[t]; I('tl-eye').textContent = c[0]; I('tl-h1').textContent = c[1]; I('tl-sub').textContent = c[2];
+  if (t !== 'booster') loadOpt();
+}
+document.querySelectorAll('#tl-tabs button').forEach(b => b.onclick = () => showTool(b.dataset.t));
+document.querySelectorAll('#op-und button').forEach(b => b.onclick = () => { OPT_U = b.dataset.u; document.querySelectorAll('#op-und button').forEach(x => x.classList.toggle('on', x === b)); renderOpt(); });
 </script>
 </body>
 </html>
