@@ -5908,7 +5908,9 @@ async function loadBooster(force) {
       res = { rows: out, upd: rows.length ? (rows[0][ix('updated')] || '') : '' };
     }
   } catch (e) { I('bo-upd').textContent = 'Data unavailable — market closed or feed offline'; return; }
-  BO = res.rows; I('bo-upd').textContent = res.upd ? 'Updated ' + res.upd : '';
+  BO = res.rows;
+  { const ist = new Date(Date.now() + 19800000), td = String(ist.getUTCDate()).padStart(2, '0') + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][ist.getUTCMonth()] + ' ' + ist.getUTCFullYear(), live = res.upd && res.upd.indexOf(td) === 0;
+    I('bo-upd').innerHTML = res.upd ? (live ? '🟢 Live · Updated ' : '🕘 Last session · ') + esc(res.upd) : ''; }
   renderBooster();
   clearTimeout(BO_T);
   BO_T = setTimeout(() => { if (I('page-booster').classList.contains('active')) loadBooster(true); }, 120000);
