@@ -5977,7 +5977,7 @@ function boRow(r) {
   return '<a class="bo-row" href="' + boTv(r.s) + '" target="_blank" rel="noopener">' + boLogo(r.s) +
     '<div class="bo-sym"><span class="bo-sn">' + esc(r.s) + '<i title="' + esc(r.sec) + '">' + (SEC_ICO[r.sec] || '📈') + '</i></span>' +
     '<small>₹' + r.ltp.toLocaleString('en-IN') + (BU_NAME[r.bu] ? ' · <em class="bo-tag ' + r.bu + '">' + BU_NAME[r.bu] + '</em>' : '') + '</small></div>' +
-    (r.since ? '<span class="bo-since">@ ' + esc(r.since) + '</span>' : '<span></span>') +
+    (r.since ? '<span class="bo-since" title="Time this stock first entered today\'s top 10">⏱ Since ' + esc(r.since.replace(/^0/, '')) + '</span>' : '<span></span>') +
     '<div class="bo-num"><span class="bo-pill ' + (r.chg >= 0 ? 'up' : 'dn') + '">' + boPct(r.chg) + '</span><small>OI ' + boPct(r.oic) + '</small></div></a>';
 }
 function renderBooster() {
