@@ -749,6 +749,34 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .bo-hc b{font-size:.82em!important;font-weight:600;letter-spacing:.02em;max-width:100%}
 .bo-hc span{font-size:.9em;font-weight:500;opacity:.95}
 @media(max-width:480px){.bo-hg{grid-template-columns:repeat(3,1fr)!important}.bo-hc .bo-logo{width:30px;height:30px}.bo-hc b{font-size:.72em!important}}
+
+.bo-hc{font-family:var(--font)!important;font-size:15px!important;line-height:1.2!important;color:#fff!important}
+.bo-hc b{font-size:.86em!important;font-weight:600!important;letter-spacing:.01em!important;text-shadow:0 1px 2px rgba(0,0,0,.18)}
+.bo-hc span{font-size:1.18em!important;font-weight:700!important;letter-spacing:-.01em;opacity:1!important;text-shadow:0 1px 2px rgba(0,0,0,.18)}
+@media(max-width:480px){.bo-hc{font-size:13px!important}.bo-hc b{font-size:.78em!important}.bo-hc span{font-size:1.05em!important}}
+.bo-hs-h{font-size:.95em!important;font-weight:600!important;margin:6px 0 8px!important}.bo-hs-h small{font-size:.85em}
+
+/* screener */
+.sc-pre{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.sc-pre button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font:inherit;cursor:pointer;text-align:left;transition:.15s}
+.sc-pre button:hover{border-color:#0369a1}
+.sc-pre button b{font-size:.86em;font-weight:600;color:var(--text)}.sc-pre button small{font-size:.74em;color:var(--muted)}
+.sc-pre button.on{background:#0f172a;border-color:#0f172a}.sc-pre button.on b{color:#fff}.sc-pre button.on small{color:#cbd5e1}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px 14px;align-items:end}
+.sc-grid label{display:flex;flex-direction:column;gap:5px;font-size:.76em;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em}
+.sc-grid label span{display:flex;gap:6px}
+.sc-grid input,.sc-grid select{width:100%;padding:9px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface);font:inherit;font-size:1.15em;text-transform:none;letter-spacing:0;color:var(--text);font-weight:500;min-width:0}
+.sc-grid input:focus,.sc-grid select:focus{outline:none;border-color:#0369a1}
+.sc-btns{display:flex;justify-content:flex-end}
+.sc-tbl td{vertical-align:middle;white-space:nowrap}
+.sc-st{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.sc-st .bo-logo{width:32px;height:32px;font-size:.66em}
+.sc-st b{display:block;font-weight:600;font-size:.95em}.sc-st small{font-size:.76em;color:var(--muted)}
+.sc-rng{position:relative;width:90px;height:6px;border-radius:99px;background:linear-gradient(90deg,#fca5a5,#e2e8f0,#86efac);margin-left:auto}
+.sc-rng i{position:absolute;top:50%;width:11px;height:11px;border-radius:50%;background:#0f172a;border:2px solid #fff;transform:translate(-50%,-50%);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+.op-bias{position:relative;height:8px;background:var(--surface2);border-radius:99px}
+.op-bias i{position:absolute;top:0;bottom:0;border-radius:99px}
+.op-bias:before{content:'';position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--border)}
 </style>
 </head>
 <body>
@@ -5194,6 +5222,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <button data-t="pece"><i>📊</i>PE-CE Difference</button>
     <button data-t="str"><i>📈</i>ATM Straddle</button>
     <button data-t="decay"><i>⏳</i>Premium Decay</button>
+    <button data-t="scr"><i>🔎</i>Stock Screener</button>
   </div>
 
   <div class="tl-pane on" id="tl-booster">
@@ -5230,6 +5259,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <div class="bo-legend"><b>How to read:</b> <span class="lb">Long Build-up</span> price ↑ OI ↑ · <span class="sc">Short Covering</span> price ↑ OI ↓ · <span class="sb">Short Build-up</span> price ↓ OI ↑ · <span class="lu">Long Unwinding</span> price ↓ OI ↓. Best used 9:15–10:15 AM and 2:30–3:30 PM.</div>
   </div><!-- /tl-booster -->
+
+  <div class="tl-pane" id="tl-scr">
+    <div class="bo-card">
+      <div class="bo-ttl">Quick Scans</div>
+      <div class="sc-pre" id="sc-pre"></div>
+    </div>
+    <div class="bo-card sc-f">
+      <div class="bo-ttl">Custom Filters</div>
+      <div class="sc-grid">
+        <label>% Change<span><input id="sf-c1" type="number" step="0.1" placeholder="Min"><input id="sf-c2" type="number" step="0.1" placeholder="Max"></span></label>
+        <label>OI Change %<span><input id="sf-o1" type="number" step="0.5" placeholder="Min"><input id="sf-o2" type="number" step="0.5" placeholder="Max"></span></label>
+        <label>Price ₹<span><input id="sf-p1" type="number" placeholder="Min"><input id="sf-p2" type="number" placeholder="Max"></span></label>
+        <label>Gap at Open %<span><input id="sf-g1" type="number" step="0.1" placeholder="Min"><input id="sf-g2" type="number" step="0.1" placeholder="Max"></span></label>
+        <label>Price vs VWAP<select id="sf-vw"><option value="">Any</option><option value="a">Above VWAP</option><option value="b">Below VWAP</option></select></label>
+        <label>Open = High / Low<select id="sf-ohl"><option value="">Any</option><option value="ol">Open = Low (bullish)</option><option value="oh">Open = High (bearish)</option></select></label>
+        <label>Day Range Position<select id="sf-rg"><option value="">Any</option><option value="nh">Near Day High (top 10%)</option><option value="nl">Near Day Low (bottom 10%)</option></select></label>
+        <label>Build-up<select id="sf-bu"><option value="">Any</option><option value="LB">Long Build-up</option><option value="SC">Short Covering</option><option value="SB">Short Build-up</option><option value="LU">Long Unwinding</option></select></label>
+        <label>Sector<select id="sf-sec"><option value="">All Sectors</option></select></label>
+        <label>Min Turnover ₹ Cr<input id="sf-to" type="number" step="1" placeholder="e.g. 50"></label>
+        <label>Sort by<select id="sf-sort"><option value="chg">% Change ↓</option><option value="chga">% Change ↑</option><option value="oic">OI Change ↓</option><option value="to">Turnover ↓</option><option value="gap">Gap % ↓</option><option value="vw">Distance from VWAP ↓</option></select></label>
+        <div class="sc-btns"><button class="bo-ref" id="sf-reset">Reset</button></div>
+      </div>
+    </div>
+    <div class="bo-card">
+      <div class="bo-lh"><span id="sc-ttl">Results</span><small id="sc-cnt"></small></div>
+      <div class="op-wrap"><table class="op-tbl sc-tbl"><thead><tr><th style="text-align:left">Stock</th><th>LTP</th><th>% Chg</th><th>OI Chg</th><th>Gap</th><th>vs VWAP</th><th>Day Range</th><th>Turnover</th><th style="text-align:left">Build-up</th></tr></thead><tbody id="sc-body"></tbody></table></div>
+    </div>
+  </div>
 
   <div class="tl-pane" id="tl-opt">
     <div class="op-bar">
@@ -6001,7 +6058,7 @@ function boDemo() {
   const sec = { Banking: ['HDFCBANK','ICICIBANK','SBIN','AXISBANK','KOTAKBANK'], IT: ['TCS','INFY','WIPRO','HCLTECH','TECHM'], Auto: ['MARUTI','M&M','TATAMOTORS','BAJAJ-AUTO','EICHERMOT'], Pharma: ['SUNPHARMA','CIPLA','DRREDDY','LUPIN'], Metal: ['TATASTEEL','JSWSTEEL','HINDALCO','VEDL'], Energy: ['RELIANCE','ONGC','NTPC','POWERGRID','BPCL'], FMCG: ['ITC','HINDUNILVR','NESTLEIND','BRITANNIA'] };
   const out = []; let s = 7;
   const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
-  Object.entries(sec).forEach(([k, a]) => a.forEach(sym => { const c = (rnd() - 0.45) * 5, o = (rnd() - 0.4) * 12; out.push({ s: sym, sec: k, ltp: Math.round(500 + rnd() * 3000), chg: c, oi: Math.round(rnd() * 5e7), oic: o, vol: Math.round(rnd() * 9e6), since: ['9:20 AM','9:34 AM','10:12 AM','11:05 AM'][Math.floor(rnd()*4)], bu: c >= 0 ? (o >= 0 ? 'LB' : 'SC') : (o >= 0 ? 'SB' : 'LU') }); }));
+  Object.entries(sec).forEach(([k, a]) => a.forEach(sym => { const c = (rnd() - 0.45) * 5, o = (rnd() - 0.4) * 12; out.push({ s: sym, sec: k, ltp: Math.round(500 + rnd() * 3000), chg: c, oi: Math.round(rnd() * 5e7), oic: o, vol: Math.round(rnd() * 9e6), since: ['9:20 AM','9:34 AM','10:12 AM','11:05 AM'][Math.floor(rnd()*4)], ...(() => { const L = Math.round(500 + rnd() * 3000), pv = L / (1 + c / 100), op = pv * (1 + (rnd() - 0.5) * 0.03), hi = Math.max(L, op) * (1 + rnd() * 0.01), lo = Math.min(L, op) * (1 - rnd() * 0.01); return { ltp: L, prev: pv, o: rnd() < 0.15 ? lo : rnd() < 0.15 ? hi : op, hi, lo, vwap: (hi + lo + L) / 3 }; })(), bu: c >= 0 ? (o >= 0 ? 'LB' : 'SC') : (o >= 0 ? 'SB' : 'LU') }); }));
   const idx = ['REALTY','FMCG','PSU BANK','SERVICES','PVT BANK','INFRA','BANKNIFTY','FINNIFTY','NIFTY','CONSUMPTION','COMMODITIES','ENERGY','IT','MIDCAP','METAL','PHARMA','MEDIA','PSE','CPSE','MNC','AUTO'].map((n, i) => ({ n, ltp: 1000 + i * 731, chg: 2.75 - i * 0.24 }));
   return { rows: out, upd: 'Demo data', idx };
 }
@@ -6014,7 +6071,7 @@ async function loadBooster(force) {
     else {
       const rows = csvRows(await fetchCSV(BOOSTER_URL + '&t=' + Date.now()));
       const hd = rows.shift().map(x => x.trim().toLowerCase()), ix = n => hd.indexOf(n), num = v => parseFloat(String(v).replace(/[,%]/g, '')) || 0;
-      const out = rows.filter(r => r[ix('symbol')]).map(r => ({ s: r[ix('symbol')].trim(), sec: (r[ix('sector')] || 'Others').trim() || 'Others', ltp: num(r[ix('ltp')]), chg: num(r[ix('chgpct')]), oi: num(r[ix('oi')]), oic: num(r[ix('oichgpct')]), vol: num(r[ix('volume')]), bu: (r[ix('buildup')] || '').trim(), since: ix('since') >= 0 ? (r[ix('since')] || '').trim() : '' }));
+      const out = rows.filter(r => r[ix('symbol')]).map(r => ({ s: r[ix('symbol')].trim(), sec: (r[ix('sector')] || 'Others').trim() || 'Others', ltp: num(r[ix('ltp')]), chg: num(r[ix('chgpct')]), oi: num(r[ix('oi')]), oic: num(r[ix('oichgpct')]), vol: num(r[ix('volume')]), bu: (r[ix('buildup')] || '').trim(), since: ix('since') >= 0 ? (r[ix('since')] || '').trim() : '', prev: num(r[ix('prev')]), o: num(r[ix('open')]), hi: num(r[ix('high')]), lo: num(r[ix('low')]), vwap: num(r[ix('vwap')]) }));
       res = { rows: out, upd: rows.length ? (rows[0][ix('updated')] || '') : '' };
       try {
         const ir = csvRows(await fetchCSV(BOOSTER_URL.replace('sheet=Booster', 'sheet=BoosterIdx') + '&t=' + Date.now())); ir.shift();
@@ -6025,7 +6082,7 @@ async function loadBooster(force) {
   BO = res.rows; BO_IDX = res.idx || [];
   { const ist = new Date(Date.now() + 19800000), td = String(ist.getUTCDate()).padStart(2, '0') + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][ist.getUTCMonth()] + ' ' + ist.getUTCFullYear(), live = res.upd && res.upd.indexOf(td) === 0;
     I('bo-upd').innerHTML = res.upd ? (live ? '🟢 Live · Updated ' : '🕘 Last session · ') + esc(res.upd) : ''; }
-  renderBooster();
+  renderBooster(); if (typeof scRender === 'function' && TL_CUR === 'scr') scRender();
   clearTimeout(BO_T);
   BO_T = setTimeout(() => { if (I('page-booster').classList.contains('active')) { loadBooster(true); loadOpt(true); } }, 120000);
 }
@@ -6088,10 +6145,11 @@ const TL = {
   mp: ['Option Tools · Live', 'Max Pain', 'The strike where option buyers lose the most (and writers gain the most) at expiry — price often gravitates towards it.'],
   pece: ['Option Tools · Live', 'PE-CE Difference', 'Put OI minus Call OI at every strike. Big positive = strong put writing (support), big negative = strong call writing (resistance).'],
   str: ['Option Tools · Live', 'ATM Straddle', 'ATM Call + Put premium through the day. Falling straddle = sideways / decay; rising straddle = trending / volatility expansion.'],
+  scr: ['Screener · F&O Stocks', 'Stock Screener', 'Filter all F&O stocks live by price action, OI, VWAP, gap, open-high-low and build-up — one-tap quick scans or your own filters.'],
   decay: ['Option Tools · Live', 'Premium Decay', 'How much Call and Put premiums have changed since the open for strikes around ATM.']
 };
 let OPT = null, OPT_AT = 0, OPT_U = 'NIFTY', TL_CUR = 'booster';
-const fmtL = v => (v / 1e5).toLocaleString('en-IN', { maximumFractionDigits: 1 }) + 'L';
+const fmtL = v => Math.abs(v) >= 1e7 ? (v / 1e7).toLocaleString('en-IN', { maximumFractionDigits: 2 }) + ' Cr' : (v / 1e5).toLocaleString('en-IN', { maximumFractionDigits: 1 }) + ' L';
 const fN = (v, d = 2) => Number(v || 0).toLocaleString('en-IN', { maximumFractionDigits: d });
 function opDemo() {
   const mk = (spot, step) => { const atm = Math.round(spot / step) * step, ch = [], ser = []; let s = 11;
@@ -6099,7 +6157,7 @@ function opDemo() {
     for (let i = -20; i <= 20; i++) { const k = atm + i * step, ce = Math.round((2e6 + r() * 6e6) * Math.exp(-Math.max(0, -i) / 6) * (i > 0 ? 1.4 : 0.7)), pe = Math.round((2e6 + r() * 6e6) * Math.exp(-Math.max(0, i) / 6) * (i < 0 ? 1.4 : 0.7));
       const cl = Math.max(1, (spot - k) + step * 2.2 * Math.exp(-Math.abs(i) / 4)), pl = Math.max(1, (k - spot) + step * 2.2 * Math.exp(-Math.abs(i) / 4));
       ch.push([k, ce, Math.round(ce * (0.8 + r() * 0.3)), +Math.max(0.5, cl).toFixed(2), +(Math.max(0.5, cl) * (1.05 + r() * 0.2)).toFixed(2), pe, Math.round(pe * (0.8 + r() * 0.3)), +Math.max(0.5, pl).toFixed(2), +(Math.max(0.5, pl) * (1.05 + r() * 0.2)).toFixed(2), 0]); }
-    const t0 = 9 * 60 + 15; for (let m = 0; m < 70; m++) { const t = t0 + m * 3; ser.push({ t: String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'), spot: spot + Math.sin(m / 9) * step * 1.5, pcr: 0.85 + m * 0.004 + Math.sin(m / 5) * 0.03, str: step * 4.6 - m * step * 0.012 + Math.sin(m / 4) * step * 0.1, ce: step * 2.3 - m * step * 0.006, pe: step * 2.3 - m * step * 0.007 }); }
+    const t0 = 9 * 60 + 15; for (let m = 0; m < 70; m++) { const t = t0 + m * 3; ser.push({ t: String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'), spot: spot + Math.sin(m / 9) * step * 1.5, pcr: 0.85 + m * 0.004 + Math.sin(m / 5) * 0.03, str: step * 4.6 - m * step * 0.012 + Math.sin(m / 4) * step * 0.1, ce: step * 2.3 - m * step * 0.006, pe: step * 2.3 - m * step * 0.007, pc: Math.round(1e6 * m * (1 + Math.sin(m / 6) * .4)), cc: Math.round(8e5 * m * (1 + Math.cos(m / 7) * .4)), cd: -m * step * 0.05 + Math.sin(m / 5) * step * .2, pd: -m * step * 0.08 + Math.cos(m / 6) * step * .2 }); }
     const ceoi = ch.reduce((a, c) => a + c[1], 0), peoi = ch.reduce((a, c) => a + c[5], 0);
     ch.forEach(c => c[9] = Math.round(ch.reduce((a, x) => a + x[1] * Math.max(0, c[0] - x[0]) + x[5] * Math.max(0, x[0] - c[0]), 0) / 1e5));
     const mp = ch.reduce((a, c) => c[9] < a[9] ? c : a)[0];
@@ -6147,6 +6205,8 @@ function renderOpt() {
     B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">Total PE − CE OI</div><div class="op-big" style="color:' + clr(tot) + '">' + (tot >= 0 ? '+' : '') + fmtL(tot) + '</div><span class="op-tag ' + (tot >= 0 ? 'g' : 'r') + '">' + (tot >= 0 ? 'Put writers stronger · support' : 'Call writers stronger · resistance') + '</span>' +
       '<div class="op-kv"><span>Change today (PE − CE)</span><b style="color:' + clr(chgT) + '">' + (chgT >= 0 ? '+' : '') + fmtL(chgT) + '</b></div><div class="op-kv"><span>Highest Put OI (support)</span><b>' + fN(C.reduce((a, c) => c[5] > a[5] ? c : a)[0], 0) + '</b></div><div class="op-kv"><span>Highest Call OI (resistance)</span><b>' + fN(C.reduce((a, c) => c[1] > a[1] ? c : a)[0], 0) + '</b></div></div>' +
       '<div class="bo-card"><div class="bo-lh"><span>PE − CE OI by strike</span><small>green = put heavy · red = call heavy</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>' +
+      (S.length && S[0].pc != null ? (() => { const mxc = Math.max(1, ...S.map(s => Math.abs((s.pc || 0) - (s.cc || 0)))); return '<div class="bo-card"><div class="bo-lh"><span>Intraday OI flow · ATM ± 10</span><small>change vs previous day · latest first</small></div><div class="op-wrap"><table class="op-tbl"><thead><tr><th style="text-align:left">Time</th><th>Put OI Chg</th><th>Call OI Chg</th><th>PE − CE</th><th style="width:28%">Bias</th><th>PCR</th><th>Spot</th></tr></thead><tbody>' +
+        S.slice().reverse().map((s, j, A) => { const d = (s.pc || 0) - (s.cc || 0), w = Math.abs(d) / mxc * 50, pv = A[j + 1]; return '<tr><td style="text-align:left;font-weight:600">' + s.t + '</td><td style="color:' + clr(s.pc) + '">' + (s.pc >= 0 ? '+' : '') + fmtL(s.pc) + '</td><td style="color:' + clr(s.cc) + '">' + (s.cc >= 0 ? '+' : '') + fmtL(s.cc) + '</td><td style="font-weight:600;color:' + clr(d) + '">' + (d >= 0 ? '+' : '') + fmtL(d) + '</td><td><div class="op-bias"><i style="' + (d >= 0 ? 'left:50%' : 'right:50%') + ';width:' + w.toFixed(1) + '%;background:' + (d >= 0 ? '#10b981' : '#ef4444') + '"></i></div></td><td>' + s.pcr.toFixed(2) + '</td><td style="color:' + (pv ? clr(s.spot - pv.spot) : 'inherit') + '">' + fN(s.spot) + '</td></tr>'; }).join('') + '</tbody></table></div></div>'; })() : '') +
       '<div class="bo-card"><div class="bo-lh"><span>Strike-wise OI</span><small>L = lakh contracts qty</small></div><div class="op-wrap"><table class="op-tbl"><thead><tr><th>Call OI</th><th>CE Chg</th><th class="k">Strike</th><th>Put OI</th><th>PE Chg</th><th>PE − CE</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
     opChart('opc1', { type: 'bar', data: { labels: K, datasets: [{ label: 'PE − CE', data: C.map(c => c[5] - c[1]), backgroundColor: C.map(c => c[5] - c[1] >= 0 ? 'rgba(16,185,129,.8)' : 'rgba(239,68,68,.8)'), borderRadius: 3 }] }, options: opt2({ plugins: { legend: { display: false } } }) });
   } else if (T === 'str') {
@@ -6154,7 +6214,10 @@ function renderOpt() {
     B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">ATM ' + fN(D.atm, 0) + ' Straddle</div><div class="op-big">₹' + fN(D.str) + '</div><span class="op-tag ' + (ch <= 0 ? 'g' : 'r') + '">' + (ch >= 0 ? '+' : '') + fN(ch) + ' (' + (o0 ? (ch / o0 * 100).toFixed(1) : 0) + '%) since open · ' + (ch <= 0 ? 'Decaying' : 'Expanding') + '</span>' +
       '<div class="op-kv"><span>Day High</span><b>₹' + fN(hi) + '</b></div><div class="op-kv"><span>Day Low</span><b>₹' + fN(lo) + '</b></div><div class="op-kv"><span>Expected move (±)</span><b>' + fN(D.str, 0) + ' pts</b></div>' +
       '<p class="op-note">Straddle price ≈ the market\'s expected move till expiry. Steady fall = range-bound day; sharp rise = breakout / event.</p></div>' +
-      '<div class="bo-card"><div class="bo-lh"><span>Straddle premium vs Spot</span><small>ATM CE + PE</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>';
+      '<div class="bo-card"><div class="bo-lh"><span>Straddle premium vs Spot</span><small>rolling ATM CE + PE</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>' +
+      (() => { const i0 = C.findIndex(c => c[0] === D.atm), nr = C.slice(Math.max(0, i0 - 6), i0 + 7), mn = Math.min(...nr.map(c => c[3] + c[7]));
+        return '<div class="bo-card"><div class="bo-lh"><span>Straddle by strike</span><small>lowest straddle highlighted</small></div><div class="op-wrap"><table class="op-tbl"><thead><tr><th>Call</th><th class="k">Strike</th><th>Put</th><th>Straddle</th><th>Call − Put</th></tr></thead><tbody>' +
+        nr.map(c => { const sd = c[3] + c[7]; return '<tr class="' + (c[0] === D.atm ? 'atm' : '') + '"><td style="color:var(--green)">' + fN(c[3]) + '</td><td class="k">' + fN(c[0], 0) + '</td><td style="color:var(--red)">' + fN(c[7]) + '</td><td style="font-weight:600' + (sd === mn ? ';color:#7c3aed' : '') + '">' + fN(sd) + (sd === mn ? ' ★' : '') + '</td><td>' + fN(c[3] - c[7]) + '</td></tr>'; }).join('') + '</tbody></table></div></div>'; })();
     const o = opt2({ scales: { x: OPC.scales.x, y: OPC.scales.y, y2: { position: 'right', grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } } } });
     opChart('opc1', { type: 'line', data: { labels: lab, datasets: [{ label: 'Straddle', data: v, borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,.08)', fill: true, borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'Spot', data: S.map(s => s.spot), borderColor: '#94a3b8', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, yAxisID: 'y2', tension: .3 }] }, options: o });
   } else if (T === 'decay') {
@@ -6165,20 +6228,79 @@ function renderOpt() {
     const who = ceD < peD ? ['Calls decaying faster → bearish tilt', 'r'] : ceD > peD ? ['Puts decaying faster → bullish tilt', 'g'] : ['Equal decay → sideways', 'n'];
     B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">Decay since open · ATM ± 5</div><div class="op-kv"><span>Call premium change</span><b style="color:' + clr(ceD) + '">' + (ceD >= 0 ? '+' : '') + fN(ceD) + '</b></div><div class="op-kv"><span>Put premium change</span><b style="color:' + clr(peD) + '">' + (peD >= 0 ? '+' : '') + fN(peD) + '</b></div><span class="op-tag ' + who[1] + '" style="margin-top:8px">' + who[0] + '</span>' +
       '<p class="op-note">Compares how Call and Put premiums moved since 9:15 AM. The side losing premium faster is where writers are winning.</p></div>' +
-      '<div class="bo-card"><div class="bo-lh"><span>ATM Call vs Put premium</span><small>through the day</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>Cumulative premium change</span><small>Call vs Put since open</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>' +
       '<div class="bo-card"><div class="bo-lh"><span>Strike-wise decay</span><small>Open → Now</small></div><div class="op-wrap"><table class="op-tbl"><thead><tr><th>CE Open</th><th>CE Now</th><th>CE %</th><th class="k">Strike</th><th>PE Open</th><th>PE Now</th><th>PE %</th></tr></thead><tbody>' + rows + '</tbody></table></div></div>';
-    opChart('opc1', { type: 'line', data: { labels: lab, datasets: [{ label: 'ATM CE', data: S.map(s => s.ce), borderColor: '#059669', borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'ATM PE', data: S.map(s => s.pe), borderColor: '#dc2626', borderWidth: 2, pointRadius: 0, tension: .3 }] }, options: opt2() });
+    const hasCD = S.length && S[0].cd != null;
+    opChart('opc1', { type: 'line', data: { labels: lab, datasets: hasCD ? [{ label: 'Call premium change (ATM±5)', data: S.map(s => s.cd), borderColor: '#059669', backgroundColor: 'rgba(5,150,105,.07)', fill: 'origin', borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'Put premium change (ATM±5)', data: S.map(s => s.pd), borderColor: '#dc2626', backgroundColor: 'rgba(220,38,38,.06)', fill: 'origin', borderWidth: 2, pointRadius: 0, tension: .3 }]
+      : [{ label: 'ATM CE', data: S.map(s => s.ce), borderColor: '#059669', borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'ATM PE', data: S.map(s => s.pe), borderColor: '#dc2626', borderWidth: 2, pointRadius: 0, tension: .3 }] }, options: opt2() });
   }
 }
 function showTool(t) {
   TL_CUR = t;
   document.querySelectorAll('#tl-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  I('tl-booster').classList.toggle('on', t === 'booster'); I('tl-opt').classList.toggle('on', t !== 'booster');
+  I('tl-booster').classList.toggle('on', t === 'booster'); I('tl-scr').classList.toggle('on', t === 'scr'); I('tl-opt').classList.toggle('on', t !== 'booster' && t !== 'scr');
+  if (t === 'scr') { loadBooster(); scRender(); }
   const c = TL[t]; I('tl-eye').textContent = c[0]; I('tl-h1').textContent = c[1]; I('tl-sub').textContent = c[2];
-  if (t !== 'booster') loadOpt();
+  if (t !== 'booster' && t !== 'scr') loadOpt();
 }
 document.querySelectorAll('#tl-tabs button').forEach(b => b.onclick = () => showTool(b.dataset.t));
 document.querySelectorAll('#op-und button').forEach(b => b.onclick = () => { OPT_U = b.dataset.u; document.querySelectorAll('#op-und button').forEach(x => x.classList.toggle('on', x === b)); renderOpt(); });
+</script>
+<script>
+/* ═══ STOCK SCREENER — uses Intraday Booster data (BO) ═══ */
+const SC_PRE = [
+  ['ol', '🟢 Open = Low', 'Bullish intraday setup'], ['oh', '🔴 Open = High', 'Bearish intraday setup'],
+  ['gu', '⬆️ Gap Up > 1%', 'Strong opening'], ['gd', '⬇️ Gap Down > 1%', 'Weak opening'],
+  ['bv', '🚀 Above VWAP + Long Build-up', 'Momentum longs'], ['sv', '📉 Below VWAP + Short Build-up', 'Momentum shorts'],
+  ['nh', '🔝 Near Day High', 'Trading at top 10% of range'], ['nl', '🔻 Near Day Low', 'Trading at bottom 10% of range'],
+  ['oi', '🔥 OI Spurt > 5%', 'Big fresh positions'], ['sc', '⚡ Short Covering > 2%', 'Shorts running']
+];
+let SC_P = '';
+const scv = id => { const v = I(id).value; return v === '' ? null : +v; };
+function scMetrics(r) {
+  const gap = r.prev && r.o ? (r.o - r.prev) / r.prev * 100 : 0, rng = r.hi - r.lo, pos = rng > 0 ? (r.ltp - r.lo) / rng : 0.5;
+  return { gap, pos, vw: r.vwap ? (r.ltp - r.vwap) / r.vwap * 100 : 0, to: r.vol * r.ltp / 1e7, ol: r.o && r.lo && Math.abs(r.o - r.lo) <= r.o * 0.0005, oh: r.o && r.hi && Math.abs(r.o - r.hi) <= r.o * 0.0005 };
+}
+function scRender() {
+  const sel = I('sf-sec'); if (sel.options.length < 2 && BO.length) [...new Set(BO.map(r => r.sec))].sort().forEach(s => sel.add(new Option(s, s)));
+  I('sc-pre').innerHTML = SC_PRE.map(p => '<button class="' + (SC_P === p[0] ? 'on' : '') + '" data-p="' + p[0] + '"><b>' + p[1] + '</b><small>' + p[2] + '</small></button>').join('');
+  I('sc-pre').querySelectorAll('button').forEach(b => b.onclick = () => { SC_P = SC_P === b.dataset.p ? '' : b.dataset.p; scRender(); });
+  if (!BO.length) { I('sc-body').innerHTML = '<tr><td colspan="9" class="bo-empty">Loading data…</td></tr>'; return; }
+  const hasOHL = BO.some(r => r.o > 0);
+  const c1 = scv('sf-c1'), c2 = scv('sf-c2'), o1 = scv('sf-o1'), o2 = scv('sf-o2'), p1 = scv('sf-p1'), p2 = scv('sf-p2'), g1 = scv('sf-g1'), g2 = scv('sf-g2'), to = scv('sf-to');
+  const vw = I('sf-vw').value, ohl = I('sf-ohl').value, rg = I('sf-rg').value, bu = I('sf-bu').value, sec = I('sf-sec').value, so = I('sf-sort').value;
+  let R = BO.map(r => Object.assign({ m: scMetrics(r) }, r)).filter(r => {
+    const m = r.m;
+    if (c1 != null && r.chg < c1) return false; if (c2 != null && r.chg > c2) return false;
+    if (o1 != null && r.oic < o1) return false; if (o2 != null && r.oic > o2) return false;
+    if (p1 != null && r.ltp < p1) return false; if (p2 != null && r.ltp > p2) return false;
+    if (g1 != null && m.gap < g1) return false; if (g2 != null && m.gap > g2) return false;
+    if (to != null && m.to < to) return false;
+    if (vw === 'a' && !(r.vwap && r.ltp > r.vwap)) return false; if (vw === 'b' && !(r.vwap && r.ltp < r.vwap)) return false;
+    if (ohl === 'ol' && !m.ol) return false; if (ohl === 'oh' && !m.oh) return false;
+    if (rg === 'nh' && m.pos < 0.9) return false; if (rg === 'nl' && m.pos > 0.1) return false;
+    if (bu && r.bu !== bu) return false; if (sec && r.sec !== sec) return false;
+    switch (SC_P) {
+      case 'ol': return m.ol; case 'oh': return m.oh; case 'gu': return m.gap > 1; case 'gd': return m.gap < -1;
+      case 'bv': return r.vwap && r.ltp > r.vwap && r.bu === 'LB'; case 'sv': return r.vwap && r.ltp < r.vwap && r.bu === 'SB';
+      case 'nh': return m.pos >= 0.9 && r.chg > 0; case 'nl': return m.pos <= 0.1 && r.chg < 0; case 'oi': return r.oic > 5; case 'sc': return r.bu === 'SC' && r.chg > 2;
+    }
+    return true;
+  });
+  const key = { chg: r => -r.chg, chga: r => r.chg, oic: r => -r.oic, to: r => -r.m.to, gap: r => -Math.abs(r.m.gap), vw: r => -Math.abs(r.m.vw) }[so];
+  R.sort((a, b) => key(a) - key(b));
+  const pre = SC_PRE.find(p => p[0] === SC_P);
+  I('sc-ttl').textContent = pre ? pre[1] : 'Results';
+  I('sc-cnt').textContent = R.length + ' of ' + BO.length + ' stocks' + (hasOHL ? '' : ' · Open/High/Low & VWAP start after feed update');
+  I('sc-body').innerHTML = R.slice(0, 100).map(r => { const m = r.m;
+    return '<tr><td style="text-align:left"><a class="sc-st" href="' + boTv(r.s) + '" target="_blank" rel="noopener">' + boLogo(r.s) + '<span><b>' + esc(r.s) + '</b><small>' + esc(r.sec) + '</small></span></a></td>' +
+      '<td>₹' + fN(r.ltp) + '</td><td><span class="bo-pill ' + (r.chg >= 0 ? 'up' : 'dn') + '">' + boPct(r.chg) + '</span></td><td style="color:' + clr(r.oic) + '">' + boPct(r.oic) + '</td>' +
+      '<td style="color:' + clr(m.gap) + '">' + (r.o ? boPct(m.gap) : '–') + '</td><td style="color:' + clr(m.vw) + '">' + (r.vwap ? boPct(m.vw) : '–') + '</td>' +
+      '<td>' + (r.hi > r.lo ? '<div class="sc-rng" title="Low ₹' + fN(r.lo) + ' · High ₹' + fN(r.hi) + '"><i style="left:' + (m.pos * 100).toFixed(0) + '%"></i></div>' : '–') + '</td>' +
+      '<td>' + (m.to >= 1 ? '₹' + fN(m.to, 0) + ' Cr' : '₹' + fN(m.to, 1) + ' Cr') + '</td><td style="text-align:left">' + (BU_NAME[r.bu] ? '<span class="bo-tag ' + r.bu + '">' + BU_NAME[r.bu] + '</span>' : '') + '</td></tr>'; }).join('') || '<tr><td colspan="9" class="bo-empty">No stocks match these filters</td></tr>';
+}
+document.querySelectorAll('#tl-scr input, #tl-scr select').forEach(e => e.addEventListener('input', scRender));
+I('sf-reset').onclick = () => { document.querySelectorAll('#tl-scr input').forEach(e => e.value = ''); document.querySelectorAll('#tl-scr select').forEach(e => e.selectedIndex = 0); SC_P = ''; scRender(); };
 </script>
 </body>
 </html>
