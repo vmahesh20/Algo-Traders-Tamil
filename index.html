@@ -683,6 +683,17 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .bo-pill.up{background:rgba(5,150,105,.1);color:#047857}.bo-pill.dn{background:rgba(220,38,38,.08);color:#b91c1c}
 .bo-num{min-width:84px!important}.bo-num small{margin-top:3px}
 @media(max-width:480px){.bo-since{display:none}.bo-row{grid-template-columns:auto 1fr auto!important}}
+
+.bo-vc{display:flex;gap:6px;height:260px;padding-top:6px}
+.bo-vcol{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;position:relative}
+.bo-vpos{height:var(--p);width:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;border-bottom:1px solid var(--border)}
+.bo-vneg{height:calc(100% - var(--p) - 46px);width:100%;display:flex;flex-direction:column;align-items:center}
+.bo-vcol i{display:block;width:78%;max-width:44px;min-height:2px}
+.bo-vcol i.up{background:#10b981;border-radius:4px 4px 0 0}.bo-vcol i.dn{background:#ef4444;border-radius:0 0 4px 4px}
+.bo-vcol b{font-size:.68em;font-weight:600;margin:3px 0;white-space:nowrap}
+.bo-vl{position:absolute;bottom:0;font-size:.62em;color:var(--muted2);font-weight:500;transform:rotate(-40deg);transform-origin:center;white-space:nowrap;height:40px;display:flex;align-items:center}
+.bo-hlist{display:none}
+@media(max-width:800px){.bo-vc{display:none}.bo-hlist{display:block}}
 </style>
 </head>
 <body>
@@ -5142,7 +5153,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div class="bo-card">
-    <div class="bo-lh"><span>📊 Sector Performance</span><small>Average futures % change</small></div>
+    <div class="bo-lh"><span>📊 Sector Performance</span><small id="bo-sec-src">Average futures % change</small></div>
     <div id="bo-sec"></div>
   </div>
   <div class="bo-card">
@@ -5907,7 +5918,7 @@ document.querySelectorAll('.ind-video[data-vid]').forEach(function(el){
 /* ═══ INTRADAY BOOSTER — reads "Booster" tab of the Google Sheet (filled by booster_feed.py) ═══ */
 const BOOSTER_URL = 'https://docs.google.com/spreadsheets/d/16Z2Rk_jjuMX8oBDS8y0vPxI5PQzmStQdsYBQGZHDwzc/gviz/tq?tqx=out:csv&sheet=Booster';
 const BU_NAME = { LB: 'Long Build-up', SC: 'Short Covering', SB: 'Short Build-up', LU: 'Long Unwinding' };
-let BO = [], BO_F = 'all', BO_T = null, BO_AT = 0;
+let BO = [], BO_IDX = [], BO_F = 'all', BO_T = null, BO_AT = 0;
 const boPct = v => (v > 0 ? '+' : '') + v.toFixed(2) + '%';
 const boTv = s => 'https://www.tradingview.com/chart/?symbol=NSE:' + encodeURIComponent(s);
 function boDemo() {
@@ -5915,7 +5926,8 @@ function boDemo() {
   const out = []; let s = 7;
   const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
   Object.entries(sec).forEach(([k, a]) => a.forEach(sym => { const c = (rnd() - 0.45) * 5, o = (rnd() - 0.4) * 12; out.push({ s: sym, sec: k, ltp: Math.round(500 + rnd() * 3000), chg: c, oi: Math.round(rnd() * 5e7), oic: o, vol: Math.round(rnd() * 9e6), since: ['9:20 AM','9:34 AM','10:12 AM','11:05 AM'][Math.floor(rnd()*4)], bu: c >= 0 ? (o >= 0 ? 'LB' : 'SC') : (o >= 0 ? 'SB' : 'LU') }); }));
-  return { rows: out, upd: 'Demo data' };
+  const idx = ['REALTY','FMCG','PSU BANK','SERVICES','PVT BANK','INFRA','BANKNIFTY','FINNIFTY','NIFTY','CONSUMPTION','COMMODITIES','ENERGY','IT','MIDCAP','METAL','PHARMA','MEDIA','PSE','CPSE','MNC','AUTO'].map((n, i) => ({ n, chg: 2.75 - i * 0.14 }));
+  return { rows: out, upd: 'Demo data', idx };
 }
 async function loadBooster(force) {
   if (!force && Date.now() - BO_AT < 60000 && BO.length) return;
@@ -5928,9 +5940,13 @@ async function loadBooster(force) {
       const hd = rows.shift().map(x => x.trim().toLowerCase()), ix = n => hd.indexOf(n), num = v => parseFloat(String(v).replace(/[,%]/g, '')) || 0;
       const out = rows.filter(r => r[ix('symbol')]).map(r => ({ s: r[ix('symbol')].trim(), sec: (r[ix('sector')] || 'Others').trim() || 'Others', ltp: num(r[ix('ltp')]), chg: num(r[ix('chgpct')]), oi: num(r[ix('oi')]), oic: num(r[ix('oichgpct')]), vol: num(r[ix('volume')]), bu: (r[ix('buildup')] || '').trim(), since: ix('since') >= 0 ? (r[ix('since')] || '').trim() : '' }));
       res = { rows: out, upd: rows.length ? (rows[0][ix('updated')] || '') : '' };
+      try {
+        const ir = csvRows(await fetchCSV(BOOSTER_URL.replace('sheet=Booster', 'sheet=BoosterIdx') + '&t=' + Date.now())); ir.shift();
+        res.idx = ir.filter(r => r[0] && r[0].trim()).map(r => ({ n: r[0].trim(), chg: parseFloat(r[2]) || 0 }));
+      } catch (_) { res.idx = []; }
     }
   } catch (e) { I('bo-upd').textContent = 'Data unavailable — market closed or feed offline'; return; }
-  BO = res.rows;
+  BO = res.rows; BO_IDX = res.idx || [];
   { const ist = new Date(Date.now() + 19800000), td = String(ist.getUTCDate()).padStart(2, '0') + ' ' + ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][ist.getUTCMonth()] + ' ' + ist.getUTCFullYear(), live = res.upd && res.upd.indexOf(td) === 0;
     I('bo-upd').innerHTML = res.upd ? (live ? '🟢 Live · Updated ' : '🕘 Last session · ') + esc(res.upd) : ''; }
   renderBooster();
@@ -5970,7 +5986,16 @@ function renderBooster() {
   const S = {}; R.forEach(r => (S[r.sec] = S[r.sec] || []).push(r));
   const sec = Object.entries(S).map(([k, a]) => ({ k, a, avg: a.reduce((x, r) => x + r.chg, 0) / a.length, up: a.filter(r => r.chg > 0).length })).sort((a, b) => b.avg - a.avg);
   const mx = Math.max(1, ...sec.map(s => Math.abs(s.avg)));
+  if (BO_IDX.length) {
+    const ix = BO_IDX.slice().sort((a, b) => b.chg - a.chg), m2 = Math.max(0.5, ...ix.map(r => Math.abs(r.chg)));
+    const hasNeg = ix.some(r => r.chg < 0), hasPos = ix.some(r => r.chg > 0), pH = hasNeg && hasPos ? 70 : 100;
+    I('bo-sec-src').textContent = 'Official NSE indices · % change';
+    I('bo-sec').innerHTML = '<div class="bo-vc" style="--p:' + pH + '%">' + ix.map(r => { const h2 = Math.abs(r.chg) / m2 * (r.chg >= 0 ? pH : 100 - pH); return '<div class="bo-vcol"><div class="bo-vpos">' + (r.chg >= 0 ? '<b style="color:var(--green)">' + boPct(r.chg) + '</b><i class="up" style="height:' + h2.toFixed(1) + '%"></i>' : '') + '</div><div class="bo-vneg">' + (r.chg < 0 ? '<i class="dn" style="height:' + h2.toFixed(1) + '%"></i><b style="color:var(--red)">' + boPct(r.chg) + '</b>' : '') + '</div><span class="bo-vl">' + esc(r.n) + '</span></div>'; }).join('') + '</div>' +
+      '<div class="bo-hlist">' + (() => { const mx3 = Math.max(0.5, ...ix.map(r => Math.abs(r.chg))); return ix.map(r => { const w = Math.abs(r.chg) / mx3 * 50; return '<div class="bo-sr"><span class="n">' + esc(r.n) + '</span><div class="t"><i style="' + (r.chg >= 0 ? 'left:50%' : 'right:50%') + ';width:' + w.toFixed(1) + '%;background:' + (r.chg >= 0 ? '#10b981' : '#ef4444') + '"></i></div><span class="v" style="color:' + clr(r.chg) + '">' + boPct(r.chg) + '</span></div>'; }).join(''); })() + '</div>';
+  } else {
+  I('bo-sec-src').textContent = 'Average futures % change';
   I('bo-sec').innerHTML = sec.map(s => { const w = Math.abs(s.avg) / mx * 50; return '<div class="bo-sr"><span class="n">' + esc(s.k) + '</span><div class="t"><i style="' + (s.avg >= 0 ? 'left:50%' : 'right:50%') + ';width:' + w.toFixed(1) + '%;background:' + (s.avg >= 0 ? '#10b981' : '#ef4444') + '"></i></div><span class="v" style="color:' + clr(s.avg) + '">' + boPct(s.avg) + '</span></div>'; }).join('');
+  }
   const hc = c => { const a = Math.min(1, Math.abs(c) / 3); return c >= 0 ? 'rgba(5,150,105,' + (0.55 + a * 0.45).toFixed(2) + ')' : 'rgba(220,38,38,' + (0.55 + a * 0.45).toFixed(2) + ')'; };
   I('bo-heat').innerHTML = sec.map(s => '<div class="bo-hs"><div class="bo-hs-h">' + esc(s.k) + '<small>' + s.up + ' ↑ · ' + (s.a.length - s.up) + ' ↓</small></div><div class="bo-hg">' + s.a.sort((a, b) => b.chg - a.chg).map(r => '<a class="bo-hc" style="background:' + hc(r.chg) + '" href="' + boTv(r.s) + '" target="_blank" rel="noopener"><b>' + esc(r.s) + '</b>' + boPct(r.chg) + '</a>').join('') + '</div></div>').join('');
 }
