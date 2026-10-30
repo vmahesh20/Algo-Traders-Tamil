@@ -694,6 +694,19 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .bo-vl{position:absolute;bottom:0;font-size:.62em;color:var(--muted2);font-weight:500;transform:rotate(-40deg);transform-origin:center;white-space:nowrap;height:40px;display:flex;align-items:center}
 .bo-hlist{display:none}
 @media(max-width:800px){.bo-vc{display:none}.bo-hlist{display:block}}
+
+.bo-tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.bo-tile{position:relative;overflow:hidden;border-radius:12px;padding:12px 14px 14px;border:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;gap:2px;transition:.15s}
+.bo-tile:hover{transform:translateY(-2px);box-shadow:0 8px 20px -14px rgba(15,23,42,.45)}
+.bo-tile.up{background:rgba(5,150,105,var(--a));border-color:rgba(5,150,105,.22)}
+.bo-tile.dn{background:rgba(220,38,38,var(--a));border-color:rgba(220,38,38,.2)}
+.bo-tn{font-size:.72em;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted2)}
+.bo-tile b{font-size:1.35em;font-weight:600;letter-spacing:-.02em;line-height:1.25}
+.bo-tile.up b{color:#047857}.bo-tile.dn b{color:#b91c1c}.bo-tile.na b{color:var(--muted)}
+.bo-tile small{font-size:.76em;color:var(--muted)}
+.bo-tile i{position:absolute;left:0;bottom:0;height:3px;border-radius:0 3px 3px 0}
+.bo-tile.up i{background:#10b981}.bo-tile.dn i{background:#ef4444}
+@media(max-width:480px){.bo-tiles{grid-template-columns:1fr 1fr;gap:8px}.bo-tile b{font-size:1.2em}}
 </style>
 </head>
 <body>
@@ -5926,7 +5939,7 @@ function boDemo() {
   const out = []; let s = 7;
   const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
   Object.entries(sec).forEach(([k, a]) => a.forEach(sym => { const c = (rnd() - 0.45) * 5, o = (rnd() - 0.4) * 12; out.push({ s: sym, sec: k, ltp: Math.round(500 + rnd() * 3000), chg: c, oi: Math.round(rnd() * 5e7), oic: o, vol: Math.round(rnd() * 9e6), since: ['9:20 AM','9:34 AM','10:12 AM','11:05 AM'][Math.floor(rnd()*4)], bu: c >= 0 ? (o >= 0 ? 'LB' : 'SC') : (o >= 0 ? 'SB' : 'LU') }); }));
-  const idx = ['REALTY','FMCG','PSU BANK','SERVICES','PVT BANK','INFRA','BANKNIFTY','FINNIFTY','NIFTY','CONSUMPTION','COMMODITIES','ENERGY','IT','MIDCAP','METAL','PHARMA','MEDIA','PSE','CPSE','MNC','AUTO'].map((n, i) => ({ n, chg: 2.75 - i * 0.14 }));
+  const idx = ['REALTY','FMCG','PSU BANK','SERVICES','PVT BANK','INFRA','BANKNIFTY','FINNIFTY','NIFTY','CONSUMPTION','COMMODITIES','ENERGY','IT','MIDCAP','METAL','PHARMA','MEDIA','PSE','CPSE','MNC','AUTO'].map((n, i) => ({ n, ltp: 1000 + i * 731, chg: 2.75 - i * 0.24 }));
   return { rows: out, upd: 'Demo data', idx };
 }
 async function loadBooster(force) {
@@ -5942,7 +5955,7 @@ async function loadBooster(force) {
       res = { rows: out, upd: rows.length ? (rows[0][ix('updated')] || '') : '' };
       try {
         const ir = csvRows(await fetchCSV(BOOSTER_URL.replace('sheet=Booster', 'sheet=BoosterIdx') + '&t=' + Date.now())); ir.shift();
-        res.idx = ir.filter(r => r[0] && r[0].trim()).map(r => ({ n: r[0].trim(), chg: parseFloat(r[2]) || 0 }));
+        res.idx = ir.filter(r => r[0] && r[0].trim()).map(r => ({ n: r[0].trim(), ltp: parseFloat(r[1]) || 0, chg: String(r[2]).trim() === '' || isNaN(parseFloat(r[2])) ? null : parseFloat(r[2]) }));
       } catch (_) { res.idx = []; }
     }
   } catch (e) { I('bo-upd').textContent = 'Data unavailable — market closed or feed offline'; return; }
@@ -5986,15 +5999,16 @@ function renderBooster() {
   const S = {}; R.forEach(r => (S[r.sec] = S[r.sec] || []).push(r));
   const sec = Object.entries(S).map(([k, a]) => ({ k, a, avg: a.reduce((x, r) => x + r.chg, 0) / a.length, up: a.filter(r => r.chg > 0).length })).sort((a, b) => b.avg - a.avg);
   const mx = Math.max(1, ...sec.map(s => Math.abs(s.avg)));
-  if (BO_IDX.length) {
-    const ix = BO_IDX.slice().sort((a, b) => b.chg - a.chg), m2 = Math.max(0.5, ...ix.map(r => Math.abs(r.chg)));
-    const hasNeg = ix.some(r => r.chg < 0), hasPos = ix.some(r => r.chg > 0), pH = hasNeg && hasPos ? 70 : 100;
-    I('bo-sec-src').textContent = 'Official NSE indices · % change';
-    I('bo-sec').innerHTML = '<div class="bo-vc" style="--p:' + pH + '%">' + ix.map(r => { const h2 = Math.abs(r.chg) / m2 * (r.chg >= 0 ? pH : 100 - pH); return '<div class="bo-vcol"><div class="bo-vpos">' + (r.chg >= 0 ? '<b style="color:var(--green)">' + boPct(r.chg) + '</b><i class="up" style="height:' + h2.toFixed(1) + '%"></i>' : '') + '</div><div class="bo-vneg">' + (r.chg < 0 ? '<i class="dn" style="height:' + h2.toFixed(1) + '%"></i><b style="color:var(--red)">' + boPct(r.chg) + '</b>' : '') + '</div><span class="bo-vl">' + esc(r.n) + '</span></div>'; }).join('') + '</div>' +
-      '<div class="bo-hlist">' + (() => { const mx3 = Math.max(0.5, ...ix.map(r => Math.abs(r.chg))); return ix.map(r => { const w = Math.abs(r.chg) / mx3 * 50; return '<div class="bo-sr"><span class="n">' + esc(r.n) + '</span><div class="t"><i style="' + (r.chg >= 0 ? 'left:50%' : 'right:50%') + ';width:' + w.toFixed(1) + '%;background:' + (r.chg >= 0 ? '#10b981' : '#ef4444') + '"></i></div><span class="v" style="color:' + clr(r.chg) + '">' + boPct(r.chg) + '</span></div>'; }).join(''); })() + '</div>';
+  const tile = (n, v, sub) => { const a = v == null ? 0 : Math.min(1, Math.abs(v) / 2.5), up = v != null && v >= 0;
+    return '<div class="bo-tile ' + (v == null ? 'na' : up ? 'up' : 'dn') + '" style="--a:' + (0.05 + a * 0.16).toFixed(3) + '"><span class="bo-tn">' + esc(n) + '</span><b>' + (v == null ? '—' : boPct(v)) + '</b><small>' + sub + '</small><i style="width:' + (v == null ? 0 : Math.max(4, a * 100)).toFixed(0) + '%"></i></div>'; };
+  const idxOk = BO_IDX.some(r => r.chg != null);
+  if (idxOk) {
+    const ix = BO_IDX.slice().sort((x, y) => (y.chg ?? -99) - (x.chg ?? -99)), upN = ix.filter(r => r.chg > 0).length;
+    I('bo-sec-src').textContent = 'Official NSE indices · ' + upN + ' up · ' + (ix.length - upN) + ' down';
+    I('bo-sec').innerHTML = '<div class="bo-tiles">' + ix.map(r => tile(r.n, r.chg, r.ltp ? r.ltp.toLocaleString('en-IN', { maximumFractionDigits: 2 }) : '')).join('') + '</div>';
   } else {
-  I('bo-sec-src').textContent = 'Average futures % change';
-  I('bo-sec').innerHTML = sec.map(s => { const w = Math.abs(s.avg) / mx * 50; return '<div class="bo-sr"><span class="n">' + esc(s.k) + '</span><div class="t"><i style="' + (s.avg >= 0 ? 'left:50%' : 'right:50%') + ';width:' + w.toFixed(1) + '%;background:' + (s.avg >= 0 ? '#10b981' : '#ef4444') + '"></i></div><span class="v" style="color:' + clr(s.avg) + '">' + boPct(s.avg) + '</span></div>'; }).join('');
+    I('bo-sec-src').textContent = 'Average of F&O stock futures by sector';
+    I('bo-sec').innerHTML = '<div class="bo-tiles">' + sec.map(s => tile(s.k, s.avg, s.up + ' ↑ · ' + (s.a.length - s.up) + ' ↓')).join('') + '</div>';
   }
   const hc = c => { const a = Math.min(1, Math.abs(c) / 3); return c >= 0 ? 'rgba(5,150,105,' + (0.55 + a * 0.45).toFixed(2) + ')' : 'rgba(220,38,38,' + (0.55 + a * 0.45).toFixed(2) + ')'; };
   I('bo-heat').innerHTML = sec.map(s => '<div class="bo-hs"><div class="bo-hs-h">' + esc(s.k) + '<small>' + s.up + ' ↑ · ' + (s.a.length - s.up) + ' ↓</small></div><div class="bo-hg">' + s.a.sort((a, b) => b.chg - a.chg).map(r => '<a class="bo-hc" style="background:' + hc(r.chg) + '" href="' + boTv(r.s) + '" target="_blank" rel="noopener"><b>' + esc(r.s) + '</b>' + boPct(r.chg) + '</a>').join('') + '</div></div>').join('');
