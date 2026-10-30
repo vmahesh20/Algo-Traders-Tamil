@@ -777,6 +777,40 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .op-bias{position:relative;height:8px;background:var(--surface2);border-radius:99px}
 .op-bias i{position:absolute;top:0;bottom:0;border-radius:99px}
 .op-bias:before{content:'';position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--border)}
+
+.tl-tabs{flex-wrap:wrap}
+@media(max-width:900px){.tl-tabs{flex-wrap:nowrap}}
+.sr-wrap{display:grid;grid-template-columns:1fr 1.1fr 1fr;gap:18px}
+.sr-row{display:flex;justify-content:space-between;align-items:center;padding:11px 12px;border-radius:10px;margin-bottom:8px;border:1px solid var(--border)}
+.sr-row.r{background:rgba(220,38,38,.05);border-color:rgba(220,38,38,.18)}.sr-row.s{background:rgba(5,150,105,.06);border-color:rgba(5,150,105,.2)}
+.sr-row b{font-size:1.2em;font-weight:600;display:block}.sr-row small{font-size:.74em;color:var(--muted);display:block}
+.sr-row>span{text-align:right;font-weight:600;font-size:.92em}
+.sr-mid{text-align:center;display:flex;flex-direction:column;justify-content:center;gap:8px}
+.sr-band{display:flex;align-items:center;gap:8px;font-size:.8em;font-weight:600}
+.sr-band span:first-child{color:#047857}.sr-band span:last-child{color:#b91c1c}
+.sr-band div{flex:1;position:relative;height:8px;border-radius:99px;background:linear-gradient(90deg,#86efac,#e2e8f0,#fca5a5)}
+.sr-band i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#0f172a;border:2px solid #fff;transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+.pv-in{display:flex;flex-direction:column;gap:12px}
+.pv-in label{display:flex;flex-direction:column;gap:5px;font-size:.76em;font-weight:600;color:var(--muted2);text-transform:uppercase;letter-spacing:.05em}
+.pv-in label small{text-transform:none;font-weight:400}
+.pv-in input,.pv-in select{padding:10px 11px;border:1px solid var(--border);border-radius:8px;background:var(--surface);font:inherit;font-size:1.2em;color:var(--text);text-transform:none;letter-spacing:0;font-weight:500}
+.pv-in input:focus,.pv-in select:focus{outline:none;border-color:#0369a1}
+.pv-tf{display:flex;background:var(--surface2);border-radius:9px;padding:3px}
+.pv-tf button{flex:1;border:0;background:transparent;padding:8px;border-radius:7px;font:inherit;font-size:1.1em;font-weight:600;color:var(--muted2);cursor:pointer;text-transform:none;letter-spacing:0}
+.pv-tf button.on{background:#0f172a;color:#fff}
+.pv-cpr{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.pv-cpr>div{background:var(--surface2);border-radius:10px;padding:12px;text-align:center}
+.pv-cpr small{display:block;font-size:.72em;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.pv-cpr b{font-size:1.35em;font-weight:600}
+.pv-cpr .pv-p{background:#0f172a;color:#fff}.pv-cpr .pv-p small{color:#94a3b8}
+.pv-tbl td{font-size:1.02em}
+.pv-tbl tr.pv-x td{color:var(--muted);font-size:.9em}
+.pv-tbl tr.pv-now td{background:#0f172a;color:#fff;text-align:center;font-weight:600;font-size:.85em;padding:5px}
+.pv-promo{font-size:.88em;color:var(--muted2);padding:12px 16px;border:1px dashed var(--border);border-radius:12px;background:var(--surface2)}
+.pv-promo a{color:#0369a1;font-weight:600;text-decoration:none}
+@media(max-width:900px){.sr-wrap{grid-template-columns:1fr}.sr-mid{order:-1}}
+.op-grid>*{min-width:0}.pv-in input,.pv-in select{width:100%;min-width:0;box-sizing:border-box}
+.pv-cpr>div{min-width:0}@media(max-width:480px){.pv-cpr{gap:6px}.pv-cpr>div{padding:10px 4px}.pv-cpr b{font-size:1em}}
 </style>
 </head>
 <body>
@@ -5217,12 +5251,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   <div class="tl-tabs" id="tl-tabs">
     <button data-t="booster" class="on"><i>🚀</i>Intraday Booster</button>
+    <button data-t="scr"><i>🔎</i>Stock Screener</button>
     <button data-t="pcr"><i>⚖️</i>Put-Call Ratio</button>
-    <button data-t="mp"><i>🎯</i>Max Pain</button>
     <button data-t="pece"><i>📊</i>PE-CE Difference</button>
+    <button data-t="oich"><i>🧱</i>OI Change</button>
+    <button data-t="sr"><i>🛡️</i>Support &amp; Resistance</button>
+    <button data-t="fut"><i>📉</i>Futures OI</button>
+    <button data-t="mp"><i>🎯</i>Max Pain</button>
     <button data-t="str"><i>📈</i>ATM Straddle</button>
     <button data-t="decay"><i>⏳</i>Premium Decay</button>
-    <button data-t="scr"><i>🔎</i>Stock Screener</button>
+    <button data-t="piv"><i>🧮</i>CPR &amp; Pivots</button>
   </div>
 
   <div class="tl-pane on" id="tl-booster">
@@ -5285,6 +5323,26 @@ document.addEventListener('DOMContentLoaded', () => {
     <div class="bo-card">
       <div class="bo-lh"><span id="sc-ttl">Results</span><small id="sc-cnt"></small></div>
       <div class="op-wrap"><table class="op-tbl sc-tbl"><thead><tr><th style="text-align:left">Stock</th><th>LTP</th><th>% Chg</th><th>OI Chg</th><th>Gap</th><th>vs VWAP</th><th>Day Range</th><th>Turnover</th><th style="text-align:left">Build-up</th></tr></thead><tbody id="sc-body"></tbody></table></div>
+    </div>
+  </div>
+
+  <div class="tl-pane" id="tl-piv">
+    <div class="op-grid">
+      <div class="bo-card pv-in">
+        <div class="bo-ttl">Inputs</div>
+        <label>Instrument<select id="pv-sym"><option value="NIFTY">NIFTY (auto)</option><option value="BANKNIFTY">BANKNIFTY (auto)</option><option value="">Custom / Any stock</option></select></label>
+        <label>Timeframe<div class="pv-tf" id="pv-tf"><button data-f="D" class="on">Daily</button><button data-f="W">Weekly</button><button data-f="M">Monthly</button></div></label>
+        <label>Previous High<input id="pv-h" type="number" step="0.05"></label>
+        <label>Previous Low<input id="pv-l" type="number" step="0.05"></label>
+        <label>Previous Close<input id="pv-c" type="number" step="0.05"></label>
+        <label>Current Price <small>(optional)</small><input id="pv-p" type="number" step="0.05"></label>
+        <p class="op-note" id="pv-src"></p>
+      </div>
+      <div>
+        <div class="bo-card" id="pv-cpr"></div>
+        <div class="bo-card"><div class="bo-lh"><span>Pivot Levels</span><small>▶ marks where price is now</small></div><div class="op-wrap"><table class="op-tbl pv-tbl"><thead><tr><th style="text-align:left">Level</th><th>Classic</th><th>Camarilla</th><th>Fibonacci</th></tr></thead><tbody id="pv-body"></tbody></table></div></div>
+        <div class="pv-promo">🎯 Want these levels auto-plotted on your chart with signals? <a href="#" onclick="showPage('plans');return false">See Pivot Master indicator →</a></div>
+      </div>
     </div>
   </div>
 
@@ -6145,6 +6203,10 @@ const TL = {
   mp: ['Option Tools · Live', 'Max Pain', 'The strike where option buyers lose the most (and writers gain the most) at expiry — price often gravitates towards it.'],
   pece: ['Option Tools · Live', 'PE-CE Difference', 'Put OI minus Call OI at every strike. Big positive = strong put writing (support), big negative = strong call writing (resistance).'],
   str: ['Option Tools · Live', 'ATM Straddle', 'ATM Call + Put premium through the day. Falling straddle = sideways / decay; rising straddle = trending / volatility expansion.'],
+  oich: ['Option Tools · Live', 'OI Change by Strike', 'Fresh Call vs Put positions added today at every strike — see exactly where writers are building up.'],
+  sr: ['Option Tools · Live', 'Support & Resistance', 'Key levels from option writers: highest Put OI = support, highest Call OI = resistance — with distance from spot.'],
+  fut: ['Futures · Live', 'Futures OI Buildup', 'Index futures price vs Open Interest through the day — is the move backed by fresh positions or just covering?'],
+  piv: ['Calculator', 'CPR & Pivot Levels', 'Daily, Weekly & Monthly CPR with Classic, Camarilla and Fibonacci pivots. Auto-filled for Nifty & BankNifty, or enter any stock.'],
   scr: ['Screener · F&O Stocks', 'Stock Screener', 'Filter all F&O stocks live by price action, OI, VWAP, gap, open-high-low and build-up — one-tap quick scans or your own filters.'],
   decay: ['Option Tools · Live', 'Premium Decay', 'How much Call and Put premiums have changed since the open for strikes around ATM.']
 };
@@ -6157,15 +6219,15 @@ function opDemo() {
     for (let i = -20; i <= 20; i++) { const k = atm + i * step, ce = Math.round((2e6 + r() * 6e6) * Math.exp(-Math.max(0, -i) / 6) * (i > 0 ? 1.4 : 0.7)), pe = Math.round((2e6 + r() * 6e6) * Math.exp(-Math.max(0, i) / 6) * (i < 0 ? 1.4 : 0.7));
       const cl = Math.max(1, (spot - k) + step * 2.2 * Math.exp(-Math.abs(i) / 4)), pl = Math.max(1, (k - spot) + step * 2.2 * Math.exp(-Math.abs(i) / 4));
       ch.push([k, ce, Math.round(ce * (0.8 + r() * 0.3)), +Math.max(0.5, cl).toFixed(2), +(Math.max(0.5, cl) * (1.05 + r() * 0.2)).toFixed(2), pe, Math.round(pe * (0.8 + r() * 0.3)), +Math.max(0.5, pl).toFixed(2), +(Math.max(0.5, pl) * (1.05 + r() * 0.2)).toFixed(2), 0]); }
-    const t0 = 9 * 60 + 15; for (let m = 0; m < 70; m++) { const t = t0 + m * 3; ser.push({ t: String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'), spot: spot + Math.sin(m / 9) * step * 1.5, pcr: 0.85 + m * 0.004 + Math.sin(m / 5) * 0.03, str: step * 4.6 - m * step * 0.012 + Math.sin(m / 4) * step * 0.1, ce: step * 2.3 - m * step * 0.006, pe: step * 2.3 - m * step * 0.007, pc: Math.round(1e6 * m * (1 + Math.sin(m / 6) * .4)), cc: Math.round(8e5 * m * (1 + Math.cos(m / 7) * .4)), cd: -m * step * 0.05 + Math.sin(m / 5) * step * .2, pd: -m * step * 0.08 + Math.cos(m / 6) * step * .2 }); }
+    const t0 = 9 * 60 + 15; for (let m = 0; m < 70; m++) { const t = t0 + m * 3; ser.push({ t: String(Math.floor(t / 60)).padStart(2, '0') + ':' + String(t % 60).padStart(2, '0'), spot: spot + Math.sin(m / 9) * step * 1.5, pcr: 0.85 + m * 0.004 + Math.sin(m / 5) * 0.03, str: step * 4.6 - m * step * 0.012 + Math.sin(m / 4) * step * 0.1, ce: step * 2.3 - m * step * 0.006, pe: step * 2.3 - m * step * 0.007, fp: spot + 40 + Math.sin(m / 9) * step * 1.5, foi: Math.round(1.2e7 + m * 4e4 + Math.sin(m / 4) * 2e5), pc: Math.round(1e6 * m * (1 + Math.sin(m / 6) * .4)), cc: Math.round(8e5 * m * (1 + Math.cos(m / 7) * .4)), cd: -m * step * 0.05 + Math.sin(m / 5) * step * .2, pd: -m * step * 0.08 + Math.cos(m / 6) * step * .2 }); }
     const ceoi = ch.reduce((a, c) => a + c[1], 0), peoi = ch.reduce((a, c) => a + c[5], 0);
     ch.forEach(c => c[9] = Math.round(ch.reduce((a, x) => a + x[1] * Math.max(0, c[0] - x[0]) + x[5] * Math.max(0, x[0] - c[0]), 0) / 1e5));
     const mp = ch.reduce((a, c) => c[9] < a[9] ? c : a)[0];
-    return { exp: '2026-11-03', spot, atm, pcr: +(peoi / ceoi).toFixed(2), mp, str: ser[ser.length - 1].str, ceoi, peoi, chain: ch, series: ser }; };
+    return { exp: '2026-11-03', spot, atm, pcr: +(peoi / ceoi).toFixed(2), mp, str: ser[ser.length - 1].str, ceoi, peoi, chain: ch, series: ser, fut: { exp: '2026-11-23', ltp: spot + 42, prev: spot + 10, oi: 12800000, poi: 12300000, vol: 3400000 }, piv: { D: [spot * 1.006, spot * 0.992, spot * 1.003], W: [spot * 1.02, spot * 0.98, spot * 1.004], M: [spot * 1.05, spot * 0.95, spot * 1.01], d: '2026-10-29' } }; };
   return { updated: 'Demo data', data: { NIFTY: mk(22980, 50), BANKNIFTY: mk(54790, 100) } };
 }
 async function loadOpt(force) {
-  if (TL_CUR === 'booster' && !force) return;
+  if ((TL_CUR === 'booster' || TL_CUR === 'scr') && !force) return;
   if (!force && OPT && Date.now() - OPT_AT < 60000) return renderOpt();
   OPT_AT = Date.now();
   try {
@@ -6220,6 +6282,32 @@ function renderOpt() {
         nr.map(c => { const sd = c[3] + c[7]; return '<tr class="' + (c[0] === D.atm ? 'atm' : '') + '"><td style="color:var(--green)">' + fN(c[3]) + '</td><td class="k">' + fN(c[0], 0) + '</td><td style="color:var(--red)">' + fN(c[7]) + '</td><td style="font-weight:600' + (sd === mn ? ';color:#7c3aed' : '') + '">' + fN(sd) + (sd === mn ? ' ★' : '') + '</td><td>' + fN(c[3] - c[7]) + '</td></tr>'; }).join('') + '</tbody></table></div></div>'; })();
     const o = opt2({ scales: { x: OPC.scales.x, y: OPC.scales.y, y2: { position: 'right', grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } } } });
     opChart('opc1', { type: 'line', data: { labels: lab, datasets: [{ label: 'Straddle', data: v, borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,.08)', fill: true, borderWidth: 2, pointRadius: 0, tension: .3 }, { label: 'Spot', data: S.map(s => s.spot), borderColor: '#94a3b8', borderWidth: 1.5, borderDash: [4, 4], pointRadius: 0, yAxisID: 'y2', tension: .3 }] }, options: o });
+  } else if (T === 'oich') {
+    const ce = C.map(c => c[1] - c[2]), pe = C.map(c => c[5] - c[6]), tc = ce.reduce((a, b) => a + b, 0), tp = pe.reduce((a, b) => a + b, 0);
+    const mc = C[ce.indexOf(Math.max(...ce))], mpu = C[pe.indexOf(Math.max(...pe))];
+    B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">Today\'s fresh OI · ATM ± 20</div><div class="op-kv"><span>Call OI added</span><b style="color:var(--red)">' + (tc >= 0 ? '+' : '') + fmtL(tc) + '</b></div><div class="op-kv"><span>Put OI added</span><b style="color:var(--green)">' + (tp >= 0 ? '+' : '') + fmtL(tp) + '</b></div>' +
+      '<div class="op-kv"><span>Most Call writing</span><b>' + fN(mc[0], 0) + '</b></div><div class="op-kv"><span>Most Put writing</span><b>' + fN(mpu[0], 0) + '</b></div><span class="op-tag ' + (tp > tc ? 'g' : tp < tc ? 'r' : 'n') + '" style="margin-top:8px">' + (tp > tc ? 'Put writers more active → bullish tilt' : tp < tc ? 'Call writers more active → bearish tilt' : 'Balanced') + '</span>' +
+      '<p class="op-note">Call OI added above spot = sellers expect a cap there. Put OI added below spot = sellers defending that floor.</p></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>OI change by strike</span><small>vs previous day · ATM ' + fN(D.atm, 0) + '</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>';
+    opChart('opc1', { type: 'bar', data: { labels: K, datasets: [{ label: 'Call OI change', data: ce, backgroundColor: 'rgba(239,68,68,.8)', borderRadius: 3 }, { label: 'Put OI change', data: pe, backgroundColor: 'rgba(16,185,129,.8)', borderRadius: 3 }] }, options: opt2() });
+  } else if (T === 'sr') {
+    const top = (i) => C.slice().sort((a, b) => b[i] - a[i]).slice(0, 3);
+    const res = top(1).sort((a, b) => a[0] - b[0]), sup = top(5).sort((a, b) => b[0] - a[0]);
+    const lvl = (c, i, kind) => { const d = c[0] - D.spot, ch = c[i] - c[i + 1]; return '<div class="sr-row ' + kind + '"><div><b>' + fN(c[0], 0) + '</b><small>' + fmtL(c[i]) + ' OI · ' + (ch >= 0 ? '+' : '') + fmtL(ch) + ' today</small></div><span>' + (d >= 0 ? '+' : '') + fN(d, 0) + ' pts<small>' + (d / D.spot * 100).toFixed(2) + '%</small></span></div>'; };
+    const r1 = res.find(c => c[0] >= D.spot) || res[res.length - 1], s1 = sup.find(c => c[0] <= D.spot) || sup[0];
+    B.innerHTML = '<div class="sr-wrap"><div class="bo-card"><div class="bo-ttl" style="color:#b91c1c">🔴 Resistance · highest Call OI</div>' + res.slice().reverse().map(c => lvl(c, 1, 'r')).join('') + '</div>' +
+      '<div class="bo-card sr-mid"><div class="bo-ttl">Spot · ' + OPT_U + '</div><div class="op-big">' + fN(D.spot) + '</div><div class="sr-band"><span>S ' + fN(s1[0], 0) + '</span><div><i style="left:' + Math.max(0, Math.min(100, (D.spot - s1[0]) / ((r1[0] - s1[0]) || 1) * 100)).toFixed(0) + '%"></i></div><span>R ' + fN(r1[0], 0) + '</span></div><p class="op-note">Expected range by OI: <b>' + fN(s1[0], 0) + ' – ' + fN(r1[0], 0) + '</b>. A break above strong Call OI or below strong Put OI often triggers short covering / long unwinding moves.</p></div>' +
+      '<div class="bo-card"><div class="bo-ttl" style="color:#047857">🟢 Support · highest Put OI</div>' + sup.map(c => lvl(c, 5, 's')).join('') + '</div></div>';
+  } else if (T === 'fut') {
+    const F = D.fut || {}, fs = S.filter(s => s.fp), pc = F.prev ? (F.ltp - F.prev) / F.prev * 100 : 0, oc = F.poi ? (F.oi - F.poi) / F.poi * 100 : 0;
+    const bu = pc >= 0 ? (oc >= 0 ? ['LB', 'Long Build-up'] : ['SC', 'Short Covering']) : (oc >= 0 ? ['SB', 'Short Build-up'] : ['LU', 'Long Unwinding']);
+    const fx = F.exp ? new Date(F.exp + 'T00:00:00Z').toLocaleDateString('en-IN', { day: '2-digit', month: 'short', timeZone: 'UTC' }) : '';
+    B.innerHTML = '<div class="op-grid"><div class="bo-card op-hero"><div class="bo-ttl">' + OPT_U + ' Futures · ' + fx + '</div><div class="op-big">' + (F.ltp ? fN(F.ltp) : '–') + '</div><span class="bo-tag ' + bu[0] + '" style="align-self:flex-start;font-size:.85em;padding:5px 10px">' + bu[1] + '</span>' +
+      '<div class="op-kv"><span>Price change</span><b style="color:' + clr(pc) + '">' + boPct(pc) + '</b></div><div class="op-kv"><span>Open Interest</span><b>' + fmtL(F.oi || 0) + '</b></div><div class="op-kv"><span>OI change</span><b style="color:' + clr(oc) + '">' + boPct(oc) + '</b></div><div class="op-kv"><span>Premium over spot</span><b>' + (F.ltp ? fN(F.ltp - D.spot) : '–') + '</b></div>' +
+      '<p class="op-note">Price ↑ with OI ↑ = fresh longs (strong). Price ↑ with OI ↓ = short covering (can fade). Same logic on the way down.</p></div>' +
+      '<div class="bo-card"><div class="bo-lh"><span>Futures price vs OI</span><small>every 3 min</small></div><div class="op-ch"><canvas id="opc1"></canvas></div></div></div>';
+    const o = opt2({ scales: { x: OPC.scales.x, y: OPC.scales.y, y2: { position: 'right', grid: { display: false }, ticks: { font: { family: 'Inter', size: 10 } } } } });
+    opChart('opc1', { type: 'line', data: { labels: fs.map(s => s.t), datasets: [{ label: 'Futures price', data: fs.map(s => s.fp), borderColor: '#0f172a', borderWidth: 2, pointRadius: 0, tension: .3 }, { type: 'bar', label: 'Open Interest', data: fs.map(s => s.foi), backgroundColor: 'rgba(3,105,161,.25)', yAxisID: 'y2', borderRadius: 2 }] }, options: o });
   } else if (T === 'decay') {
     const i0 = C.findIndex(c => c[0] === D.atm), near = C.slice(Math.max(0, i0 - 5), i0 + 6);
     const pc = (l, o) => o ? (l - o) / o * 100 : 0;
@@ -6238,10 +6326,11 @@ function renderOpt() {
 function showTool(t) {
   TL_CUR = t;
   document.querySelectorAll('#tl-tabs button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
-  I('tl-booster').classList.toggle('on', t === 'booster'); I('tl-scr').classList.toggle('on', t === 'scr'); I('tl-opt').classList.toggle('on', t !== 'booster' && t !== 'scr');
+  I('tl-booster').classList.toggle('on', t === 'booster'); I('tl-scr').classList.toggle('on', t === 'scr'); I('tl-piv').classList.toggle('on', t === 'piv'); I('tl-opt').classList.toggle('on', !['booster', 'scr', 'piv'].includes(t));
+  if (t === 'piv') { pvAuto(); if (!OPT) loadOpt(true).then(pvAuto); }
   if (t === 'scr') { loadBooster(); scRender(); }
   const c = TL[t]; I('tl-eye').textContent = c[0]; I('tl-h1').textContent = c[1]; I('tl-sub').textContent = c[2];
-  if (t !== 'booster' && t !== 'scr') loadOpt();
+  if (!['booster', 'scr', 'piv'].includes(t)) loadOpt();
 }
 document.querySelectorAll('#tl-tabs button').forEach(b => b.onclick = () => showTool(b.dataset.t));
 document.querySelectorAll('#op-und button').forEach(b => b.onclick = () => { OPT_U = b.dataset.u; document.querySelectorAll('#op-und button').forEach(x => x.classList.toggle('on', x === b)); renderOpt(); });
@@ -6301,6 +6390,43 @@ function scRender() {
 }
 document.querySelectorAll('#tl-scr input, #tl-scr select').forEach(e => e.addEventListener('input', scRender));
 I('sf-reset').onclick = () => { document.querySelectorAll('#tl-scr input').forEach(e => e.value = ''); document.querySelectorAll('#tl-scr select').forEach(e => e.selectedIndex = 0); SC_P = ''; scRender(); };
+</script>
+<script>
+/* ═══ CPR & PIVOT CALCULATOR ═══ */
+let PV_F = 'D';
+function pvAuto() {
+  const u = I('pv-sym').value, D = OPT && OPT.data && OPT.data[u];
+  if (u && D && D.piv && D.piv[PV_F]) { const [hh, ll, cc] = D.piv[PV_F]; I('pv-h').value = hh; I('pv-l').value = ll; I('pv-c').value = cc; I('pv-p').value = D.spot;
+    I('pv-src').textContent = 'Auto-filled from previous ' + ({ D: 'day', W: 'week', M: 'month' })[PV_F] + ' of ' + u + ' spot index. Change any value to recalculate.'; }
+  else if (u) { I('pv-src').textContent = 'Auto data not available yet — enter values manually.'; }
+  else I('pv-src').textContent = 'Enter previous ' + ({ D: 'day', W: 'week', M: 'month' })[PV_F] + ' High, Low and Close of any stock or index.';
+  pvCalc();
+}
+function pvCalc() {
+  const H = +I('pv-h').value, L = +I('pv-l').value, Cc = +I('pv-c').value, P0 = +I('pv-p').value;
+  if (!H || !L || !Cc || H < L) { I('pv-cpr').innerHTML = '<div class="bo-empty">Enter High, Low and Close to see levels</div>'; I('pv-body').innerHTML = ''; return; }
+  const P = (H + L + Cc) / 3, b1 = (H + L) / 2, t1 = 2 * P - b1, BC = Math.min(b1, t1), TC = Math.max(b1, t1), R = H - L, w = (TC - BC) / P * 100;
+  const typ = w < 0.25 ? ['Narrow CPR → trending day likely', 'g'] : w > 0.6 ? ['Wide CPR → sideways / range day likely', 'r'] : ['Normal CPR', 'n'];
+  const pos = P0 ? (P0 > TC ? ['Price above CPR → bullish', 'var(--green)'] : P0 < BC ? ['Price below CPR → bearish', 'var(--red)'] : ['Price inside CPR → no clear bias', 'var(--muted2)']) : null;
+  I('pv-cpr').innerHTML = '<div class="bo-lh"><span>Central Pivot Range · ' + ({ D: 'Daily', W: 'Weekly', M: 'Monthly' })[PV_F] + '</span><small>width ' + w.toFixed(2) + '%</small></div><div class="pv-cpr"><div><small>TC</small><b>' + fN(TC) + '</b></div><div class="pv-p"><small>Pivot</small><b>' + fN(P) + '</b></div><div><small>BC</small><b>' + fN(BC) + '</b></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><span class="op-tag ' + typ[1] + '">' + typ[0] + '</span>' + (pos ? '<span class="op-tag n" style="color:' + pos[1] + '">' + pos[0] + '</span>' : '') + '</div>';
+  const cl = { R3: H + 2 * (P - L), R2: P + R, R1: 2 * P - L, P: P, S1: 2 * P - H, S2: P - R, S3: L - 2 * (H - P) };
+  const cm = { R3: Cc + R * 1.1 / 4, R2: Cc + R * 1.1 / 6, R1: Cc + R * 1.1 / 12, P: P, S1: Cc - R * 1.1 / 12, S2: Cc - R * 1.1 / 6, S3: Cc - R * 1.1 / 4 };
+  const fb = { R3: P + R, R2: P + 0.618 * R, R1: P + 0.382 * R, P: P, S1: P - 0.382 * R, S2: P - 0.618 * R, S3: P - R };
+  const rows = ['R3', 'R2', 'R1', 'P', 'S1', 'S2', 'S3'], nm = { P: 'Pivot' };
+  const cam4 = ['H4 ' + fN(Cc + R * 1.1 / 2), 'L4 ' + fN(Cc - R * 1.1 / 2)];
+  let html = '<tr class="pv-x"><td style="text-align:left">R4 / H4</td><td>' + fN(cl.R3 + R) + '</td><td>' + cam4[0].slice(3) + '</td><td>–</td></tr>';
+  rows.forEach((k, j) => {
+    if (P0 && j > 0) { const prv = cl[rows[j - 1]]; if (P0 <= prv && P0 > cl[k]) html += '<tr class="pv-now"><td colspan="4">▶ Price ' + fN(P0) + '</td></tr>'; }
+    else if (P0 && j === 0 && P0 > cl.R3) html += '<tr class="pv-now"><td colspan="4">▶ Price ' + fN(P0) + '</td></tr>';
+    html += '<tr class="' + (k === 'P' ? 'atm' : '') + '"><td style="text-align:left;font-weight:600;color:' + (k[0] === 'R' ? 'var(--red)' : k[0] === 'S' ? 'var(--green)' : 'inherit') + '">' + (nm[k] || k) + (k !== 'P' ? ' / ' + (k[0] === 'R' ? 'H' : 'L') + k[1] : '') + '</td><td>' + fN(cl[k]) + '</td><td>' + fN(cm[k]) + '</td><td>' + fN(fb[k]) + '</td></tr>';
+  });
+  if (P0 && P0 <= cl.S3) html += '<tr class="pv-now"><td colspan="4">▶ Price ' + fN(P0) + '</td></tr>';
+  html += '<tr class="pv-x"><td style="text-align:left">S4 / L4</td><td>' + fN(cl.S3 - R) + '</td><td>' + cam4[1].slice(3) + '</td><td>–</td></tr>';
+  I('pv-body').innerHTML = html;
+}
+document.querySelectorAll('#pv-tf button').forEach(b => b.onclick = () => { PV_F = b.dataset.f; document.querySelectorAll('#pv-tf button').forEach(x => x.classList.toggle('on', x === b)); pvAuto(); });
+I('pv-sym').onchange = pvAuto;
+['pv-h', 'pv-l', 'pv-c', 'pv-p'].forEach(id => I(id).addEventListener('input', pvCalc));
 </script>
 </body>
 </html>
