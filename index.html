@@ -818,6 +818,27 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .gl-w{height:640px}
 @media(max-width:900px){.gl-grid{grid-template-columns:1fr}.gl-w{height:560px}}
 .gl-q .gl-w{height:1180px}.gl-o{align-self:start;position:sticky;top:80px}@media(max-width:900px){.gl-o{position:static}.gl-q .gl-w{height:1180px}}
+
+.gl-tape{display:flex;align-items:center}
+.gl-tape .tradingview-widget-container{flex:1;min-width:0}
+.gift-chip{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:0 16px;height:46px;border-right:1px solid var(--border);text-decoration:none;color:var(--text);font-size:.9em;white-space:nowrap;background:var(--surface)}
+.gift-chip i{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.2);animation:pulse 2s infinite}
+.gift-chip span{font-weight:600}.gift-chip b{font-weight:600}.gift-chip em{font-style:normal;font-weight:500;font-size:.92em}
+.gift-card{border-top:4px solid #f97316;margin-bottom:18px}
+.gift-main{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.gift-px{font-size:2.4em;font-weight:700;letter-spacing:-.03em;display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.gift-px span{font-size:.45em;font-weight:600}
+.gift-sig{display:inline-block;margin-top:6px;padding:5px 10px;border-radius:8px;font-size:.85em;font-weight:600}
+.gift-sig.g{background:rgba(5,150,105,.1);color:#047857}.gift-sig.r{background:rgba(220,38,38,.08);color:#b91c1c}
+.gift-stats{display:grid;grid-template-columns:repeat(3,minmax(100px,1fr));gap:8px}
+.gift-stats div{background:var(--surface2);border-radius:10px;padding:8px 12px}
+.gift-stats small{display:block;font-size:.72em;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:600}
+.gift-stats b{font-size:1.05em;font-weight:600}
+.gift-rng{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:.8em;font-weight:600;color:var(--muted2)}
+.gift-rng div{flex:1;position:relative;height:8px;border-radius:99px;background:linear-gradient(90deg,#fca5a5,#e2e8f0,#86efac)}
+.gift-rng i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#0f172a;border:2px solid #fff;transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+@keyframes pulse{50%{opacity:.4}}
+@media(max-width:600px){.gift-chip{padding:0 10px;font-size:.8em;gap:6px}.gift-chip em{display:none}.gift-px{font-size:2em}.gift-stats{grid-template-columns:repeat(2,1fr);width:100%}}
 </style>
 </head>
 <body>
@@ -869,7 +890,7 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
   </div>
 </nav>
 
-<div class="gl-tape"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols": [{"proName": "CAPITALCOM:US30", "title": "Dow Fut"}, {"proName": "CAPITALCOM:US500", "title": "S&P 500 Fut"}, {"proName": "CAPITALCOM:US100", "title": "Nasdaq Fut"}, {"proName": "CAPITALCOM:J225", "title": "Nikkei"}, {"proName": "CAPITALCOM:HK50", "title": "Hang Seng"}, {"proName": "CAPITALCOM:DE40", "title": "DAX"}, {"proName": "CAPITALCOM:UK100", "title": "FTSE 100"}, {"proName": "TVC:USOIL", "title": "Crude Oil"}, {"proName": "TVC:GOLD", "title": "Gold"}, {"proName": "FX_IDC:USDINR", "title": "USD/INR"}, {"proName": "CAPITALCOM:DXY", "title": "Dollar Index"}, {"proName": "CAPITALCOM:VIX", "title": "US VIX"}], "showSymbolLogo": true, "isTransparent": true, "displayMode": "adaptive", "colorTheme": "light", "locale": "en"}</script></div></div>
+<div class="gl-tape"><a class="gift-chip" id="gift-chip" href="#tools" onclick="showPage('booster');setTimeout(()=>showTool('glob'),60);return false"><i></i><span>GIFT Nifty</span><b id="gift-tp">—</b><em id="gift-tc"></em></a><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols": [{"proName": "CAPITALCOM:US30", "title": "Dow Fut"}, {"proName": "CAPITALCOM:US500", "title": "S&P 500 Fut"}, {"proName": "CAPITALCOM:US100", "title": "Nasdaq Fut"}, {"proName": "CAPITALCOM:J225", "title": "Nikkei"}, {"proName": "CAPITALCOM:HK50", "title": "Hang Seng"}, {"proName": "CAPITALCOM:DE40", "title": "DAX"}, {"proName": "CAPITALCOM:UK100", "title": "FTSE 100"}, {"proName": "TVC:USOIL", "title": "Crude Oil"}, {"proName": "TVC:GOLD", "title": "Gold"}, {"proName": "FX_IDC:USDINR", "title": "USD/INR"}, {"proName": "CAPITALCOM:DXY", "title": "Dollar Index"}, {"proName": "CAPITALCOM:VIX", "title": "US VIX"}], "showSymbolLogo": true, "isTransparent": true, "displayMode": "adaptive", "colorTheme": "light", "locale": "en"}</script></div></div>
 <a class="ab-ribbon" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">🎁 <b>Free strategy access</b> — open a new Alice Blue account with our referral link <span>Open now ↗</span></a>
 
 <!-- ═══ PAGE: PERFORMANCE (today points + 1-yr backtest) ═══ -->
@@ -5356,6 +5377,7 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div class="tl-pane" id="tl-glob">
+    <div class="bo-card gift-card" id="gift-card"><div class="bo-empty">Loading GIFT Nifty…</div></div>
     <div class="gl-grid">
       <div class="bo-card gl-q"><div class="bo-lh"><span>🌏 Global Indices &amp; Futures</span><small>live · auto-updating</small></div><div id="gl-quotes" class="gl-w"></div></div>
       <div class="bo-card gl-o"><div class="bo-lh"><span>📈 Charts</span><small>tap a symbol</small></div><div id="gl-over" class="gl-w"></div></div>
@@ -6456,6 +6478,44 @@ function glLoad() {
   glW('gl-quotes', 'https://s3.tradingview.com/external-embedding/embed-widget-market-quotes.js', {"width": "100%", "height": "100%", "symbolsGroups": [{"name": "Futures (Pre-market cues)", "symbols": [{"name": "CAPITALCOM:US30", "displayName": "Dow Jones Fut"}, {"name": "CAPITALCOM:US500", "displayName": "S&P 500 Fut"}, {"name": "CAPITALCOM:US100", "displayName": "Nasdaq 100 Fut"}, {"name": "CAPITALCOM:J225", "displayName": "Nikkei 225 Fut"}, {"name": "CAPITALCOM:HK50", "displayName": "Hang Seng Fut"}, {"name": "CAPITALCOM:CN50", "displayName": "China A50 Fut"}]}, {"name": "Asia", "symbols": [{"name": "FOREXCOM:JP225", "displayName": "Nikkei 225"}, {"name": "OANDA:HK33HKD", "displayName": "Hang Seng"}, {"name": "SSE:000001", "displayName": "Shanghai Composite"}, {"name": "CAPITALCOM:AU200", "displayName": "ASX 200"}, {"name": "OANDA:SG30SGD", "displayName": "Singapore 30"}]}, {"name": "Europe", "symbols": [{"name": "CAPITALCOM:UK100", "displayName": "FTSE 100"}, {"name": "CAPITALCOM:DE40", "displayName": "DAX"}, {"name": "CAPITALCOM:FR40", "displayName": "CAC 40"}, {"name": "CAPITALCOM:EU50", "displayName": "Euro Stoxx 50"}]}, {"name": "US", "symbols": [{"name": "FOREXCOM:DJI", "displayName": "Dow Jones"}, {"name": "FOREXCOM:SPXUSD", "displayName": "S&P 500"}, {"name": "FOREXCOM:NSXUSD", "displayName": "Nasdaq 100"}, {"name": "CAPITALCOM:VIX", "displayName": "US VIX"}]}, {"name": "Commodities & Currency", "symbols": [{"name": "TVC:USOIL", "displayName": "WTI Crude"}, {"name": "TVC:UKOIL", "displayName": "Brent Crude"}, {"name": "TVC:GOLD", "displayName": "Gold"}, {"name": "TVC:SILVER", "displayName": "Silver"}, {"name": "FX_IDC:USDINR", "displayName": "USD / INR"}, {"name": "CAPITALCOM:DXY", "displayName": "Dollar Index"}, {"name": "OANDA:USB10YUSD", "displayName": "US 10Y T-Note"}]}], "showSymbolLogo": true, "isTransparent": true, "colorTheme": "light", "locale": "en"});
   glW('gl-over', 'https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js', {"colorTheme": "light", "dateRange": "1D", "showChart": true, "locale": "en", "width": "100%", "height": "100%", "largeChartUrl": "", "isTransparent": true, "showSymbolLogo": true, "showFloatingTooltip": true, "plotLineColorGrowing": "rgba(5,150,105,1)", "plotLineColorFalling": "rgba(220,38,38,1)", "gridLineColor": "rgba(148,163,184,0.15)", "scaleFontColor": "rgba(100,116,139,1)", "belowLineFillColorGrowing": "rgba(5,150,105,0.10)", "belowLineFillColorFalling": "rgba(220,38,38,0.10)", "belowLineFillColorGrowingBottom": "rgba(5,150,105,0)", "belowLineFillColorFallingBottom": "rgba(220,38,38,0)", "symbolActiveColor": "rgba(3,105,161,0.10)", "tabs": [{"title": "Futures", "symbols": [{"s": "CAPITALCOM:US30", "d": "Dow Fut"}, {"s": "CAPITALCOM:US500", "d": "S&P Fut"}, {"s": "CAPITALCOM:US100", "d": "Nasdaq Fut"}, {"s": "CAPITALCOM:J225", "d": "Nikkei Fut"}]}, {"title": "Asia", "symbols": [{"s": "FOREXCOM:JP225", "d": "Nikkei 225"}, {"s": "OANDA:HK33HKD", "d": "Hang Seng"}, {"s": "SSE:000001", "d": "Shanghai"}, {"s": "CAPITALCOM:AU200", "d": "ASX 200"}]}, {"title": "Europe", "symbols": [{"s": "CAPITALCOM:UK100", "d": "FTSE 100"}, {"s": "CAPITALCOM:DE40", "d": "DAX"}, {"s": "CAPITALCOM:FR40", "d": "CAC 40"}]}, {"title": "US", "symbols": [{"s": "FOREXCOM:DJI", "d": "Dow Jones"}, {"s": "FOREXCOM:SPXUSD", "d": "S&P 500"}, {"s": "FOREXCOM:NSXUSD", "d": "Nasdaq 100"}]}, {"title": "Commodities", "symbols": [{"s": "TVC:USOIL", "d": "Crude Oil"}, {"s": "TVC:GOLD", "d": "Gold"}, {"s": "FX_IDC:USDINR", "d": "USD/INR"}, {"s": "CAPITALCOM:DXY", "d": "DXY"}]}]});
 }
+</script>
+<script>
+/* ═══ GIFT NIFTY — official NSE IX public data (refresh every 60 s) ═══ */
+const GIFT_URL = 'https://www.nseix.com/api/derivatives-watch?inst_type1=IDX&inst_type2=STK&type=live', NIFTY_URL = 'https://www.nseix.com/api/nifty-market-rate';
+let GIFT = null;
+async function giftJSON(u) {
+  const tries = [() => fetch(u, { cache: 'no-store' }), () => fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(u), { cache: 'no-store' }), () => fetch('https://corsproxy.io/?url=' + encodeURIComponent(u), { cache: 'no-store' }), () => fetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u))];
+  for (const t of tries) { try { const r = await t(); if (r.ok) { const j = JSON.parse(await r.text()); if (j) return j; } } catch (_) {} }
+  throw new Error('gift fetch failed');
+}
+async function loadGift() {
+  try {
+    let f = null, nf = null;
+    try {   // 1) Google Sheet "Gift" tab (filled every minute by Apps Script)
+      const rows = csvRows(await fetchCSV('https://docs.google.com/spreadsheets/d/16Z2Rk_jjuMX8oBDS8y0vPxI5PQzmStQdsYBQGZHDwzc/gviz/tq?tqx=out:csv&sheet=Gift&range=A1&headers=0&t=' + Date.now()));
+      const j = JSON.parse(rows.map(r => r.join(',')).join('\n')); f = j.f; nf = j.n;
+    } catch (_) {}
+    if (!f) {   // 2) direct from NSE IX
+      const d = await giftJSON(GIFT_URL), rows = (d.data || []).filter(r => r.SYMBOL === 'NIFTY' && r.INSTRUMENTTYPE === 'FUTIDX');
+      if (!rows.length) return;
+      f = rows.sort((a, b) => (b.VOLUME || 0) - (a.VOLUME || 0))[0];
+      try { nf = (await giftJSON(NIFTY_URL))[0]; } catch (_) {}
+    }
+    GIFT = f;
+    const up = f.CHANGE >= 0, col = up ? 'var(--green)' : 'var(--red)', sg = up ? '+' : '';
+    I('gift-tp').textContent = fN(f.LASTPRICE); I('gift-tc').textContent = sg + fN(f.CHANGE) + ' (' + sg + f.PERCHANGE.toFixed(2) + '%)'; I('gift-tc').style.color = col;
+    const ns = nf ? parseFloat(String(nf.CURRVALUE).replace(/,/g, '')) : 0, prem = ns ? f.LASTPRICE - ns : null;
+    const ex = (f.EXPIRYDATE || '').replace(/-\d{4}$/, ''), tm = (f.TIMESTMP || '').split(' ')[1] || '';
+    const pos = f.HIGH > f.LOW ? (f.LASTPRICE - f.LOW) / (f.HIGH - f.LOW) * 100 : 50;
+    I('gift-card').innerHTML = '<div class="gift-main"><div class="gift-l"><div class="bo-ttl">🇮🇳 GIFT Nifty · ' + esc(ex) + ' Futures</div><div class="gift-px">' + fN(f.LASTPRICE) + '<span style="color:' + col + '">' + sg + fN(f.CHANGE) + ' (' + sg + f.PERCHANGE.toFixed(2) + '%)</span></div>' +
+      '<div class="gift-sig ' + (up ? 'g' : 'r') + '">' + (Math.abs(f.PERCHANGE) < 0.15 ? '➖ Flat start indicated for Nifty' : up ? '🟢 Positive start indicated for Nifty' : '🔴 Negative start indicated for Nifty') + '</div></div>' +
+      '<div class="gift-stats"><div><small>Open</small><b>' + fN(f.OPEN) + '</b></div><div><small>High</small><b>' + fN(f.HIGH) + '</b></div><div><small>Low</small><b>' + fN(f.LOW) + '</b></div><div><small>Prev Close</small><b>' + fN(f.CLOSE) + '</b></div>' +
+      (prem != null ? '<div><small>vs Nifty Spot</small><b style="color:' + clr(prem) + '">' + (prem >= 0 ? '+' : '') + fN(prem) + '</b></div>' : '') + '<div><small>Volume</small><b>' + fN(f.VOLUME, 0) + '</b></div></div></div>' +
+      '<div class="gift-rng"><span>L ' + fN(f.LOW) + '</span><div><i style="left:' + pos.toFixed(0) + '%"></i></div><span>H ' + fN(f.HIGH) + '</span></div>' +
+      '<p class="op-note" style="margin:8px 0 0">Source: NSE International Exchange (official) · last trade ' + esc(tm) + ' IST · trades 6:30 AM – 2:45 AM, so it signals Nifty’s opening before 9:15.</p>';
+  } catch (e) { if (!GIFT) { I('gift-card').innerHTML = '<div class="bo-empty">GIFT Nifty data unavailable right now</div>'; } }
+}
+loadGift(); setInterval(loadGift, 60000);
 </script>
 </body>
 </html>
