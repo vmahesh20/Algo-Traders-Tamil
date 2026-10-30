@@ -6493,6 +6493,10 @@ function glLoad() {
 }
 </script>
 <script>
+/* remove Alice Blue login code from the address bar (after the redirect) */
+if (/[?&](authCode|appcode|userId)=/.test(location.search)) history.replaceState(null, '', location.pathname + location.hash);
+</script>
+<script>
 /* ═══ GIFT NIFTY — official NSE IX public data (refresh every 60 s) ═══ */
 const GIFT_URL = 'https://www.nseix.com/api/derivatives-watch?inst_type1=IDX&inst_type2=STK&type=live', NIFTY_URL = 'https://www.nseix.com/api/nifty-market-rate';
 let GIFT = null;
