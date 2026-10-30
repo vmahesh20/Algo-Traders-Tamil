@@ -6001,10 +6001,10 @@ function renderBooster() {
   const mx = Math.max(1, ...sec.map(s => Math.abs(s.avg)));
   const tile = (n, v, sub) => { const a = v == null ? 0 : Math.min(1, Math.abs(v) / 2.5), up = v != null && v >= 0;
     return '<div class="bo-tile ' + (v == null ? 'na' : up ? 'up' : 'dn') + '" style="--a:' + (0.05 + a * 0.16).toFixed(3) + '"><span class="bo-tn">' + esc(n) + '</span><b>' + (v == null ? '—' : boPct(v)) + '</b><small>' + sub + '</small><i style="width:' + (v == null ? 0 : Math.max(4, a * 100)).toFixed(0) + '%"></i></div>'; };
-  const idxOk = BO_IDX.some(r => r.chg != null);
+  const idxOk = BO_IDX.some(r => r.chg != null && r.chg !== 0);   // all-zero = feed not giving index change → use stock average
   if (idxOk) {
-    const ix = BO_IDX.slice().sort((x, y) => (y.chg ?? -99) - (x.chg ?? -99)), upN = ix.filter(r => r.chg > 0).length;
-    I('bo-sec-src').textContent = 'Official NSE indices · ' + upN + ' up · ' + (ix.length - upN) + ' down';
+    const ix = BO_IDX.slice().sort((x, y) => (y.chg ?? -99) - (x.chg ?? -99)), upN = ix.filter(r => r.chg > 0).length, dnN = ix.filter(r => r.chg < 0).length;
+    I('bo-sec-src').textContent = 'Official NSE indices · ' + upN + ' up · ' + dnN + ' down';
     I('bo-sec').innerHTML = '<div class="bo-tiles">' + ix.map(r => tile(r.n, r.chg, r.ltp ? r.ltp.toLocaleString('en-IN', { maximumFractionDigits: 2 }) : '')).join('') + '</div>';
   } else {
     I('bo-sec-src').textContent = 'Average of F&O stock futures by sector';
