@@ -839,6 +839,19 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .gift-rng i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#0f172a;border:2px solid #fff;transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.3)}
 @keyframes pulse{50%{opacity:.4}}
 @media(max-width:600px){.gift-chip{padding:0 10px;font-size:.8em;gap:6px}.gift-chip em{display:none}.gift-px{font-size:2em}.gift-stats{grid-template-columns:repeat(2,1fr);width:100%}}
+
+/* tools tabs — individual 3D buttons */
+.tl-tabs{background:transparent!important;border:0!important;padding:2px 2px 8px!important;gap:10px!important}
+.tl-tabs button{background:linear-gradient(180deg,#ffffff 0%,#f1f5f9 100%)!important;border:1px solid #d6dee8!important;border-radius:12px!important;padding:10px 16px!important;color:#334155!important;font-weight:500!important;
+  box-shadow:0 1px 0 #fff inset,0 -2px 0 rgba(15,23,42,.06) inset,0 3px 0 #cbd5e1,0 6px 14px -8px rgba(15,23,42,.35)!important;transform:translateY(0);transition:transform .12s,box-shadow .12s,background .15s!important}
+.tl-tabs button:hover{transform:translateY(-1px);border-color:#93c5fd!important;color:#0f172a!important;
+  box-shadow:0 1px 0 #fff inset,0 -2px 0 rgba(15,23,42,.06) inset,0 4px 0 #bfdbfe,0 10px 18px -10px rgba(3,105,161,.45)!important}
+.tl-tabs button:active{transform:translateY(2px);box-shadow:0 1px 0 #cbd5e1,0 2px 6px -4px rgba(15,23,42,.3)!important}
+.tl-tabs button.on{background:linear-gradient(180deg,#1e293b 0%,#0b1220 100%)!important;color:#fff!important;border-color:#0b1220!important;
+  box-shadow:0 1px 0 rgba(255,255,255,.12) inset,0 3px 0 #0369a1,0 10px 20px -10px rgba(3,105,161,.7)!important;transform:translateY(1px)}
+.tl-tabs button i{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:7px;background:#fff;box-shadow:0 1px 2px rgba(15,23,42,.15);font-size:.9em}
+.tl-tabs button.on i{background:rgba(255,255,255,.12);box-shadow:none}
+@media(max-width:900px){.tl-tabs{padding:2px 2px 10px!important}}
 </style>
 </head>
 <body>
