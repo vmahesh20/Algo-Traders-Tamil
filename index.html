@@ -949,6 +949,7 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .td-t td{font-size:1.36em!important;padding:15px 14px!important}
 .td-t td.nm{font-size:1.14em!important}
 @media(max-width:600px){.td-sh3{grid-template-columns:repeat(2,minmax(0,1fr))!important}.td-sh3 b{font-size:1.45em!important}.td-t td{font-size:1.15em!important}.td-t td.nm{font-size:1em!important}}
+.td-hero-top .td-live{display:none!important}
 </style>
 </head>
 <body>
@@ -1311,8 +1312,8 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
   <!-- ══════════ TODAY ══════════ -->
   <div class="td-head">
     <div>
-      <div class="section-label">Live Update · ₹ P&amp;L per Lot</div>
-      <div class="section-title">Live Strategy P&amp;L</div>
+      <div class="section-label">Daily Update · ₹ P&amp;L per Lot</div>
+      <div class="section-title">Daily Strategy P&amp;L</div>
       <p class="section-sub" style="margin-bottom:0" id="td-date">—</p>
     </div>
     <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
@@ -1355,7 +1356,7 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
       <div class="td-snap-col buy"><div class="td-snap-ch"><span>📈 Option Buying</span><b id="td-snap-bt">—</b></div><div id="td-snap-buy"></div></div>
       <div class="td-snap-col sell"><div class="td-snap-ch"><span>📉 Option Selling</span><b id="td-snap-st">—</b></div><div id="td-snap-sell"></div></div>
     </div>
-    <div class="td-snap-f">algotamil.com · ₹ per lot · Live account · Not SEBI registered · Past performance ≠ future results</div>
+    <div class="td-snap-f">algotamil.com · ₹ per lot · For educational purposes only · Not SEBI registered · Past performance ≠ future results</div>
   </div>
   </div><!-- /td-capture -->
   <div class="shm" id="shm" style="display:none" onclick="if(event.target===this)shmClose()">
@@ -1375,7 +1376,7 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 
   <div id="td-empty" class="empty-card" style="display:none"></div>
   <div id="td-table-wrap" style="display:none">
-    <div class="td-sec"><span id="td-ttl">Strategy-wise P&amp;L</span><small>₹ per lot · live account</small></div>
+    <div class="td-sec"><span id="td-ttl">Strategy-wise P&amp;L</span><small>₹ per lot · educational purposes only</small></div>
     <div class="td-board">
       <div class="td-side" id="td-side-buy"></div>
       <div class="td-side" id="td-side-sell"></div>
@@ -4364,7 +4365,7 @@ async function shareToday() {
 }
 function alertBox(m) { const b = I('errorBox'); b.style.display = 'block'; b.innerHTML = '<div class="error-card"><strong>⚠ Share</strong>' + esc(m) + '</div>'; }
 const shareName = () => 'AlgoTradersTamil-PnL-' + (TD_INFO.date || istToday()) + '.png';
-const shareText = () => 'Algo Traders Tamil · Live Strategy P&L · ' + fmtDay(TD_INFO.date || istToday()) + '\n' + location.origin + location.pathname;
+const shareText = () => 'Algo Traders Tamil · Daily Strategy P&L · ' + fmtDay(TD_INFO.date || istToday()) + '\n' + location.origin + location.pathname;
 async function shmNative() {
   const f = new File([SHARE_BLOB], shareName(), { type: 'image/png' });
   if (navigator.canShare && navigator.canShare({ files: [f] })) { try { await navigator.share({ files: [f], title: 'Algo Traders Tamil P&L', text: shareText() }); } catch (e) {} }
