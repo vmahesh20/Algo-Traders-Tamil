@@ -938,6 +938,17 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .nav-brand>span,.sebi-footer-brand>span,.td-snap-brand>b{margin-left:.28em}.nav-brand{margin-right:12px}
 @media(min-width:901px) and (max-width:1180px){.nav-brand{margin-right:4px}}
 @media(min-width:901px) and (max-width:1060px){.nav-brand{font-size:.92em!important}.nav-brand .brand-ic{width:26px;height:26px;margin-right:5px}.nav-links-row a{padding:6px 5px!important;font-size:.72em!important}.nav-links-row{gap:2px!important}}
+
+/* Today board — Today + Month only, bigger numbers */
+.td-sh3 i{font-size:.66em!important;padding:7px 14px!important}
+.td-sh3 b{font-size:1.85em!important}
+.td-sh3.hl i{font-size:.72em!important;padding:8px 16px!important}
+.td-sh3.hl b{font-size:1.9em!important}
+.td-t th:first-child,.td-t td:first-child{width:46%!important}
+.td-t th{font-size:.82em!important}
+.td-t td{font-size:1.36em!important;padding:15px 14px!important}
+.td-t td.nm{font-size:1.14em!important}
+@media(max-width:600px){.td-sh3{grid-template-columns:repeat(2,minmax(0,1fr))!important}.td-sh3 b{font-size:1.45em!important}.td-t td{font-size:1.15em!important}.td-t td.nm{font-size:1em!important}}
 </style>
 </head>
 <body>
@@ -1328,7 +1339,6 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
       <div class="td-wl"><div class="td-wl-bar" id="td-wlbar"></div></div>
     </div>
     <div class="td-hero-r">
-      <div class="td-stat"><b id="td-wk">—</b><span>This Week</span></div>
       <div class="td-stat"><b id="td-mo">—</b><span id="td-molbl">This Month</span></div>
       <div class="td-stat"><b id="td-count">—</b><span>Traded Today <em id="td-wl"></em></span></div>
     </div>
@@ -4276,7 +4286,7 @@ function renderToday(ok) {
   const rows = TODAY, net = rows.reduce((a, r) => a + r.pnl, 0), w = rows.filter(r => r.pnl > 0).length, l = rows.length - w;
   const cols = TD_M ? TD_M.cols : [], sum = k => cols.reduce((a, c) => a + c[k], 0);
   const setV = (id, v) => { I(id).textContent = TD_M ? fr(v) : '—'; I(id).parentNode.className = 'td-stat' + (TD_M && v ? (v > 0 ? ' pos' : ' neg') : ''); };
-  setV('td-wk', sum('w')); setV('td-mo', sum('m'));
+  setV('td-mo', sum('m'));
   if (d) I('td-molbl').textContent = 'This Month · ' + MNAME[+d.slice(5, 7) - 1];
   I('td-count').textContent = rows.length; I('td-count').parentNode.className = 'td-stat cnt'; I('td-wl').textContent = rows.length ? '(' + w + '↑ ' + l + '↓)' : '';
   I('td-pts').textContent = rows.length ? fr(net) : '₹0';
@@ -4307,7 +4317,7 @@ function renderToday(ok) {
   if (extra.length) groups.push({ side: 'other', name: 'Other Strategies', rows: extra.map(c => ({ nm: c.n, c })) });
   const cell = (v, has) => !has ? '<td class="soon">—</td>' : !v ? '<td class="z">0</td>' : '<td style="color:' + clr(v) + '">' + fr(v) + '</td>';
   const tot = rs => ['d', 'w', 'm'].map(k => rs.reduce((a, r) => a + (r.c ? r.c[k] : 0), 0));
-  const tri = (d, w, m, col) => { const it = (l, v) => '<i' + (col ? ' class="' + (v > 0 ? 'pos' : v < 0 ? 'neg' : 'nil') + '"' : '') + '>' + l + '<b>' + fr(v) + '</b></i>'; return '<span class="td-sh3' + (col ? ' hl' : '') + '">' + it('Today', d) + it('Week', w) + it('Month', m) + '</span>'; };
+  const tri = (d, w, m, col) => { const it = (l, v) => '<i' + (col ? ' class="' + (v > 0 ? 'pos' : v < 0 ? 'neg' : 'nil') + '"' : '') + '>' + l + '<b>' + fr(v) + '</b></i>'; return '<span class="td-sh3' + (col ? ' hl' : '') + '">' + it('Today', d) + it('This Month', m) + '</span>'; };
   const GICON = { 'Basic Option Plan': '🎯', 'Extra Option Buying': '⚡', 'Option Selling': '📉', 'Non-Directional Selling': '⚖️', 'Directional Selling': '🧭', 'Weekly Strategy': '🗓️' };
   const sideHTML = side => {
     const gs = groups.filter(g => g.side === side); if (!gs.length) return '';
@@ -4315,21 +4325,21 @@ function renderToday(ok) {
     const single = gs.length < 2, head = side === 'other' ? '' : '<div class="td-side-h ' + side + '"><span>' + SIDE_LBL[side] + (single ? '' : ' · All') + '</span>' + (hasAny ? tri(sd, sw, sm) : '') + '</div>';
     return head + gs.map(g => { const [gd, gw, gm] = tot(g.rows), live = g.rows.some(r => r.c);
       return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(single && side === 'sell' ? 'Directional & Non-Directional' : g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (single && side !== 'other' ? '' : live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
-        '<table class="td-t"><thead><tr><th>Strategy</th><th>Today</th><th>Week</th><th>Month</th></tr></thead><tbody>' +
-        g.rows.map(r => '<tr class="' + (r.c && r.c.d ? 'hot' + (r.c.d < 0 ? ' l' : '') : '') + '"><td class="nm">' + esc(r.nm) + (r.nick ? '<small>' + esc(r.nick) + '</small>' : '') + '</td>' + cell(r.c && r.c.d, !!r.c) + cell(r.c && r.c.w, !!r.c) + cell(r.c && r.c.m, !!r.c) + '</tr>').join('') +
+        '<table class="td-t"><thead><tr><th>Strategy</th><th>Today</th><th>This Month</th></tr></thead><tbody>' +
+        g.rows.map(r => '<tr class="' + (r.c && r.c.d ? 'hot' + (r.c.d < 0 ? ' l' : '') : '') + '"><td class="nm">' + esc(r.nm) + (r.nick ? '<small>' + esc(r.nick) + '</small>' : '') + '</td>' + cell(r.c && r.c.d, !!r.c) + cell(r.c && r.c.m, !!r.c) + '</tr>').join('') +
         '</tbody></table></div>'; }).join('');
   };
   I('td-side-buy').innerHTML = sideHTML('buy');
   /* highlights card fills the Selling column */
   const live = cols.filter(c => c.m || c.w || c.d);
   const top = live.slice().sort((a, b) => b.m - a.m).filter(c => c.m > 0).slice(0, 5), mx = Math.max(1, ...top.map(c => c.m));
-  const star = live.slice().sort((a, b) => b.w - a.w)[0];
+  const star = live.slice().sort((a, b) => b.d - a.d)[0];
   const hl = top.length ? '<div class="td-gcard hl"><div class="td-gcard-h"><span>🏆 Top Performers<small>All strategies · this month · per lot</small></span></div>' +
-    (star && star.w > 0 ? '<div class="td-star">⭐ Star of the week<b>' + esc(star.n) + '</b><em>' + fr(star.w) + '</em></div>' : '') +
+    (star && star.d > 0 ? '<div class="td-star">⭐ Best today<b>' + esc(star.n) + '</b><em>' + fr(star.d) + '</em></div>' : '') +
     '<div class="td-top">' + top.map((c, i) => '<div class="td-top-r"><span class="td-top-n">' + ['🥇', '🥈', '🥉', '4', '5'][i] + '</span><div class="td-top-b"><div class="td-top-l"><span>' + esc(c.n) + '</span><b>' + fr(c.m) + '</b></div><div class="td-top-bar"><i style="width:' + (c.m / mx * 100).toFixed(0) + '%"></i></div></div></div>').join('') + '</div></div>' : '';
   I('td-side-sell').innerHTML = sideHTML('sell') + hl;
   I('td-side-other').innerHTML = sideHTML('other');
-  I('td-ttl').textContent = 'Strategy-wise P&L · Week from ' + fmtDay(TD_M.wkStart);
+  I('td-ttl').textContent = 'Strategy-wise P&L · Today & This Month';
 }
 
 /* ── SHARE CARD (PNG) ── */
