@@ -950,6 +950,10 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .td-t td.nm{font-size:1.14em!important}
 @media(max-width:600px){.td-sh3{grid-template-columns:repeat(2,minmax(0,1fr))!important}.td-sh3 b{font-size:1.45em!important}.td-t td{font-size:1.15em!important}.td-t td.nm{font-size:1em!important}}
 .td-hero-top .td-live{display:none!important}
+
+.qm-l{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed transparent;transition:.15s}
+.qm-l i{font-style:normal;font-size:.72em;color:#0369a1;opacity:.55;transition:.15s}
+.qm-l:hover{color:#0369a1;border-bottom-color:#0369a1}.qm-l:hover i{opacity:1;transform:translate(1px,-1px)}
 </style>
 </head>
 <body>
@@ -4278,6 +4282,13 @@ const TD_GROUPS = [
 ];
 const SIDE_LBL = { buy: '📈 Option Buying', sell: '📉 Option Selling', other: '🗓️ Weekly Strategy' };
 const nk = s => String(s).toLowerCase().replace(/[^a-z0-9.]/g, '');
+let QM = null;
+const QM_ALIAS = { 'niftyselling': 'niftyselling2.0', 'bankniftyselling': 'bankniftyselling2.1', 'sensexselling': 'sensexhedge', 'niftycombo': 'niftybullrider', 'niftyhedge1.2l': 'niftyhedging1.2l' };
+function qmUrl(name) {   /* links come from the Strategy Hub cards, so they stay in sync */
+  if (!QM) { QM = {}; document.querySelectorAll('.sr-card').forEach(c => { const n = c.querySelector('.sr-nm'), a = c.querySelector('a.sr-btn'); if (n && a) QM[nk(n.textContent)] = a.href; }); }
+  const k = nk(name); return QM[k] || QM[QM_ALIAS[k]] || '';
+}
+const qmName = (name, inner) => { const u = qmUrl(name); return u ? '<a class="qm-l" href="' + u + '" target="_blank" rel="noopener" title="Open ' + esc(name) + ' on Quantman">' + inner + '<i>↗</i></a>' : inner; };
 function renderToday(ok) {
   const today = istToday(), d = TD_INFO.date, isToday = d === today;
   const dl = iso => new Date(iso + 'T00:00:00Z').toLocaleDateString('en-IN', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -4300,7 +4311,7 @@ function renderToday(ok) {
   I('shareBtn').disabled = !rows.length;
   /* screenshot card */
   const isSell = r => /sell/i.test(r.cat || '');
-  const snapCol = (list, kind) => list.length ? list.map(r => '<div class="td-snap-r' + (r.pnl > 0 ? '' : ' l') + '"><span>' + esc(r.strategy) + '</span><b>' + fr(r.pnl) + '</b></div>').join('') : '<div class="td-snap-none">⏸️ No ' + kind + ' strategy triggered today<small>Entry conditions not met — rules followed, no forced trades</small></div>';
+  const snapCol = (list, kind) => list.length ? list.map(r => '<div class="td-snap-r' + (r.pnl > 0 ? '' : ' l') + '"><span>' + qmName(r.strategy, esc(r.strategy)) + '</span><b>' + fr(r.pnl) + '</b></div>').join('') : '<div class="td-snap-none">⏸️ No ' + kind + ' strategy triggered today<small>Entry conditions not met — rules followed, no forced trades</small></div>';
   const bl = rows.filter(r => !isSell(r)), sl = rows.filter(isSell), bt = bl.reduce((a, r) => a + r.pnl, 0), st = sl.reduce((a, r) => a + r.pnl, 0);
   I('td-snap').style.display = rows.length ? 'block' : 'none';
   I('td-snap-ttl').textContent = "Today's Trades · " + (d ? fmtDay(d) : '');
@@ -4327,7 +4338,7 @@ function renderToday(ok) {
     return head + gs.map(g => { const [gd, gw, gm] = tot(g.rows), live = g.rows.some(r => r.c);
       return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(single && side === 'sell' ? 'Directional & Non-Directional' : g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (single && side !== 'other' ? '' : live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
         '<table class="td-t"><thead><tr><th>Strategy</th><th>Today</th><th>This Month</th></tr></thead><tbody>' +
-        g.rows.map(r => '<tr class="' + (r.c && r.c.d ? 'hot' + (r.c.d < 0 ? ' l' : '') : '') + '"><td class="nm">' + esc(r.nm) + (r.nick ? '<small>' + esc(r.nick) + '</small>' : '') + '</td>' + cell(r.c && r.c.d, !!r.c) + cell(r.c && r.c.m, !!r.c) + '</tr>').join('') +
+        g.rows.map(r => '<tr class="' + (r.c && r.c.d ? 'hot' + (r.c.d < 0 ? ' l' : '') : '') + '"><td class="nm">' + qmName(r.nm, esc(r.nm)) + (r.nick ? '<small>' + esc(r.nick) + '</small>' : '') + '</td>' + cell(r.c && r.c.d, !!r.c) + cell(r.c && r.c.m, !!r.c) + '</tr>').join('') +
         '</tbody></table></div>'; }).join('');
   };
   I('td-side-buy').innerHTML = sideHTML('buy');
@@ -4356,7 +4367,7 @@ async function shareToday() {
     await loadH2C();
     const el = I('td-capture');
     const canvas = await html2canvas(el, { scale: Math.min(2, window.devicePixelRatio || 2) * 1.25, backgroundColor: '#eef2f7', useCORS: true, logging: false,
-      onclone: d => { const c = d.getElementById('td-capture'); c.style.padding = '18px'; c.style.width = '1200px'; d.querySelectorAll('.td-dot').forEach(x => x.style.animation = 'none'); } });
+      onclone: d => { const c = d.getElementById('td-capture'); c.style.padding = '18px'; c.style.width = '1200px'; d.querySelectorAll('.td-dot').forEach(x => x.style.animation = 'none'); d.querySelectorAll('.qm-l i').forEach(x => x.remove()); } });
     SHARE_BLOB = await new Promise(res => canvas.toBlob(res, 'image/png'));
     I('shm-img').src = URL.createObjectURL(SHARE_BLOB);
     I('shm').style.display = 'flex';
