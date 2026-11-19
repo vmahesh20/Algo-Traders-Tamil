@@ -954,6 +954,16 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .qm-l{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:5px;border-bottom:1px dashed transparent;transition:.15s}
 .qm-l i{font-style:normal;font-size:.72em;color:#0369a1;opacity:.55;transition:.15s}
 .qm-l:hover{color:#0369a1;border-bottom-color:#0369a1}.qm-l:hover i{opacity:1;transform:translate(1px,-1px)}
+
+.td-split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.td-ms{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 14px;border-radius:12px;background:var(--surface2);border:1.5px solid var(--border);border-left:5px solid #94a3b8}
+.td-ms span{font-weight:600;font-size:.98em;color:var(--text);line-height:1.2}
+.td-ms small{display:block;font-size:.74em;font-weight:500;color:var(--muted);margin-top:2px}
+.td-ms b{font-family:var(--mono);font-size:1.15em;font-weight:600;padding:4px 10px;border-radius:8px;color:#fff;background:#64748b;white-space:nowrap}
+.td-ms.pos{background:rgba(5,150,105,.08);border-color:rgba(5,150,105,.35);border-left-color:#059669}.td-ms.pos b{background:#059669}
+.td-ms.neg{background:rgba(220,38,38,.06);border-color:rgba(220,38,38,.32);border-left-color:#dc2626}.td-ms.neg b{background:#dc2626}
+@media(max-width:600px){.td-split{grid-template-columns:1fr}}
+.td-ms{flex-direction:column;align-items:flex-start;gap:6px}.td-ms span{white-space:nowrap}.td-ms b{font-size:1.3em}.td-ms small{display:inline;margin:0 0 0 4px}
 </style>
 </head>
 <body>
@@ -1345,6 +1355,7 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
     </div>
     <div class="td-hero-r">
       <div class="td-stat"><b id="td-mo">—</b><span id="td-molbl">This Month</span></div>
+      <div class="td-split"><div class="td-ms" id="td-msb"><span>📈 Option Buying</span><b id="td-mob">—</b></div><div class="td-ms" id="td-mss"><span>📉 Option Selling</span><b id="td-mos">—</b></div></div>
       <div class="td-stat"><b id="td-count">—</b><span>Traded Today <em id="td-wl"></em></span></div>
     </div>
     </div>
@@ -4299,7 +4310,7 @@ function renderToday(ok) {
   const cols = TD_M ? TD_M.cols : [], sum = k => cols.reduce((a, c) => a + c[k], 0);
   const setV = (id, v) => { I(id).textContent = TD_M ? fr(v) : '—'; I(id).parentNode.className = 'td-stat' + (TD_M && v ? (v > 0 ? ' pos' : ' neg') : ''); };
   setV('td-mo', sum('m'));
-  if (d) I('td-molbl').textContent = 'This Month · ' + MNAME[+d.slice(5, 7) - 1];
+  if (d) { I('td-molbl').textContent = 'This Month · ' + MNAME[+d.slice(5, 7) - 1]; document.querySelectorAll('.td-msm').forEach(x => x.textContent = 'This Month · ' + MNAME[+d.slice(5, 7) - 1]); }
   I('td-count').textContent = rows.length; I('td-count').parentNode.className = 'td-stat cnt'; I('td-wl').textContent = rows.length ? '(' + w + '↑ ' + l + '↓)' : '';
   I('td-pts').textContent = rows.length ? fr(net) : '₹0';
   I('td-hero').className = 'td-hero' + (rows.length ? (net >= 0 ? ' up' : ' down') : '');
@@ -4334,6 +4345,7 @@ function renderToday(ok) {
   const sideHTML = side => {
     const gs = groups.filter(g => g.side === side); if (!gs.length) return '';
     const all = gs.flatMap(g => g.rows), [sd, sw, sm] = tot(all), hasAny = all.some(r => r.c);
+    if (side === 'buy' || side === 'sell') { const b = I(side === 'buy' ? 'td-mob' : 'td-mos'); b.textContent = hasAny ? fr(sm) : '—'; b.parentNode.className = 'td-ms' + (hasAny && sm ? (sm > 0 ? ' pos' : ' neg') : ''); }
     const single = gs.length < 2, head = side === 'other' ? '' : '<div class="td-side-h ' + side + '"><span>' + SIDE_LBL[side] + (single ? '' : ' · All') + '</span>' + (hasAny ? tri(sd, sw, sm) : '') + '</div>';
     return head + gs.map(g => { const [gd, gw, gm] = tot(g.rows), live = g.rows.some(r => r.c);
       return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(single && side === 'sell' ? 'Directional & Non-Directional' : g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (single && side !== 'other' ? '' : live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
