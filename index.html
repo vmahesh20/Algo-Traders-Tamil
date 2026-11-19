@@ -4837,7 +4837,7 @@ function shmClose() { I('shm').style.display = 'none'; }
    (A "Type" / "Capital" column in the backtest sheet overrides this)
 ════════════════════════════════════════════════ */
 const TYPE_CFG = {
-  buy:  { label: 'Option Buying',  slipMax: 1,   slipDef: 0 },
+  buy:  { label: 'Option Buying',  slipMax: 0.5,  slipDef: 0 },
   sell: { label: 'Option Selling', slipMax: 0.5, slipDef: 0 }
 };
 const STRAT_CFG = {
@@ -4889,9 +4889,9 @@ function onSlip() {
 }
 
 const getLots = () => { const el = I('bt-lots'); let v = Math.floor(parseFloat(el.value)); if (isNaN(v) || v < 1) v = 1; if (v > 100) v = 100; if (String(v) !== el.value && document.activeElement !== el) el.value = v; return v; };
-const slipRs = () => { const rs = I('bt-slipmode').value === 'rs'; I('bt-slip').max = rs ? '' : '1'; return rs; };
+const slipRs = () => { const rs = I('bt-slipmode').value === 'rs'; I('bt-slip').max = rs ? '' : '0.5'; return rs; };
 const getCap = () => [...new Set(BT.map(r => r.strategy))].filter(inScope).reduce((a, n) => a + cfgOf(n).capital, 0) * getLots();
-const SLIP_MAX_PCT = 1; // overall ceiling; per-trade cap comes from TYPE_CFG (buy 1%, sell 0.5%)
+const SLIP_MAX_PCT = 0.5; // max slippage 0.5% for buying & selling
 function getSlip() {
   const el = I('bt-slip'); let v = parseFloat(el.value);
   if (isNaN(v) || v < 0) v = 0;
@@ -4964,7 +4964,7 @@ function renderBacktest() {
   const per = +I('bt-period').value, from = per ? isoMinusDays(istToday(), per) : '';
   const rows = BT.filter(r => inScope(r.strategy) && (!from || r.date >= from));
   { const c = getCap(), nS = [...new Set(BT.map(r => r.strategy))].filter(inScope).length; I('bt-cap').value = c ? '₹' + c.toLocaleString('en-IN') + (nS > 1 ? ' · ' + nS : '') : '—'; }
-  I('bt-range').innerHTML = 'Window: ' + (rows.length ? fmtDay(rows[0].date) + ' → ' + fmtDay(rows[rows.length - 1].date) : '—') + '<br><small>🔒 Last 3 months hidden as per SEBI norms (data till ' + fmtDay(btCut()) + ')</small><br>Slippage ' + (slipRs() ? '₹' + slip + ' flat' : slip + '% of traded value') + ' per trade · ' + LOTS + ' lot' + (LOTS > 1 ? 's' : '') + ' · max: buying 1%, selling 0.5%';
+  I('bt-range').innerHTML = 'Window: ' + (rows.length ? fmtDay(rows[0].date) + ' → ' + fmtDay(rows[rows.length - 1].date) : '—') + '<br><small>🔒 Last 3 months hidden as per SEBI norms (data till ' + fmtDay(btCut()) + ')</small><br>Slippage ' + (slipRs() ? '₹' + slip + ' flat' : slip + '% of traded value') + ' per trade · ' + LOTS + ' lot' + (LOTS > 1 ? 's' : '') + ' · max 0.5%';
 
   if (!rows.length) {
     I('bt-wrap').style.display = 'none';
@@ -5739,7 +5739,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <ol class="bth-steps">
         <li class="s1"><i>1</i><div><b>Choose Category</b><span>Option Buying or Option Selling</span></div></li>
         <li class="s2"><i>2</i><div><b>Pick a Strategy</b><span>Or keep “All Strategies” for the full portfolio</span></div></li>
-        <li class="s3"><i>3</i><div><b>Add Slippage &amp; Lots</b><span>Slippage = real-world cost per trade (max 1% buying, 0.5% selling)</span></div></li>
+        <li class="s3"><i>3</i><div><b>Add Slippage &amp; Lots</b><span>Slippage = real-world cost per trade (max 0.5% for buying & selling)</span></div></li>
         <li class="s4"><i>4</i><div><b>Read the Results</b><span>Net P&amp;L, win rate, drawdown, year &amp; month tables</span></div></li>
       </ol>
       <button class="bth-go" onclick="document.querySelector('.bt-controls').scrollIntoView({behavior:'smooth',block:'center'})">Try it now ↓</button>
@@ -5760,7 +5760,7 @@ document.addEventListener('DOMContentLoaded', () => {
     <div><label for="bt-period">Period</label><select id="bt-period" onchange="onSlip()"><option value="0">All Years</option><option value="365">Last 1 Year</option><option value="730">Last 2 Years</option><option value="1095">Last 3 Years</option></select></div>
     <div><label for="bt-type">Category</label><select id="bt-type" onchange="onType()"><option value="all">All Categories</option><option value="buy">Option Buying</option><option value="sell">Option Selling</option></select></div>
     <div><label for="bt-strat">Strategy</label><select id="bt-strat" onchange="onStrat()"><option value="__all">All Strategies</option></select></div>
-    <div><label for="bt-slip">Slippage / trade</label><div style="display:flex;gap:6px"><select id="bt-slipmode" onchange="onSlip()" aria-label="Slippage type"><option value="pct">%</option><option value="rs">₹</option></select><input id="bt-slip" type="number" min="0" max="1" step="0.05" value="0" oninput="onSlip()" onchange="getSlip();onSlip()" title="Max 1% for option buying, 0.5% for option selling"></div></div>
+    <div><label for="bt-slip">Slippage / trade</label><div style="display:flex;gap:6px"><select id="bt-slipmode" onchange="onSlip()" aria-label="Slippage type"><option value="pct">%</option><option value="rs">₹</option></select><input id="bt-slip" type="number" min="0" max="0.5" step="0.05" value="0" oninput="onSlip()" onchange="getSlip();onSlip()" title="Max 0.5% for buying & selling"></div></div>
     <div><label for="bt-lots">No. of Lots</label><input id="bt-lots" type="number" min="1" max="100" step="1" value="1" oninput="onSlip()" onchange="getLots();onSlip()" style="width:80px" title="P&amp;L, slippage and capital scale with lots"></div>
     <div><label for="bt-cap">Deployed Capital</label><input id="bt-cap" type="text" readonly value="—" style="width:150px;background:var(--surface3);cursor:default;font-weight:600" title="Per strategy · Nifty &amp; Sensex ₹15,000 · Bank Nifty ₹25,000"></div>
     <div class="bt-note" id="bt-range">—</div>
