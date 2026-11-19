@@ -1021,6 +1021,27 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 .td-snap-ch span{display:flex;flex-direction:column;line-height:1.2}
 .td-snap-ch span small{font-size:.58em;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px}
 @media(max-width:700px){.td-snap-h{grid-template-columns:1fr;justify-items:start;gap:8px}.td-snap-mid{align-items:flex-start;text-align:left}.td-snap-net{justify-self:start;text-align:left}}
+
+/* compact Today header */
+.tdh{display:grid!important;grid-template-columns:auto 1fr auto;align-items:center!important;gap:18px!important;margin-bottom:16px!important;flex-direction:row!important}
+.tdh .section-title{font-size:1.55rem!important;margin:0!important;white-space:nowrap}
+.tdh .section-sub{margin:2px 0 0!important;font-size:.85rem!important;white-space:nowrap}
+.tdh-steps{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.tdh-st{font-size:.82em;font-weight:600;color:var(--muted2);white-space:nowrap}
+.tdh .td-step{display:inline-flex;align-items:center;gap:7px;padding:6px 12px 6px 6px;border-radius:999px;font-size:.82em;font-weight:600;white-space:nowrap;box-shadow:0 2px 0 #e2e8f0}
+.tdh .td-step i{width:22px;height:22px;font-size:.78em}
+.tdh-act{display:flex;align-items:center;gap:8px;flex-wrap:nowrap}
+@media(max-width:1100px){.tdh{grid-template-columns:1fr auto}.tdh-steps{grid-column:1/-1;grid-row:2;justify-content:flex-start}}
+@media(max-width:700px){.tdh{grid-template-columns:1fr!important;gap:10px!important}.tdh-act{flex-wrap:wrap}.tdh-steps{grid-row:auto}.tdh .section-sub{white-space:normal}}
+#td-molbl{display:flex;flex-direction:column;gap:3px}#td-molbl .mo-t{display:flex;align-items:center;font-size:1em}#td-molbl .mo-s{font-size:.74em;font-weight:500;color:var(--muted)}
+@media(max-width:700px){.tdh-steps{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.tdh-st{display:none}.tdh .td-step{justify-content:center;padding:6px 6px 6px 4px;font-size:.72em;gap:5px;min-width:0;overflow:hidden;text-overflow:ellipsis}.tdh .td-step i{width:18px;height:18px;font-size:.75em;flex-shrink:0}}
+
+/* world-market ticker fixed at bottom */
+.gl-tape{position:fixed!important;left:0;right:0;bottom:0;z-index:800;border-top:1px solid var(--border);border-bottom:0!important;box-shadow:0 -6px 18px -12px rgba(15,23,42,.35);background:var(--surface)}
+body{padding-bottom:48px}
+.wa-float{bottom:62px!important}
+@media(max-width:600px){.wa-float{bottom:58px!important}}
+.tip::after{display:none}.tip:hover::after,.tip:focus::after{display:block}.sr-cap .tip::after,.td-hero-r .tip::after{left:auto;right:-8px;transform:none}
 </style>
 </head>
 <body>
@@ -1072,8 +1093,6 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
   </div>
 </nav>
 
-<div class="gl-tape"><a class="gift-chip" id="gift-chip" href="#tools" onclick="showPage('booster');setTimeout(()=>showTool('glob'),60);return false"><i></i><span>GIFT Nifty</span><b id="gift-tp">—</b><em id="gift-tc"></em></a><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols": [{"proName": "CAPITALCOM:US30", "title": "Dow Fut"}, {"proName": "CAPITALCOM:US500", "title": "S&P 500 Fut"}, {"proName": "CAPITALCOM:US100", "title": "Nasdaq Fut"}, {"proName": "CAPITALCOM:J225", "title": "Nikkei"}, {"proName": "CAPITALCOM:HK50", "title": "Hang Seng"}, {"proName": "CAPITALCOM:DE40", "title": "DAX"}, {"proName": "CAPITALCOM:UK100", "title": "FTSE 100"}, {"proName": "TVC:USOIL", "title": "Crude Oil"}, {"proName": "TVC:GOLD", "title": "Gold"}, {"proName": "FX_IDC:USDINR", "title": "USD/INR"}, {"proName": "CAPITALCOM:DXY", "title": "Dollar Index"}, {"proName": "CAPITALCOM:VIX", "title": "US VIX"}], "showSymbolLogo": true, "isTransparent": true, "displayMode": "adaptive", "colorTheme": "light", "locale": "en"}</script></div></div>
-<a class="ab-ribbon" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener">🎁 <b>Free strategy access</b> — open a new Alice Blue account with our referral link <span>Open now ↗</span></a>
 
 <!-- ═══ PAGE: PERFORMANCE (today points + 1-yr backtest) ═══ -->
 <div class="page-section active" id="page-performance">
@@ -1381,13 +1400,18 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 <div class="perf-wrap">
 
   <!-- ══════════ TODAY ══════════ -->
-  <div class="td-head">
-    <div>
-      <div class="section-label">Daily Update · ₹ P&amp;L per Lot</div>
+  <div class="td-head tdh">
+    <div class="tdh-l">
       <div class="section-title">Daily Strategy P&amp;L</div>
-      <p class="section-sub" style="margin-bottom:0" id="td-date">—</p>
+      <p class="section-sub" id="td-date">—</p>
     </div>
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+    <div class="tdh-steps">
+      <span class="tdh-st">🚀 New here?</span>
+      <a class="td-step" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener"><i>1</i>Open Alice Blue</a>
+      <a class="td-step" href="#" onclick="showPage('strategies');return false"><i>2</i>Pick a strategy</a>
+      <a class="td-step" href="#td-capture" onclick="I('td-capture').scrollIntoView({behavior:'smooth'});return false"><i>3</i>Track results</a>
+    </div>
+    <div class="tdh-act">
       <span class="last-sync" id="lastSync">–</span>
       <button class="refresh-btn" id="refreshBtn" onclick="loadData()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
@@ -1399,13 +1423,6 @@ h1,h2,h3,.page-h1,.section-title,.ind-nm,.td-hero-val,.bo-mood{letter-spacing:-0
 
   <div id="errorBox" style="display:none"></div>
 
-  <!-- HERO -->
-  <div class="td-start">
-    <div class="td-start-t">🚀 New here? Start in 3 steps</div>
-    <a class="td-step" href="https://ekyc.aliceblueonline.com/?source=NDEL2080" target="_blank" rel="noopener"><i>1</i><span><b>Open Alice Blue account</b><small>Free · via our referral link</small></span></a>
-    <a class="td-step" href="#" onclick="showPage('strategies');return false"><i>2</i><span><b>Pick a strategy</b><small>Strategy Hub · capital &amp; links</small></span></a>
-    <a class="td-step" href="#td-capture" onclick="I('td-capture').scrollIntoView({behavior:'smooth'});return false"><i>3</i><span><b>Track daily results</b><small>Updated every trading day</small></span></a>
-  </div>
   <div id="td-capture">
   <div class="td-hero" id="td-hero">
     <div class="td-hero-top"><span class="td-snap-brand"><i class="brand-ic"></i>Algo Traders <b>Tamil</b></span><div class="td-bigdate" id="td-bigdate"></div><span class="td-asof" id="td-asof"></span><div class="td-live"><span class="td-dot"></span><span id="td-livetxt">LIVE · TODAY</span></div></div>
@@ -4377,7 +4394,7 @@ function renderToday(ok) {
   const cols = TD_M ? TD_M.cols : [], sum = k => cols.reduce((a, c) => a + c[k], 0);
   const setV = (id, v) => { I(id).textContent = TD_M ? fr(v) : '—'; I(id).parentNode.className = 'td-stat' + (TD_M && v ? (v > 0 ? ' pos' : ' neg') : ''); };
   setV('td-mo', sum('m'));
-  if (d) { I('td-molbl').innerHTML = 'This Month · ' + MNAME[+d.slice(5, 7) - 1] + TIP('Total P&L of all trading days so far this month, per lot.'); I('td-mslbl').innerHTML = 'This Month · ' + MNAME[+d.slice(5, 7) - 1] + ' · by category' + TIP('Option Buying = small capital, limited loss. Option Selling = higher capital, steadier income, always hedged.'); }
+  if (d) { I('td-molbl').innerHTML = '<span class="mo-t">This Month · ' + MNAME[+d.slice(5, 7) - 1] + ' · All Strategies' + TIP('Total P&L of ALL strategies (Option Buying + Option Selling) for every trading day so far this month, per lot.') + '</span><small class="mo-s">📈 Buying + 📉 Selling combined</small>'; I('td-mslbl').innerHTML = 'This Month · ' + MNAME[+d.slice(5, 7) - 1] + ' · by category' + TIP('Option Buying = small capital, limited loss. Option Selling = higher capital, steadier income, always hedged.'); }
   I('td-count').textContent = rows.length; I('td-count').parentNode.className = 'td-stat cnt'; I('td-wl').textContent = '';
   I('td-pts').textContent = rows.length ? fr(net) : '₹0';
   I('td-hero').className = 'td-hero' + (rows.length ? (net >= 0 ? ' up' : ' down') : '');
@@ -4416,7 +4433,7 @@ function renderToday(ok) {
     if (side === 'buy' || side === 'sell') { const b = I(side === 'buy' ? 'td-mob' : 'td-mos'); b.textContent = hasAny ? fr(sm) : '—'; b.parentNode.className = 'td-ms' + (hasAny && sm ? (sm > 0 ? ' pos' : ' neg') : ''); }
     const single = gs.length < 2, head = side === 'other' ? '' : '<div class="td-side-h ' + side + '"><span>' + SIDE_LBL[side] + (single ? '' : ' · All') + '</span>' + (hasAny ? tri(sd, sw, sm) : '') + '</div>';
     return head + gs.map(g => { const [gd, gw, gm] = tot(g.rows), live = g.rows.some(r => r.c);
-      return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(single && side === 'sell' ? 'Directional & Non-Directional' : g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (single && side !== 'other' ? '' : live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
+      return '<div class="td-gcard ' + side + '"><div class="td-gcard-h"><span>' + (GICON[g.name] || '📊') + ' ' + esc(single && side === 'sell' ? 'Directional & Non-Directional' : g.name) + '<small>' + g.rows.length + ' strateg' + (g.rows.length > 1 ? 'ies' : 'y') + '</small></span>' + (live ? tri(gd, gw, gm, 1) : '<span class="td-soon">Coming soon</span>') + '</div>' +
         '<table class="td-t"><thead><tr><th>Strategy</th><th>Today</th><th>This Month</th></tr></thead><tbody>' +
         g.rows.map(r => '<tr class="' + (r.c && r.c.d ? 'hot' + (r.c.d < 0 ? ' l' : '') : '') + '"><td class="nm">' + qmName(r.nm, esc(r.nm)) + (!r.c ? '<span class="cs-b">Coming soon</span>' : '') + (r.nick ? '<small>' + esc(r.nick) + '</small>' : '') + '</td>' + cell(r.c && r.c.d, !!r.c) + cell(r.c && r.c.m, !!r.c) + '</tr>').join('') +
         '</tbody></table></div>'; }).join('');
@@ -5597,7 +5614,6 @@ document.addEventListener('DOMContentLoaded', () => {
   </div>
 
   <div class="tl-pane" id="tl-glob">
-    <div class="bo-card gift-card" id="gift-card"><div class="bo-empty">Loading GIFT Nifty…</div></div>
     <div class="gl-grid">
       <div class="bo-card gl-q"><div class="bo-lh"><span>🌏 Global Indices &amp; Futures</span><small>live · auto-updating</small></div><div id="gl-quotes" class="gl-w"></div></div>
       <div class="bo-card gl-o"><div class="bo-lh"><span>📈 Charts</span><small>tap a symbol</small></div><div id="gl-over" class="gl-w"></div></div>
@@ -6720,47 +6736,10 @@ function glLoad() {
 if (/[?&](authCode|appcode|userId)=/.test(location.search)) history.replaceState(null, '', location.pathname + location.hash);
 </script>
 <script>
-/* ═══ GIFT NIFTY — official NSE IX public data (refresh every 60 s) ═══ */
-const GIFT_URL = 'https://www.nseix.com/api/derivatives-watch?inst_type1=IDX&inst_type2=STK&type=live', NIFTY_URL = 'https://www.nseix.com/api/nifty-market-rate';
-let GIFT = null;
-async function giftJSON(u) {
-  const tries = [() => fetch(u, { cache: 'no-store' }), () => fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(u), { cache: 'no-store' }), () => fetch('https://corsproxy.io/?url=' + encodeURIComponent(u), { cache: 'no-store' }), () => fetch('https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u))];
-  for (const t of tries) { try { const r = await t(); if (r.ok) { const j = JSON.parse(await r.text()); if (j) return j; } } catch (_) {} }
-  throw new Error('gift fetch failed');
-}
-async function loadGift() {
-  try {
-    let f = null, nf = null;
-    try {   // 1) Google Sheet "Gift" tab (filled every minute by Apps Script)
-      const rows = csvRows(await fetchCSV('https://docs.google.com/spreadsheets/d/16Z2Rk_jjuMX8oBDS8y0vPxI5PQzmStQdsYBQGZHDwzc/gviz/tq?tqx=out:csv&sheet=Gift&range=A1&headers=0&t=' + Date.now()));
-      const j = JSON.parse(rows.map(r => r.join(',')).join('\n')); f = j.f; nf = j.n;
-    } catch (_) {}
-    if (!f) {   // 2) direct from NSE IX
-      const d = await giftJSON(GIFT_URL), rows = (d.data || []).filter(r => r.SYMBOL === 'NIFTY' && r.INSTRUMENTTYPE === 'FUTIDX');
-      if (!rows.length) return;
-      f = rows.sort((a, b) => (b.VOLUME || 0) - (a.VOLUME || 0))[0];
-      try { nf = (await giftJSON(NIFTY_URL))[0]; } catch (_) {}
-    }
-    GIFT = f;
-    const up = f.CHANGE >= 0, col = up ? 'var(--green)' : 'var(--red)', sg = up ? '+' : '';
-    I('gift-tp').textContent = fN(f.LASTPRICE); I('gift-tc').textContent = sg + fN(f.CHANGE) + ' (' + sg + f.PERCHANGE.toFixed(2) + '%)'; I('gift-tc').style.color = col;
-    const ns = nf ? parseFloat(String(nf.CURRVALUE).replace(/,/g, '')) : 0, prem = ns ? f.LASTPRICE - ns : null;
-    const ex = (f.EXPIRYDATE || '').replace(/-\d{4}$/, ''), tm = (f.TIMESTMP || '').split(' ')[1] || '';
-    const pos = f.HIGH > f.LOW ? (f.LASTPRICE - f.LOW) / (f.HIGH - f.LOW) * 100 : 50;
-    I('gift-card').innerHTML = '<div class="gift-main"><div class="gift-l"><div class="bo-ttl">🇮🇳 GIFT Nifty · ' + esc(ex) + ' Futures</div><div class="gift-px">' + fN(f.LASTPRICE) + '<span style="color:' + col + '">' + sg + fN(f.CHANGE) + ' (' + sg + f.PERCHANGE.toFixed(2) + '%)</span></div>' +
-      '<div class="gift-sig ' + (up ? 'g' : 'r') + '">' + (Math.abs(f.PERCHANGE) < 0.15 ? '➖ Flat start indicated for Nifty' : up ? '🟢 Positive start indicated for Nifty' : '🔴 Negative start indicated for Nifty') + '</div></div>' +
-      '<div class="gift-stats"><div><small>Open</small><b>' + fN(f.OPEN) + '</b></div><div><small>High</small><b>' + fN(f.HIGH) + '</b></div><div><small>Low</small><b>' + fN(f.LOW) + '</b></div><div><small>Prev Close</small><b>' + fN(f.CLOSE) + '</b></div>' +
-      (prem != null ? '<div><small>vs Nifty Spot</small><b style="color:' + clr(prem) + '">' + (prem >= 0 ? '+' : '') + fN(prem) + '</b></div>' : '') + '<div><small>Volume</small><b>' + fN(f.VOLUME, 0) + '</b></div></div></div>' +
-      '<div class="gift-rng"><span>L ' + fN(f.LOW) + '</span><div><i style="left:' + pos.toFixed(0) + '%"></i></div><span>H ' + fN(f.HIGH) + '</span></div>' +
-      '<p class="op-note" style="margin:8px 0 0">Source: NSE International Exchange (official) · last trade ' + esc(tm) + ' IST · trades 6:30 AM – 2:45 AM, so it signals Nifty’s opening before 9:15.</p>';
-  } catch (e) { if (!GIFT) { I('gift-card').innerHTML = '<div class="bo-empty">GIFT Nifty data unavailable right now</div>'; } }
-}
-loadGift(); setInterval(loadGift, 60000);
-</script>
-<script>
 function btGuide(show) { I('bth').classList.toggle('hide', !show); try { localStorage.setItem('btGuide', show ? '1' : '0'); } catch (_) {} }
 try { if (localStorage.getItem('btGuide') === '0') I('bth').classList.add('hide'); } catch (_) {}
 </script>
+<div class="gl-tape"><div class="tradingview-widget-container"><div class="tradingview-widget-container__widget"></div><script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>{"symbols": [{"proName": "CAPITALCOM:US30", "title": "Dow Fut"}, {"proName": "CAPITALCOM:US500", "title": "S&P 500 Fut"}, {"proName": "CAPITALCOM:US100", "title": "Nasdaq Fut"}, {"proName": "CAPITALCOM:J225", "title": "Nikkei"}, {"proName": "CAPITALCOM:HK50", "title": "Hang Seng"}, {"proName": "CAPITALCOM:DE40", "title": "DAX"}, {"proName": "CAPITALCOM:UK100", "title": "FTSE 100"}, {"proName": "TVC:USOIL", "title": "Crude Oil"}, {"proName": "TVC:GOLD", "title": "Gold"}, {"proName": "FX_IDC:USDINR", "title": "USD/INR"}, {"proName": "CAPITALCOM:DXY", "title": "Dollar Index"}, {"proName": "CAPITALCOM:VIX", "title": "US VIX"}], "showSymbolLogo": true, "isTransparent": true, "displayMode": "regular", "colorTheme": "light", "locale": "en"}</script></div></div>
 <a class="wa-float" href="https://wa.me/919655516011?text=Hi%20Mahesh%2C%20I%20have%20a%20question%20about%20Algo%20Traders%20Tamil" target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><svg viewBox="0 0 32 32" width="28" height="28"><path fill="#fff" d="M16 3a13 13 0 0 0-11.3 19.5L3 29l6.7-1.7A13 13 0 1 0 16 3zm0 23.7a10.7 10.7 0 0 1-5.5-1.5l-.4-.2-4 1 1.1-3.9-.3-.4A10.7 10.7 0 1 1 16 26.7zm5.9-8c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7.1a8.8 8.8 0 0 1-4.4-3.8c-.3-.6.3-.5 1-1.7.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.4 14.4 0 0 0 5.5 4.9c2 .9 2.8.9 3.8.8a3.2 3.2 0 0 0 2.1-1.5 2.6 2.6 0 0 0 .2-1.5c-.1-.1-.3-.2-.6-.3z"/></svg><span>Chat with us</span></a>
 </body>
 </html>
